@@ -35,7 +35,7 @@ class Game:
     def reset_map(self):
 
         self.player = Player((self.width / 2), (self.height - 100), 100, 100, 'assets/Characters/knight/idle/idle_knight_1.png', 10)
-        self.background = Background
+        self.background = Background(0, 0, self.width, self.height, 'assets/Background/layer_2.png', 10)
         speed = 5 + (self.level * 5)
 
         if self.level >= 4.0:
@@ -61,7 +61,7 @@ class Game:
         #self.game_window.blit(self.background1.image, (self.background1.x, self.background1.y))
         #self.game_window.blit(self.background2.image, (self.background2.x, self.background2.y))
         #self.game_window.blit(self.background3.image, (self.background3.x, self.background3.y-600))
-        self.game_window.blit(self.background.image)
+        self.game_window.blit(self.background.image, 0, 0)
         self.game_window.blit(self.treasure.image, (self.treasure.x, self.treasure.y))
         self.game_window.blit(self.player.image, (self.player.x, self.player.y))
 
