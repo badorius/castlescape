@@ -2,6 +2,7 @@ import pygame
 from gameObject import GameObject
 from player import Player
 from enemy import Enemy
+from background import Background
 
 class Game:
 
@@ -15,9 +16,9 @@ class Game:
 
         self.clock = pygame.time.Clock()
 
-        self.background1 = GameObject(0, 0, self.width, self.height, 'assets/Background/layer_1.png')
-        self.background2 = GameObject(0, 0, self.width, self.height, 'assets/Background/layer_2.png')
-        self.background3 = GameObject(0, 0, self.width, self.height, 'assets/Background/layer_3.png')
+        #self.background1 = GameObject(0, 0, self.width, self.height, 'assets/Background/layer_1.png')
+        #self.background2 = GameObject(0, 0, self.width, self.height, 'assets/Background/layer_2.png')
+        #self.background3 = GameObject(0, 0, self.width, self.height, 'assets/Background/layer_3.png')
 
         self.treasure = GameObject(375, 50, 50, 50, 'assets/treasure.png')
 
@@ -34,6 +35,7 @@ class Game:
     def reset_map(self):
 
         self.player = Player((self.width / 2), (self.height - 100), 100, 100, 'assets/Characters/knight/idle/idle_knight_1.png', 10)
+        self.background = Background
         speed = 5 + (self.level * 5)
 
         if self.level >= 4.0:
@@ -56,10 +58,10 @@ class Game:
     def draw_objects(self):
         self.game_window.fill(self.white_colour)
         self.game_window.scroll(10,10)
-        self.game_window.blit(self.background1.image, (self.background1.x, self.background1.y))
-        self.game_window.blit(self.background2.image, (self.background2.x, self.background2.y))
+        #self.game_window.blit(self.background1.image, (self.background1.x, self.background1.y))
+        #self.game_window.blit(self.background2.image, (self.background2.x, self.background2.y))
         #self.game_window.blit(self.background3.image, (self.background3.x, self.background3.y-600))
-
+        self.game_window.blit(self.background.image)
         self.game_window.blit(self.treasure.image, (self.treasure.x, self.treasure.y))
         self.game_window.blit(self.player.image, (self.player.x, self.player.y))
 

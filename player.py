@@ -36,6 +36,8 @@ class Player(GameObject):
                 pygame.image.load('assets/Characters/knight/idle/idle_knight_6.png')]
 
         self.walkCount = 0
+        self.isJump = False
+
 
     def move(self, direction, max_width):
 
