@@ -1,13 +1,10 @@
 import pygame
-from gameObject import GameObject
-
-class Player(GameObject):
 
 
-    def __init__(self, x, y, width, height, image_path, speed):
-        super().__init__(x, y, width, height, image_path)
+class Player():
 
-        self.speed = speed
+
+    def __init__(self, x, y, width, height, speed):
         self.walkRight = [pygame.image.load('assets/Characters/knight/walk/walk_knight_1.png'),
                      pygame.image.load('assets/Characters/knight/walk/walk_knight_2.png'),
                      pygame.image.load('assets/Characters/knight/walk/walk_knight_3.png'),
@@ -37,6 +34,19 @@ class Player(GameObject):
 
         self.walkCount = 0
         self.isJump = False
+
+        image = pygame.image.load('assets/Characters/knight/walk/walk_knight_1.png')
+        #self.image = pygame.transform.flip(image, 1, 0)
+        self.image = pygame.transform.scale(image, (width, height))
+
+
+
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.speed = speed
+
 
 
     def move(self, direction, max_width):
