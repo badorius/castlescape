@@ -55,9 +55,11 @@ class Game:
         self.game_window.fill(self.white_colour)
         self.game_window.scroll(10,10)
 
+
         self.game_window.blit(self.background.image1, (self.background.x1, self.background.y1))
         self.game_window.blit(self.background.image2, (self.background.x2, self.background.y2))
         self.game_window.blit(self.background.image3, (self.background.x3, self.background.y3))
+
         self.game_window.blit(self.player.image, (self.player.x, self.player.y))
 
         #self.game_window.blit(self.player.walkRight[player_direction//3], (self.player.x, self.player.y))

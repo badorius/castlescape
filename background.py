@@ -4,6 +4,7 @@ import pygame
 class Background():
 
     def __init__(self, x, y, width, height, speed):
+
         self.x1 = x
         self.x2 = x
         self.x3 = x
@@ -11,6 +12,7 @@ class Background():
         self.y1 = y
         self.y2 = y
         self.y3 = y
+
 
         self.width = width
         self.height = height
@@ -27,8 +29,8 @@ class Background():
         self.image2 = pygame.transform.scale(self.image2, (width, height))
         self.image3 = pygame.transform.scale(self.image3, (width, height))
 
-        self.width = width/2
-        self.height = height/2
+        self.width = width
+        self.height = height
         self.speed = speed * 2
 
 
