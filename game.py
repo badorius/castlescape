@@ -3,6 +3,7 @@ from gameObject import GameObject
 from player import Player
 from enemy import Enemy
 from background import Background
+import math
 
 class Game:
 
@@ -12,7 +13,8 @@ class Game:
         self.height = 900
         self.white_colour = (255, 255, 255)
         self.FPS = 60
-
+        self.scroll = 0
+        self.counter = 0
         self.game_window = pygame.display.set_mode((self.width,self.height))
 
         self.clock = pygame.time.Clock()
@@ -36,18 +38,18 @@ class Game:
 
         if self.level >= 4.0:
             self.enemies = [
-                Enemy(0, 600, 50, 50, speed),
-                Enemy(750, 400, 50, 50, speed),
-                Enemy(0, 200, 50, 50, speed),
+                Enemy(0, self.height - 100, 50, 50, speed),
+                Enemy(750, self.height - 100, 50, 50, speed),
+                Enemy(0, self.height - 100, 50, 50, speed),
             ]
         elif self.level >= 2.0:
             self.enemies = [
-                Enemy(0, 600, 50, 50, speed),
-                Enemy(750, 400, 50, 50, speed),
+                Enemy(0, self.height - 100, 50, 50, speed),
+                Enemy(750, self.height - 100, 50, 50, speed),
             ]
         else:
             self.enemies = [
-                Enemy(0, 600, 50, 50, speed),
+                Enemy(0, self.height - 100, 50, 50, speed),
             ]
 
 
@@ -55,10 +57,15 @@ class Game:
         self.game_window.fill(self.white_colour)
         self.game_window.scroll(10,10)
 
+        for bg in self.background.bg_images:
+            self.game_window.blit(self.background.bg_images[self.counter],
+                                  (self.background.x_list[self.counter], self.background.y_list[self.counter]))
+            self.counter += 1
 
-        self.game_window.blit(self.background.image1, (self.background.x1, self.background.y1))
-        self.game_window.blit(self.background.image2, (self.background.x2, self.background.y2))
-        self.game_window.blit(self.background.image3, (self.background.x3, self.background.y3))
+
+
+        self.counter = 0
+
 
         self.game_window.blit(self.player.image, (self.player.x, self.player.y))
 

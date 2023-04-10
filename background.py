@@ -1,33 +1,45 @@
 import pygame
-
+import math
 
 class Background():
 
     def __init__(self, x, y, width, height, speed):
 
-        self.x1 = x
-        self.x2 = x
-        self.x3 = x
-
-        self.y1 = y
-        self.y2 = y
-        self.y3 = y
-
-
+        self.bg_images = [pygame.image.load('assets/Background/layer_1.png'), pygame.image.load('assets/Background/layer_2.png'), pygame.image.load('assets/Background/layer_3.png')]
         self.width = width
         self.height = height
-        self.bg_image1 = 'assets/Background/layer_1.png'
-        self.bg_image2 = 'assets/Background/layer_2.png'
-        self.bg_image3 = 'assets/Background/layer_3.png'
-        self.bg_images = [self.bg_image1, self.bg_image2, self.bg_image3]
 
-        self.image1 = pygame.image.load(self.bg_image1)
-        self.image2 = pygame.image.load(self.bg_image2)
-        self.image3 = pygame.image.load(self.bg_image3)
+        self.counter = 0
+        self.bg_with_list = []
+        self.tiles_list = []
+        self.x_list = []
+        self.y_list = []
+        self.speed_list = []
 
-        self.image1 = pygame.transform.scale(self.image1, (width, height))
-        self.image2 = pygame.transform.scale(self.image2, (width, height))
-        self.image3 = pygame.transform.scale(self.image3, (width, height))
+        for items in self.bg_images:
+            self.x_list.append(x)
+            self.counter += 1
+        self.counter = 0
+
+        for items in self.bg_images:
+            self.y_list.append(y)
+            self.counter += 1
+        self.counter = 0
+
+        for bg in self.bg_images:
+            self.bg_images[self.counter] = pygame.transform.scale(self.bg_images[self.counter], (width, height))
+            self.counter += 1
+        self.counter = 0
+
+        for bg in self.bg_images:
+            self.bg_with_list.append(self.bg_images[self.counter].get_width())
+            self.counter += 1
+        self.counter = 0
+
+        for bg in self.bg_images:
+            self.tiles_list.append(math.ceil(width / self.bg_with_list[self.counter]))
+            self.counter += 1
+        self.counter = 0
 
         self.width = width
         self.height = height
@@ -37,9 +49,16 @@ class Background():
 
     def move(self, direction, max_width):
 
-        self.speed1 = self.speed + 1
-        self.speed2 = self.speed + 2
-        self.speed3 = self.speed + 3
-        self.x1 += (direction * self.speed1)
-        self.x2 += (direction * self.speed2)
-        self.x3 += (direction * self.speed3)
+        for bg in self.bg_images:
+            self.speed_list.append(self.speed + (self.counter + 1))
+            #print(self.speed_list[self.counter])
+            self.counter += 1
+        self.counter = 0
+
+        for bg in self.bg_images:
+            self.x_list[self.counter] = self.x_list[self.counter] + (direction * self.speed_list[self.counter])
+            print(self.x_list[self.counter])
+            self.counter += 1
+        self.counter = 0
+
+

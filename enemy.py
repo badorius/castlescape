@@ -11,7 +11,7 @@ class Enemy():
         self.height = height
 
         self.speed = speed
-        image = pygame.image.load('assets/enemy.png')
+        image = pygame.image.load('assets/Characters/skeleton-rise-clothed/skeleton-rise-clothed-5.png')
         self.image = pygame.transform.scale(image, (width, height))
     def move(self, max_width):
         if self.x <= 0:
