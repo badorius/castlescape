@@ -56,9 +56,10 @@ class Game:
         self.game_window.fill(self.white_colour)
         self.game_window.scroll(10,10)
 
-        for i in range(0, self.background.bg_num):
-            #self.game_window.blit(self.background.bg_images[i], ((self.background.x_list[i] * self.background.bg_with_list[i]) - player_direction, self.background.y_list[i]))
-            self.game_window.blit(self.background.bg_images[i], (self.background.x_list[i], self.background.y_list[i]))
+        for x in range (5):
+            for i in range(0, self.background.bg_num):
+                #self.game_window.blit(self.background.bg_images[i], ((self.background.x_list[i] * self.background.bg_with_list[i]) - player_direction, self.background.y_list[i]))
+                self.game_window.blit(self.background.bg_images[i], ((self.width * x) + self.background.x_list[i], self.background.y_list[i]))
 
 
         self.game_window.blit(self.player.image, (self.player.x, self.player.y))
