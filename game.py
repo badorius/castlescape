@@ -9,18 +9,17 @@ class Game:
 
 
     def __init__(self):
-        self.width = 1440
-        self.height = 900
+        self.width = 800
+        self.height = 432
         self.white_colour = (255, 255, 255)
         self.FPS = 60
         self.scroll = 0
-        self.counter = 0
-        self.game_window = pygame.display.set_mode((self.width,self.height))
+        self.level = 1.0
 
+        self.game_window = pygame.display.set_mode((self.width,self.height))
         self.clock = pygame.time.Clock()
 
 
-        self.level = 1.0
 
         self.reset_map()
 
@@ -38,18 +37,18 @@ class Game:
 
         if self.level >= 4.0:
             self.enemies = [
-                Enemy(0, self.height - 100, 50, 50, speed),
-                Enemy(750, self.height - 100, 50, 50, speed),
-                Enemy(0, self.height - 100, 50, 50, speed),
+                Enemy(0, self.height - 200, 50, 50, speed),
+                Enemy(750, self.height - 200, 50, 50, speed),
+                Enemy(0, self.height - 200, 50, 50, speed),
             ]
         elif self.level >= 2.0:
             self.enemies = [
-                Enemy(0, self.height - 100, 50, 50, speed),
-                Enemy(750, self.height - 100, 50, 50, speed),
+                Enemy(0, self.height - 200, 50, 50, speed),
+                Enemy(750, self.height - 200, 50, 50, speed),
             ]
         else:
             self.enemies = [
-                Enemy(0, self.height - 100, 50, 50, speed),
+                Enemy(0, self.height - 200, 50, 50, speed),
             ]
 
 
@@ -57,14 +56,9 @@ class Game:
         self.game_window.fill(self.white_colour)
         self.game_window.scroll(10,10)
 
-        for bg in self.background.bg_images:
-            self.game_window.blit(self.background.bg_images[self.counter],
-                                  (self.background.x_list[self.counter], self.background.y_list[self.counter]))
-            self.counter += 1
-
-
-
-        self.counter = 0
+        for i in range(0, self.background.bg_num):
+            self.game_window.blit(self.background.bg_images[i],
+                                  (self.background.x_list[i], self.background.y_list[i]))
 
 
         self.game_window.blit(self.player.image, (self.player.x, self.player.y))
@@ -107,6 +101,7 @@ class Game:
         player_direction = 0
 
         while True:
+            self.clock.tick(self.FPS)
 
             # Handle events
             events = pygame.event.get()
@@ -138,4 +133,3 @@ class Game:
             if self.check_if_collided():
                 self.reset_map()
 
-            self.clock.tick(self.FPS)
