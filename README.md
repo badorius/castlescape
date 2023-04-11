@@ -1,2 +1,2 @@
 # castlescape
-castlescpae my first pythone game 
+castlescpae my first pythone game!
