@@ -29,7 +29,7 @@ class Background():
     def move(self, direction, max_width):
 
         for i in range(0,self.bg_num):
-            self.speed_list.append(self.speed + ((i) + 1))
+            self.speed_list.append(self.speed + (i + 1))
             self.x_list[i] = self.x_list[i] + (direction * self.speed_list[i])
 
 
