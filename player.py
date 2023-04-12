@@ -5,32 +5,25 @@ class Player():
 
 
     def __init__(self, x, y, width, height, speed):
-        self.walkRight = [pygame.image.load('assets/Characters/knight/walk/walk_knight_1.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_2.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_3.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_4.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_5.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_6.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_7.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_8.png'),
-                     pygame.image.load('assets/Characters/knight/walk/walk_knight_9.png')]
+        self.walk_num = 9
+        self.char_num = 6
+        self.walkRight = []
+        self.walkLeft = []
+        self.char = []
 
-        self.walkLeft = [pygame.image.load('assets/Characters/knight/walk/walk_knight_1.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_2.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_3.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_4.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_5.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_6.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_7.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_8.png'),
-                    pygame.image.load('assets/Characters/knight/walk/walk_knight_9.png')]
+        for i in range(0,self.walk_num):
+            self.walkRight.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{i+1}.png"))
+            self.walkRight[i] = pygame.transform.scale(self.walkRight[i], (width, height))
 
-        self.char = [pygame.image.load('assets/Characters/knight/idle/idle_knight_1.png'),
-                pygame.image.load('assets/Characters/knight/idle/idle_knight_2.png'),
-                pygame.image.load('assets/Characters/knight/idle/idle_knight_3.png'),
-                pygame.image.load('assets/Characters/knight/idle/idle_knight_4.png'),
-                pygame.image.load('assets/Characters/knight/idle/idle_knight_5.png'),
-                pygame.image.load('assets/Characters/knight/idle/idle_knight_6.png')]
+            self.walkLeft.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{i+1}.png"))
+            self.walkLeft[i] = pygame.transform.flip(self.walkLeft[i], 1, 0)
+            self.walkLeft[i] = pygame.transform.scale(self.walkLeft[i], (width, height))
+
+
+        for i in range(0,self.char_num):
+            self.char.append(pygame.image.load(f"assets/Characters/knight/idle/idle_knight_{i+1}.png"))
+            self.char[i] = pygame.transform.scale(self.char[i], (width, height))
+
 
         self.walkCount = 0
         self.isJump = False
@@ -56,6 +49,12 @@ class Player():
             return
 
         self.x += (direction * self.speed)
+
+    def jump(self, direction, max_width):
+        if (self.y >= max_width - self.width and direction > 0) or (self.y <= 0 and direction < 0):
+            return
+
+        self.y += (direction * self.speed)
 
 
 

@@ -27,7 +27,12 @@ class Game:
         pygame.mixer.music.load('assets/music/04.mp3')
         pygame.mixer.music.play()
         self.ouch = pygame.mixer.Sound('assets/music/jump.mp3')
+
+
         self.isJump = False
+        self.isLeft = False
+        self.isRight = True
+        self.jump_distance = 50
 
 
     def reset_map(self):
@@ -62,7 +67,12 @@ class Game:
                 self.game_window.blit(self.background.bg_images[i], ((self.width * x) + self.background.x_list[i], self.background.y_list[i]))
 
 
-        self.game_window.blit(self.player.image, (self.player.x, self.player.y))
+        if self.isRight:
+            self.game_window.blit(self.player.walkRight[player_direction//3], (self.player.x, self.player.y))
+        elif self.isLeft:
+            self.game_window.blit(self.player.walkLeft[player_direction//3], (self.player.x, self.player.y))
+        elif self.isJump:
+            self.game_window.blit(self.player.char[player_direction//3], (self.player.x, self.player.y - self.jump_distance))
 
         #self.game_window.blit(self.player.walkRight[player_direction//3], (self.player.x, self.player.y))
 
@@ -75,6 +85,7 @@ class Game:
     def move_objects(self, player_direction, isJump):
 
         self.player.move(player_direction, self.width)
+        self.player.jump(player_direction, self.width)
         self.background.move((player_direction * -1), self.width)
         for enemy in self.enemies:
             enemy.move(self.width)
@@ -112,11 +123,22 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         player_direction = -1
+                        self.isLeft = True
+                        self.isRight = False
+                        self.isJump = False
+
                     elif event.key == pygame.K_RIGHT:
                         player_direction = 1
+                        self.isRight = True
+                        self.isLeft = False
+                        self.isJump = False
+
                     elif event.key == pygame.K_SPACE:
                         player_direction = 0
+                        self.isRight = False
+                        self.isLeft = False
                         self.isJump = True
+        
                         pygame.mixer.Sound.play(self.ouch)
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_SPACE:
