@@ -10,6 +10,15 @@ class Player():
         self.walkRight = []
         self.walkLeft = []
         self.char = []
+        self.jump_distance = 50
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.speed = speed
+        self.topx_player = 100
+        self.jump_y = []
+
 
         for i in range(0,self.walk_num):
             self.walkRight.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{i+1}.png"))
@@ -34,28 +43,20 @@ class Player():
 
 
 
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.speed = speed
-
-
 
     def move(self, direction, max_width):
 
         #self.s += (direction * self.speed)
-        if (self.x >= max_width - self.width and direction > 0) or (self.x <= 0 and direction < 0):
+        if (self.x >= max_width + self.topx_player and direction > 0) or (self.x <= max_width - self.topx_player * 2 and direction < 0):
             return
 
         self.x += (direction * self.speed)
 
     def jump(self, direction, max_width):
-        if (self.y >= max_width - self.width and direction > 0) or (self.y <= 0 and direction < 0):
-            return
-
-        self.y += (direction * self.speed)
-
+        for up_down in range(0, self.jump_distance):
+            self.jump_y.append(self.y-up_down)
+        for down_up in range (0, self.jump_distance):
+            self.jump_y.append((self.y-self.jump_distance)+down_up)
 
 
 

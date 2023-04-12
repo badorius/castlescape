@@ -16,7 +16,6 @@ class Background():
         self.bg_num = 3
 
         for i in range(0,self.bg_num):
-            print(f"assets/Background/layer_{i+1}.png")
             self.bg_image = pygame.image.load(f"assets/Background/layer_{i+1}.png").convert_alpha()
             self.bg_images.append(self.bg_image)
             self.x_list.append(x)

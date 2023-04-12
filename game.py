@@ -15,6 +15,9 @@ class Game:
         self.FPS = 60
         self.scroll = 0
         self.level = 1.0
+        self.x = self.width / 2
+        self.y = self.height - 100
+        self.flor = self.y
 
         self.game_window = pygame.display.set_mode((self.width,self.height))
         self.clock = pygame.time.Clock()
@@ -31,12 +34,13 @@ class Game:
 
         self.isJump = False
         self.isLeft = False
-        self.isRight = True
-        self.jump_distance = 50
+        self.isRight = False
 
 
     def reset_map(self):
-        self.player = Player((self.width / 2), (self.height - 100), 100, 100, 10)
+        x = self.width / 2
+        y = self.height - 100
+        self.player = Player(self.x, self.flor, 100, 100, 10)
         self.background = Background(0, 0, self.width, self.height, 1)
         speed = 5 + (self.level * 5)
 
@@ -66,13 +70,22 @@ class Game:
                 #self.game_window.blit(self.background.bg_images[i], ((self.background.x_list[i] * self.background.bg_with_list[i]) - player_direction, self.background.y_list[i]))
                 self.game_window.blit(self.background.bg_images[i], ((self.width * x) + self.background.x_list[i], self.background.y_list[i]))
 
-
         if self.isRight:
             self.game_window.blit(self.player.walkRight[player_direction//3], (self.player.x, self.player.y))
+            self.isRight = False
         elif self.isLeft:
             self.game_window.blit(self.player.walkLeft[player_direction//3], (self.player.x, self.player.y))
+            #self.isLeft = False
+
         elif self.isJump:
-            self.game_window.blit(self.player.char[player_direction//3], (self.player.x, self.player.y - self.jump_distance))
+            for up in self.player.jump_y:
+                self.game_window.blit(self.player.char[player_direction//3], (self.player.x, up))
+            if self.player.y is not self.flor:
+                print(f"{self.player.y} is not {self.flor}")
+            self.isJump = False
+        else:
+            self.game_window.blit(self.player.char[player_direction//3], (self.player.x, self.player.y))
+
 
         #self.game_window.blit(self.player.walkRight[player_direction//3], (self.player.x, self.player.y))
 
@@ -82,10 +95,15 @@ class Game:
         pygame.display.update()
 
 
-    def move_objects(self, player_direction, isJump):
+    def move_objects(self, player_direction):
+        if self.isLeft or self.isRight:
+            self.player.move(player_direction, self.width/2)
+        elif self.isJump:
+            self.player.jump(player_direction, self.width/2)
 
-        self.player.move(player_direction, self.width)
-        self.player.jump(player_direction, self.width)
+
+
+        #self.player.jump(player_direction, self.width/2)
         self.background.move((player_direction * -1), self.width)
         for enemy in self.enemies:
             enemy.move(self.width)
@@ -125,20 +143,13 @@ class Game:
                         player_direction = -1
                         self.isLeft = True
                         self.isRight = False
-                        self.isJump = False
-
                     elif event.key == pygame.K_RIGHT:
                         player_direction = 1
                         self.isRight = True
                         self.isLeft = False
-                        self.isJump = False
-
                     elif event.key == pygame.K_SPACE:
                         player_direction = 0
-                        self.isRight = False
-                        self.isLeft = False
                         self.isJump = True
-        
                         pygame.mixer.Sound.play(self.ouch)
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_SPACE:
@@ -147,7 +158,7 @@ class Game:
                     
 
             # Execute logic
-            self.move_objects(player_direction, self.isJump)
+            self.move_objects(player_direction)
 
             # Update display
             self.draw_objects(player_direction)
