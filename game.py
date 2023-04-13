@@ -151,9 +151,53 @@ class Game:
                         player_direction = 0
                         self.isJump = True
                         pygame.mixer.Sound.play(self.ouch)
+                        self.player.jump(player_direction, self.width)
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_SPACE:
                         player_direction = 0
+
+    def run_game_loop_new(self):
+        run = True
+
+        while run:
+            self.clock.tick(self.FPS)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+
+            keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_LEFT] and x > vel:
+                x -= vel
+                left = True
+                right = False
+
+            elif keys[pygame.K_RIGHT] and x < 1280 - vel - width:
+                x += vel
+                left = False
+                right = True
+
+            else:
+                left = False
+                right = False
+                walkCount = 0
+
+            if not (isJump):
+                if keys[pygame.K_SPACE]:
+                    isJump = True
+                    left = False
+                    right = False
+                    walkCount = 0
+                    pygame.mixer.Sound.play(ouch)
+
+            else:
+                if jumpCount >= -10:
+                    y -= (jumpCount * abs(jumpCount)) * 0.5
+                    jumpCount -= 1
+                else:
+                    jumpCount = 10
+                    isJump = False
 
                     
 
