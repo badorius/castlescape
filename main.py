@@ -47,7 +47,10 @@ for z in range(1,7):
 
 for z in range(1,4):
     bgs.append(pygame.image.load(f"assets/Background/layer_{z}.png"))
-    bgs[z-1] = pygame.transform.scale(bgs[z-1], (window_width, window_height))
+    if z is not 3:
+        bgs[z-1] = pygame.transform.scale(bgs[z-1], (window_width, window_height))
+    elif z is 3:
+        bgs[z - 1] = pygame.transform.scale(bgs[z - 1], (window_width, bgs[z-1].get_height()))
 
 for z in range(1,5):
     floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
