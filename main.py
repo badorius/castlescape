@@ -1,6 +1,7 @@
 import pygame
 from gameObject import GameObject
 from random import randint
+import math
 
 pygame.init()
 window_width = 1280
@@ -17,6 +18,8 @@ left = False
 right = False
 walkCount = 0
 scroll = 0
+idle = 0
+idle_floor = 0
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/music/04.mp3')
@@ -44,14 +47,14 @@ for z in range(1,10):
     walkLeft[z-1] = pygame.transform.flip(walkLeft[z-1], 1, 0)
 
 for z in range(1,7):
-    char.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{z}.png"))
+    char.append(pygame.image.load(f"assets/Characters/knight/idle/idle_knight_{z}.png"))
     char[z-1] = pygame.transform.scale(char[z-1], (width, height))
 
 for z in range(1,4):
     bgs.append(pygame.image.load(f"assets/Background/layer_{z}.png"))
-    if z is not 3:
+    if z != 3:
         bgs[z-1] = pygame.transform.scale(bgs[z-1], (window_width, window_height))
-    elif z is 3:
+    elif z == 3:
         bgs[z - 1] = pygame.transform.scale(bgs[z - 1], (window_width, bgs[z-1].get_height()))
 
 for z in range(1,5):
@@ -67,10 +70,10 @@ def drwaBG():
     for x in range(5):
         speed = 1
         for bg in bgs:
-            if bgs.index(bg) is not 2:
+            if bgs.index(bg) != 2:
                 win.blit(bg, ((x*window_width) - scroll * speed, 0))
                 speed += 0.2
-            elif bgs.index(bg) is 2:
+            elif bgs.index(bg) == 2:
                 win.blit(bg, ((x*window_width) - scroll * speed, window_height - 60))
                 speed += 0.2
 
@@ -82,15 +85,22 @@ def  draw_ground():
         for x in range(1,5):
             win.blit(floor1[x-1], (x+z * (floor1[x-1].get_width()) - scroll * 2.2, window_height - floor1[x-1].get_height()))
 
+
 def redrawGameWindow():
     global walkCount
     global scroll
+    global idle
+    global idle_floor
 
     drwaBG()
     draw_ground()
 
     if walkCount + 1 >= 27:
         walkCount = 0
+
+    if idle_floor == 5:
+        idle = 0
+        idle_floor = 0
         
     if left and scroll > 0:
         win.blit(walkLeft[walkCount//3], (x,y))
@@ -103,7 +113,9 @@ def redrawGameWindow():
         scroll += 5
 
     elif scroll > 0 or scroll < 3000:
-        win.blit(char[walkCount//3],  (x, y))
+        idle += 0.1
+        idle_floor = math.floor(idle)
+        win.blit(char[idle_floor],  (x, y))
         walkCount = 0
         
     pygame.display.update()
