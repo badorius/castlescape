@@ -32,6 +32,8 @@ char = []
 bgs = []
 floor1 = []
 
+
+
 for z in range(1,10):
     walkRight.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{z}.png"))
     walkRight[z-1] = pygame.transform.scale(walkRight[z-1], (width, height))
@@ -65,8 +67,13 @@ def drwaBG():
     for x in range(5):
         speed = 1
         for bg in bgs:
-            win.blit(bg, ((x*window_width) - scroll * speed, 0))
-            speed += 0.2
+            if bgs.index(bg) is not 2:
+                win.blit(bg, ((x*window_width) - scroll * speed, 0))
+                speed += 0.2
+            elif bgs.index(bg) is 2:
+                win.blit(bg, ((x*window_width) - scroll * speed, window_height - 60))
+                speed += 0.2
+
 
 def  draw_ground():
     floor_rnd = randint(1, 10)
