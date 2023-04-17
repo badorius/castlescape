@@ -113,7 +113,7 @@ def redrawGameWindow():
         scroll += 5
 
     elif scroll > 0 or scroll < 3000:
-        idle += 0.1
+        idle += 0.2
         idle_floor = math.floor(idle)
         win.blit(char[idle_floor],  (x, y))
         walkCount = 0
