@@ -2,53 +2,30 @@ import pygame
 from gameObject import GameObject
 from random import randint
 import math
+from warrior import Warrior
+from enemy import Enemy
 
 pygame.init()
 window_width = 1280
 window_height = 800
-x = 400
-y = 700
-width = 100
-height = 100
 vel = 5
 FPS = 60
-isJump = False
-jumpCount = 10
-left = False
-right = False
-walkCount = 0
 scroll = 0
-idle = 0
-idle_floor = 0
+
+
 
 pygame.mixer.init()
-pygame.mixer.music.load('assets/music/04.mp3')
+pygame.mixer.music.load('assets/music/background/2020-02-04_-_Powerful_-_David_Fesliyan.mp3')
 pygame.mixer.music.play()
-ouch = pygame.mixer.Sound('assets/music/jump.mp3')
+ouch = pygame.mixer.Sound('assets/music/fast-simple-chop-5-6270.mp3')
 
 win = pygame.display.set_mode((window_width,window_height))
 pygame.display.set_caption("First Game")
 
-walkLeft = []
-walkRight = []
-char = []
 bgs = []
 floor1 = []
 
 
-
-for z in range(1,10):
-    walkRight.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{z}.png"))
-    walkRight[z-1] = pygame.transform.scale(walkRight[z-1], (width, height))
-
-for z in range(1,10):
-    walkLeft.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{z}.png"))
-    walkLeft[z-1] = pygame.transform.scale(walkLeft[z-1], (width, height))
-    walkLeft[z-1] = pygame.transform.flip(walkLeft[z-1], 1, 0)
-
-for z in range(1,7):
-    char.append(pygame.image.load(f"assets/Characters/knight/idle/idle_knight_{z}.png"))
-    char[z-1] = pygame.transform.scale(char[z-1], (width, height))
 
 for z in range(1,4):
     bgs.append(pygame.image.load(f"assets/Background/layer_{z}.png"))
@@ -60,14 +37,17 @@ for z in range(1,4):
 for z in range(1,5):
     floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
 
+
+ingrid = Warrior()
+skeleton = Enemy()
 floor_y = floor1[0].get_height()
-y -= floor_y
+ingrid.y -= floor_y
 
 
 clock = pygame.time.Clock()
 
 def drwaBG():
-    for x in range(5):
+    for x in range(10):
         speed = 1
         for bg in bgs:
             if bgs.index(bg) != 2:
@@ -87,36 +67,46 @@ def  draw_ground():
 
 
 def redrawGameWindow():
-    global walkCount
     global scroll
-    global idle
-    global idle_floor
 
     drwaBG()
     draw_ground()
 
-    if walkCount + 1 >= 27:
-        walkCount = 0
+    if ingrid.walkCount + 1 >= 24:
+        ingrid.walkCount = 0
 
-    if idle_floor == 5:
-        idle = 0
-        idle_floor = 0
-        
-    if left and scroll > 0:
-        win.blit(walkLeft[walkCount//3], (x,y))
-        walkCount += 1
+    if ingrid.idle_floor == 5:
+        ingrid.idle = 0
+        ingrid.idle_floor = 0
+
+    if skeleton.idle_floor == 5:
+        skeleton.idle = 5
+        skeleton.idle_floor = 5
+
+
+    if ingrid.isJump:
+        print(" ingrid is jump")
+
+    if ingrid.left and scroll > 0:
+        win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x,ingrid.y))
+        win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+        ingrid.walkCount += 1
         scroll -= 5
 
-    elif right and scroll < 3000:
-        win.blit(walkRight[walkCount//3], (x,y))
-        walkCount += 1
+    elif ingrid.right and scroll < 3000:
+        win.blit(ingrid.walkRight[ingrid.walkCount//3], (ingrid.x,ingrid.y))
+        win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+        ingrid.walkCount += 1
         scroll += 5
 
     elif scroll > 0 or scroll < 3000:
-        idle += 0.2
-        idle_floor = math.floor(idle)
-        win.blit(char[idle_floor],  (x, y))
-        walkCount = 0
+        ingrid.idle += 0.2
+        skeleton.idle += 0.08
+        ingrid.idle_floor = math.floor(ingrid.idle)
+        skeleton.idle_floor = math.floor(skeleton.idle)
+        win.blit(ingrid.char[ingrid.idle_floor],  (ingrid.x, ingrid.y))
+        win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+        ingrid.walkCount = 0
         
     pygame.display.update()
 
@@ -132,36 +122,42 @@ while run:
 
     keys = pygame.key.get_pressed()
     
-    if keys[pygame.K_LEFT] and x > vel: 
-        x -= vel
-        left = True
-        right = False
+    if keys[pygame.K_LEFT]:
+        if ingrid.x > window_width/4:
+            ingrid.x -= vel
+        ingrid.left = True
+        ingrid.right = False
+        skeleton.x += vel
 
-    elif keys[pygame.K_RIGHT] and x < 1280 - vel - width:
-        x += vel
-        left = False
-        right = True
-        
+
+    elif keys[pygame.K_RIGHT]:
+        if ingrid.x < window_width/2+200 - vel - ingrid.width:
+            ingrid.x += vel
+        ingrid.left = False
+        ingrid.right = True
+        skeleton.x -= vel
+
+
     else: 
-        left = False
-        right = False
-        walkCount = 0
+        ingrid.left = False
+        ingrid.right = False
+        ingrid.walkCount = 0
 
-    if not isJump:
+    if not ingrid.isJump:
         if keys[pygame.K_SPACE]:
-            isJump = True
-            left = False
-            right = False
-            walkCount = 0
+            ingrid.isJump = True
+            ingrid.left = False
+            ingrid.right = False
+            ingrid.walkCount = 0
             pygame.mixer.Sound.play(ouch)
 
     else:
-        if jumpCount >= -10:
-            y -= (jumpCount * abs(jumpCount)) * 0.5
-            jumpCount -= 1
+        if ingrid.jumpCount >= -10:
+            ingrid.y -= (ingrid.jumpCount * abs(ingrid.jumpCount)) * 0.5
+            ingrid.jumpCount -= 1
         else: 
-            jumpCount = 10
-            isJump = False
+            ingrid.jumpCount = 10
+            ingrid.isJump = False
 
     redrawGameWindow() 
     
