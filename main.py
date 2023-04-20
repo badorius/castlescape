@@ -4,15 +4,12 @@ from random import randint
 import math
 from warrior import Warrior
 from enemy import Enemy
+from settings import *
 
 pygame.init()
-window_width = 1280
-window_height = 800
+
 vel = 5
-FPS = 60
 scroll = 0
-
-
 
 pygame.mixer.init()
 pygame.mixer.music.load('assets/music/background/2020-02-04_-_Powerful_-_David_Fesliyan.mp3')
@@ -88,13 +85,13 @@ def redrawGameWindow():
         print(" ingrid is jump")
 
     if ingrid.left and scroll > 0:
-        win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x,ingrid.y))
+        win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x, ingrid.y))
         win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
         ingrid.walkCount += 1
         scroll -= 5
 
     elif ingrid.right and scroll < 3000:
-        win.blit(ingrid.walkRight[ingrid.walkCount//3], (ingrid.x,ingrid.y))
+        win.blit(ingrid.walkRight[ingrid.walkCount//3], (ingrid.x, ingrid.y))
         win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
         ingrid.walkCount += 1
         scroll += 5
@@ -129,7 +126,6 @@ while run:
         ingrid.right = False
         skeleton.x += vel
 
-
     elif keys[pygame.K_RIGHT]:
         if ingrid.x < window_width/2+200 - vel - ingrid.width:
             ingrid.x += vel
@@ -142,6 +138,8 @@ while run:
         ingrid.left = False
         ingrid.right = False
         ingrid.walkCount = 0
+        skeleton.x -= vel*0.2
+
 
     if not ingrid.isJump:
         if keys[pygame.K_SPACE]:
