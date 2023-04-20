@@ -18,13 +18,12 @@ class Warrior():
         self.walkCount = 0
         self.idle = 0
         self.idle_floor = 0
-        self.live = 100
 
         self.walkLeft = []
         self.walkRight = []
         self.char_jump = []
         self.char = []
-        self.hurt=[]
+        self.hurt = []
         self.floor1 = []
 
 

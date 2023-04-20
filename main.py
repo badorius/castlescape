@@ -5,16 +5,15 @@ import math
 from warrior import Warrior
 from enemy import Enemy
 from settings import *
+from sounds import *
+from hud import *
 
 pygame.init()
 
 vel = 5
 scroll = 0
+level = 1
 
-pygame.mixer.init()
-pygame.mixer.music.load('assets/music/background/2020-02-04_-_Powerful_-_David_Fesliyan.mp3')
-pygame.mixer.music.play()
-ouch = pygame.mixer.Sound('assets/music/fast-simple-chop-5-6270.mp3')
 
 win = pygame.display.set_mode((window_width,window_height))
 pygame.display.set_caption("First Game")
@@ -37,6 +36,7 @@ for z in range(1,5):
 
 ingrid = Warrior()
 skeleton = Enemy()
+hud = Hud()
 floor_y = floor1[0].get_height()
 ingrid.y -= floor_y
 
@@ -63,11 +63,22 @@ def  draw_ground():
             win.blit(floor1[x-1], (x+z * (floor1[x-1].get_width()) - scroll * 2.2, window_height - floor1[x-1].get_height()))
 
 
+def draw_hud():
+    win.blit(hud.weapon, (window_width - hud.x - hud.weapon.get_height() , hud.y))
+    win.blit(hud.bar_background, (hud.x, hud.y))
+    bar_helath = win.blit(hud.bar_health, (hud.x, hud.y))
+    bar_helath = pygame.transform.scale(hud.bar_health, (hud.live, hud.bar.get_height()))
+    win.blit(bar_helath, (hud.x, hud.y))
+
+    win.blit(hud.bar, (hud.x, hud.y))
+
+
 def redrawGameWindow():
     global scroll
 
     drwaBG()
     draw_ground()
+    draw_hud()
 
     if ingrid.walkCount + 1 >= 24:
         ingrid.walkCount = 0
@@ -110,8 +121,11 @@ def redrawGameWindow():
 
 def check_collided():
     collide = False
-    if (ingrid.x == skeleton.x and ingrid.y == ingrid.y):
-        collide = True
+    #print(ingrid.y, skeleton.y)
+
+    if (ingrid.x + ingrid.width/2 >= skeleton.x and ingrid.x - ingrid.width/2 <= skeleton.x):
+        if (ingrid.y + ingrid.height/2 >= skeleton.y):
+            collide = True
 
     return collide
 
@@ -163,8 +177,9 @@ while run:
             ingrid.isJump = False
 
     if check_collided():
-        ingrid.live -= 1
-        print (ingrid.live)
+        hud.live -= 1
+        pygame.mixer.Sound.play(hurt)
+        print (hud.live)
 
 
 
