@@ -86,6 +86,7 @@ def redrawGameWindow():
 
     if ingrid.left and scroll > 0:
         win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x, ingrid.y))
+
         win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
         ingrid.walkCount += 1
         scroll -= 5
@@ -107,8 +108,14 @@ def redrawGameWindow():
         
     pygame.display.update()
 
-run = True
+def check_collided():
+    collide = False
+    if (ingrid.x == skeleton.x and ingrid.y == ingrid.y):
+        collide = True
 
+    return collide
+
+run = True
 while run:
 
     clock.tick(FPS)
@@ -133,13 +140,11 @@ while run:
         ingrid.right = True
         skeleton.x -= vel
 
-
     else: 
         ingrid.left = False
         ingrid.right = False
         ingrid.walkCount = 0
         skeleton.x -= vel*0.2
-
 
     if not ingrid.isJump:
         if keys[pygame.K_SPACE]:
@@ -157,7 +162,13 @@ while run:
             ingrid.jumpCount = 10
             ingrid.isJump = False
 
-    redrawGameWindow() 
+    if check_collided():
+        ingrid.live -= 1
+        print (ingrid.live)
+
+
+
+    redrawGameWindow()
     
     
 pygame.quit()

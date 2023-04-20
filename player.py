@@ -8,11 +8,8 @@ class Player():
         self.walk_num = 9
         self.char_num = 6
         self.walkRight = []
-        self.WalkRight_rect = []
         self.walkLeft = []
-        self.walkLeft_rect = []
         self.char = []
-        self.char_rect = []
         self.jump_distance = 50
         self.x = x
         self.y = y
@@ -22,24 +19,23 @@ class Player():
         self.topx_player = 100
         self.jump_y = []
 
-
+        #Sprites Right and left
         for i in range(0,self.walk_num):
             self.walkRight.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{i+1}.png"))
             self.walkRight[i] = pygame.transform.scale(self.walkRight[i], (width, height))
-            self.WalkRight_rect.append(self.walkRight[i].get_rect())
-
 
             self.walkLeft.append(pygame.image.load(f"assets/Characters/knight/walk/walk_knight_{i+1}.png"))
             self.walkLeft[i] = pygame.transform.flip(self.walkLeft[i], 1, 0)
             self.walkLeft[i] = pygame.transform.scale(self.walkLeft[i], (width, height))
-            self.walkLeft_rect.append(self.walkLeft[i].get_rect())
 
-
+        #Sprites idle
         for i in range(0,self.char_num):
             self.char.append(pygame.image.load(f"assets/Characters/knight/idle/idle_knight_{i+1}.png"))
             self.char[i] = pygame.transform.scale(self.char[i], (width, height))
-            self.char_rect.append(self.char[i].get_rect())
 
+
+        self.enemy_rect = self.char[0].get_rect()
+        self.enemy_rect.x
 
         self.walkCount = 0
         self.isJump = False
