@@ -67,8 +67,11 @@ def draw_hud():
     win.blit(hud.weapon, (window_width - hud.x - hud.weapon.get_height() , hud.y))
     win.blit(hud.bar_background, (hud.x, hud.y))
     bar_helath = win.blit(hud.bar_health, (hud.x, hud.y))
-    bar_helath = pygame.transform.scale(hud.bar_health, (hud.live, hud.bar.get_height()))
-    win.blit(bar_helath, (hud.x, hud.y))
+    if hud.live > 0:
+        bar_helath = pygame.transform.scale(hud.bar_health, (hud.live, hud.bar.get_height()))
+        win.blit(bar_helath, (hud.x, hud.y))
+    else:
+        exit()
 
     win.blit(hud.bar, (hud.x, hud.y))
 
