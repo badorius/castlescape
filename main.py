@@ -66,10 +66,10 @@ def  draw_ground():
 def draw_hud():
     win.blit(hud.weapon, (window_width - hud.x - hud.weapon.get_height() , hud.y))
     win.blit(hud.bar_background, (hud.x, hud.y))
-    bar_helath = win.blit(hud.bar_health, (hud.x, hud.y))
+    bar_health = win.blit(hud.bar_health, (hud.x, hud.y))
     if hud.live > 0:
-        bar_helath = pygame.transform.scale(hud.bar_health, (hud.live, hud.bar.get_height()))
-        win.blit(bar_helath, (hud.x, hud.y))
+        bar_health = pygame.transform.scale(hud.bar_health, (hud.live, hud.bar.get_height()))
+        win.blit(bar_health, (hud.x, hud.y))
     else:
         exit()
 
@@ -94,31 +94,54 @@ def redrawGameWindow():
         skeleton.idle = 5
         skeleton.idle_floor = 5
 
+    if ingrid.hurt_floor == 3:
+        ingrid.hurt = 0
+        ingrid.hurt_floor = 0
+
 
     if ingrid.isJump:
         print(" ingrid is jump")
 
+
     if ingrid.left and scroll > 0:
-        win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x, ingrid.y))
+        if ingrid.attack:
+            win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
+        else:
+            win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x, ingrid.y))
 
         win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
         ingrid.walkCount += 1
         scroll -= 5
 
+
     elif ingrid.right and scroll < 3000:
-        win.blit(ingrid.walkRight[ingrid.walkCount//3], (ingrid.x, ingrid.y))
+        if ingrid.attack:
+            win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
+        else:
+            win.blit(ingrid.walkRight[ingrid.walkCount//3], (ingrid.x, ingrid.y))
+
         win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
         ingrid.walkCount += 1
         scroll += 5
 
     elif scroll > 0 or scroll < 3000:
         ingrid.idle += 0.2
+        ingrid.hurt += 0.2
         skeleton.idle += 0.08
         ingrid.idle_floor = math.floor(ingrid.idle)
+        ingrid.hurt_floor = math.floor(ingrid.hurt)
         skeleton.idle_floor = math.floor(skeleton.idle)
-        win.blit(ingrid.char[ingrid.idle_floor],  (ingrid.x, ingrid.y))
         win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+        if ingrid.attack:
+            win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
+        else:
+            win.blit(ingrid.char[ingrid.idle_floor], (ingrid.x, ingrid.y))
+
+        if check_collided():
+            win.blit(ingrid.char_hurt[ingrid.hurt_floor], (ingrid.x, ingrid.y))
         ingrid.walkCount = 0
+
+
         
     pygame.display.update()
 
@@ -148,6 +171,9 @@ while run:
             ingrid.x -= vel
         ingrid.left = True
         ingrid.right = False
+        if ingrid.face != "Left":
+            ingrid.reverse_warrior()
+            ingrid.face = "Left"
         skeleton.x += vel
 
     elif keys[pygame.K_RIGHT]:
@@ -155,6 +181,9 @@ while run:
             ingrid.x += vel
         ingrid.left = False
         ingrid.right = True
+        if ingrid.face != "Right":
+            ingrid.reverse_warrior()
+            ingrid.face = "Right"
         skeleton.x -= vel
 
     else: 
@@ -163,11 +192,22 @@ while run:
         ingrid.walkCount = 0
         skeleton.x -= vel*0.2
 
+    if not ingrid.attack:
+        if keys[pygame.K_LCTRL]:
+            ingrid.attack = True
+            ingrid.attackCount = 0
+            pygame.mixer.Sound.play(ouch)
+
+    else:
+        if ingrid.attackCount < 11:
+            ingrid.attackCount += 1
+        else:
+            ingrid.attackCount = 0
+            ingrid.attack = False
+
     if not ingrid.isJump:
         if keys[pygame.K_SPACE]:
             ingrid.isJump = True
-            ingrid.left = False
-            ingrid.right = False
             ingrid.walkCount = 0
             pygame.mixer.Sound.play(ouch)
 
@@ -182,7 +222,6 @@ while run:
     if check_collided():
         hud.live -= 1
         pygame.mixer.Sound.play(hurt)
-        print (hud.live)
 
 
 

@@ -10,7 +10,7 @@ class Hud():
         self.height = 50
         self.x = 20
         self.y = 20
-        self.live = 500
+        self.live = 450
 
         self.bar = pygame.image.load(f"assets/HUD/bar.png")
         self.bar = pygame.transform.scale(self.bar, (self.width, self.height))
