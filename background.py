@@ -1,36 +1,43 @@
 import pygame
 import math
+from random import randint
+from settings import *
 
 class Background():
+    def __init__(self):
+        self.scroll = 0
+        self.bgs = []
+        self.floor1 = []
+        self.game_over_img = pygame.image.load("assets/Background/game_over.png")
 
-    def __init__(self, x, y, width, height, speed):
-        self.bg_images = []
-        self.width = width
-        self.height = height
-        self.bg_with_list = []
-        self.tiles_list = []
-        self.x_list = []
-        self.y_list = []
-        self.speed_list = []
-        self.speed = speed * 2
-        self.bg_num = 3
+        for z in range(1, 4):
+            self.bgs.append(pygame.image.load(f"assets/Background/layer_{z}.png"))
+            if z != 3:
+                self.bgs[z - 1] = pygame.transform.scale(self.bgs[z - 1], (window_width, window_height))
+            elif z == 3:
+                self.bgs[z - 1] = pygame.transform.scale(self.bgs[z - 1], (window_width, self.bgs[z - 1].get_height()))
 
-        for i in range(0,self.bg_num):
-            self.bg_image = pygame.image.load(f"assets/Background/layer_{i+1}.png").convert_alpha()
-            self.bg_images.append(self.bg_image)
-            self.x_list.append(x)
-            self.y_list.append(y)
-            self.bg_images[i] = pygame.transform.scale(self.bg_images[i], (width, height))
-            self.bg_with_list.append(self.bg_images[i-1].get_width())
-            self.tiles_list.append(math.ceil(width / self.bg_with_list[i]))
+        for z in range(1, 5):
+            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
 
+    def drwaBG(self):
+        for x in range(10):
+            speed = 1
+            for bg in self.bgs:
+                if self.bgs.index(bg) != 2:
+                    win.blit(bg, ((x * window_width) - self.scroll * speed, 0))
+                    speed += 0.2
+                elif self.bgs.index(bg) == 2:
+                    win.blit(bg, ((x * window_width) - self.scroll * speed, window_height - 60))
+                    speed += 0.2
 
-    def move(self, direction, max_width):
+    def draw_ground(self):
+        floor_rnd = randint(1, 10)
+        for z in range(1000):
 
-        for i in range(0,self.bg_num):
-            self.speed_list.append(self.speed + (i + 1))
-            self.x_list[i] = self.x_list[i] + (direction * self.speed_list[i])
+            for x in range(1, 5):
+                win.blit(self.floor1[x - 1], (
+                x + z * (self.floor1[x - 1].get_width()) - self.scroll * 2.2, window_height - self.floor1[x - 1].get_height()))
 
-
-
-
+    def draw_game_over(self):
+        win.blit(self.game_over_img, (window_width/6, window_height/6))

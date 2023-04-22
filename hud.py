@@ -20,3 +20,15 @@ class Hud():
         #self.bar_health = pygame.transform.scale(self.bar_health, (self.live, self.height))
         self.weapon = pygame.image.load(f"assets/HUD/weapon_icon.png")
         #self.weapon = pygame.transform.scale(self.weapon, (1, 1))
+
+    def draw_hud(self):
+        win.blit(self.weapon, (window_width - self.x - self.weapon.get_height(), self.y))
+        win.blit(self.bar_background, (self.x, self.y))
+        bar_health = win.blit(self.bar_health, (self.x, self.y))
+        if self.live > 0:
+            bar_health = pygame.transform.scale(self.bar_health, (self.live, self.bar.get_height()))
+            win.blit(bar_health, (self.x, self.y))
+        else:
+            exit()
+
+        win.blit(self.bar, (self.x, self.y))

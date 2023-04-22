@@ -1,23 +1,13 @@
-level_map = [
-'                            ',
-'                            ',
-'                            ',
-' XX    XXX            XX    ',
-' XX P                       ',
-' XXXX         XX         XX ',
-' XXXX       XX              ',
-' XX    X  XXXX    XX  XX    ',
-'       X  XXXX    XX  XXX   ',
-'    XXXX  XXXXXX  XX  XXXX  ',
-'XXXXXXXX  XXXXXX  XX  XXXX  ']
+import pygame
+from level_map import *
 
-tile_size = 64
 
 window_width = 1280
 window_height = 800
+tile_size = window_width/30
 FPS = 60
+screen_width = window_width
+screen_height = len(world_data_1) * tile_size
 
-
-screen_width = 1280
-screen_height = len(level_map) * tile_size
-
+win = pygame.display.set_mode((window_width,window_height))
+pygame.display.set_caption("First Game")
