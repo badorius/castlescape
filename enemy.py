@@ -1,4 +1,5 @@
 import pygame
+from settings import *
 from random import randint
 
 
@@ -19,6 +20,7 @@ class Enemy():
         self.walkCount = 0
         self.idle = 0
         self.idle_floor = 0
+        self.face = "Right"
 
         self.walkLeft = []
         self.walkRight = []
@@ -44,3 +46,30 @@ class Enemy():
             self.char_jump[z - 1] = pygame.transform.scale(self.char_jump[z - 1], (self.width, self.height))
 
         self.enemy_rect = self.char[0].get_rect()
+
+
+    def reverse(self):
+        #Sprite idle
+        for z in range(1, 7):
+            self.walkRight[z - 1] = pygame.transform.flip(self.walkRight[z - 1], True, False)
+
+        #Sprite idle
+        for z in range(1, 7):
+            self.walkLeft[z - 1] = pygame.transform.flip(self.walkLeft[z - 1], True, False)
+
+        #Sprite jump
+        for z in range(1, 4):
+            self.char[z - 1] = pygame.transform.flip(self.char[z - 1], True, False)
+
+        #Sprite hurt
+        for z in range(1,5):
+            self.char_jump[z - 1] = pygame.transform.flip(self.char_jump[z - 1], True, False)
+
+
+    def draw(self):
+        print(self.enemy_rect)
+
+    def move(self):
+        self.enemy_rect.x = self.x
+        self.enemy_rect.y = self.y
+        win.blit(self.char[self.idle_floor], (self.x, self.y))

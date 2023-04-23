@@ -1,4 +1,6 @@
 import pygame
+from settings import *
+from random import randint
 
 
 class Warrior():
@@ -60,6 +62,8 @@ class Warrior():
             self.char_attack.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{z}.png"))
             self.char_attack[z - 1] = pygame.transform.scale(self.char_attack[z - 1], (self.width, self.height))
 
+        self.char_rect = self.char[0].get_rect()
+
 
     def reverse_warrior(self):
         #Sprite idle
@@ -77,3 +81,14 @@ class Warrior():
         #Sprite atack
         for z in range(1,13):
             self.char_attack[z - 1] = pygame.transform.flip(self.char_attack[z - 1], True, False)
+
+
+    def move(self):
+        self.char_rect.x = self.x
+        self.char_rect.y = self.y
+        if self.face == "Right":
+            win.blit(self.walkRight[self.walkCount // 3], (self.x, self.y))
+        elif self.face == "Left":
+            win.blit(self.walkLeft[self.walkCount // 3], (self.x, self.y))
+
+

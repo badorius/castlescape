@@ -5,49 +5,54 @@ from random import randint
 class World():
     def __init__(self, data):
         self.tile_list = []
+        self.floor1 = []
         self.scroll = 0
         self.speed = 1
-        #load img
-        dirt_img = pygame.image.load('assets/Tiles/floor_tile_2.png')
-        grass_img = pygame.image.load('assets/Tiles/floor_tile_carpet_2.png')
-        barrel_img = pygame.image.load('assets/Decorations/barrel.png')
 
+
+        #Load floor1 images
+        for z in range(1, 5):
+            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
+
+        floor_tile_2 = pygame.image.load('assets/Tiles/floor_tile_2.png')
+        barrel_img = pygame.image.load('assets/Decorations/barrel.png')
+        door_img = pygame.image.load('assets/Decorations/door.png')
+
+        # Add image to tile list map with rect
+        def to_tile_list(tile_img, tile,  col, row):
+            img = pygame.transform.scale(tile_img, (tile_size, tile_size))
+            img_rect = img.get_rect()
+            img_rect.x = col * tile_size
+            img_rect.y = row * tile_size
+            tile = (img, img_rect)
+            self.tile_list.append(tile)
+
+
+        # Double for to full tile map with row and columns.
         row_count = 0
         for row in data:
             col_count = 0
             for tile in row:
                 if tile == 1:
-                    img = pygame.transform.scale(dirt_img, (tile_size, tile_size))
-                    img_rect = img.get_rect()
-
-                    img_rect.x = col_count * tile_size
-                    print(img_rect.x)
-                    img_rect.y = row_count * tile_size
-                    tile = (img, img_rect)
-                    self.tile_list.append(tile)
+                    to_tile_list(floor_tile_2, tile, col_count, row_count)
                 if tile == 2:
-                    img = pygame.transform.scale(barrel_img, (tile_size, tile_size))
-                    img_rect = img.get_rect()
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
-                    tile = (img, img_rect)
-                    self.tile_list.append(tile)
+                    to_tile_list(barrel_img, tile, col_count, row_count)
+                if tile == 3:
+                    to_tile_list(door_img, tile, col_count, row_count)
                 col_count += 1
             row_count += 1
 
 
     def draw(self):
-        speed = 1
         for tile in self.tile_list:
             win.blit(tile[0], tile[1])
 
-    def draw_ground(self):
-        floor_rnd = randint(1, 10)
-        for z in range(1000):
-
-            for x in range(1, 5):
-                win.blit(self.floor1[x - 1], (
-                x + z * (self.floor1[x - 1].get_width()) - self.scroll * 2.2, window_height - self.floor1[x - 1].get_height()))
+    def move(self, direction):
+        for z in range(len(self.tile_list)):
+            tile = self.tile_list[z]
+            img = tile[0]
+            img_rect = tile[1]
+            img_rect.x -= direction
 
 
     def drawgrid(self):

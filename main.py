@@ -32,7 +32,6 @@ clock = pygame.time.Clock()
 
 def redrawGameWindow():
     background.drwaBG()
-    background.draw_ground()
     hud.draw_hud()
     world.draw()
     #world.drawgrid()
@@ -63,23 +62,30 @@ def redrawGameWindow():
         if ingrid.attack:
             win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
         else:
-            win.blit(ingrid.walkLeft[ingrid.walkCount//3], (ingrid.x, ingrid.y))
+            ingrid.move()
 
-        win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+        skeleton.move()
+        ingrid.move()
         ingrid.walkCount += 1
         background.scroll -= 5
-        world.scroll -= 5
+        world.scroll -= 1
+        world.move(-5)
+
+
 
     elif ingrid.right and background.scroll < 3000:
         if ingrid.attack:
             win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
         else:
-            win.blit(ingrid.walkRight[ingrid.walkCount//3], (ingrid.x, ingrid.y))
+            skeleton.move()
 
-        win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+
+        ingrid.move()
         ingrid.walkCount += 1
         background.scroll += 5
-        world.scroll += 5
+        world.scroll += 1
+        world.move(5)
+
 
 
     elif background.scroll > 0 or background.scroll < 3000:
@@ -89,7 +95,8 @@ def redrawGameWindow():
         ingrid.idle_floor = math.floor(ingrid.idle)
         ingrid.hurt_floor = math.floor(ingrid.hurt)
         skeleton.idle_floor = math.floor(skeleton.idle)
-        win.blit(skeleton.char[skeleton.idle_floor], (skeleton.x, skeleton.y))
+        skeleton.move()
+        #ingrid.move()
         if ingrid.attack:
             win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
         else:
@@ -134,7 +141,7 @@ while run:
         if ingrid.face != "Left":
             ingrid.reverse_warrior()
             ingrid.face = "Left"
-        skeleton.x += vel
+        skeleton.x += vel - 2
 
     elif keys[pygame.K_RIGHT]:
         if ingrid.x < window_width/2+500 - vel - ingrid.width:
@@ -144,7 +151,7 @@ while run:
         if ingrid.face != "Right":
             ingrid.reverse_warrior()
             ingrid.face = "Right"
-        skeleton.x -= vel
+        skeleton.x -= vel + 2
 
     else: 
         ingrid.left = False
