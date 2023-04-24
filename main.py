@@ -30,6 +30,28 @@ floor_y = background.floor1[0].get_height()
 ingrid.y -= floor_y
 clock = pygame.time.Clock()
 
+
+def check_collided_world():
+    collide = False
+
+    for tile in world.tile_list:
+        # check for collision in x direction
+        if tile[1].colliderect(ingrid.char_rect.x, ingrid.char_rect.y, ingrid.width/2, ingrid.height):
+            print("Collide x")
+            #ingrid.y = tile[1].y/2
+            collide = True
+    return collide
+
+def check_collided():
+    collide = False
+
+    if (ingrid.x + ingrid.width/2 >= skeleton.x and ingrid.x - ingrid.width/2 <= skeleton.x):
+        if (ingrid.y + ingrid.height/2 >= skeleton.y):
+            collide = True
+
+    return collide
+
+
 def redrawGameWindow():
     background.drwaBG()
     hud.draw_hud()
@@ -54,18 +76,9 @@ def redrawGameWindow():
         ingrid.hurt = 0
         ingrid.hurt_floor = 0
 
-
-    if ingrid.isJump:
-        print(" ingrid is jump")
-
     if ingrid.left and background.scroll > 0:
-        if ingrid.attack:
-            win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
-        else:
-            ingrid.move()
-
         skeleton.move()
-        ingrid.move()
+        ingrid.update()
         ingrid.walkCount += 1
         background.scroll -= 5
         world.scroll -= 1
@@ -74,13 +87,8 @@ def redrawGameWindow():
 
 
     elif ingrid.right and background.scroll < 3000:
-        if ingrid.attack:
-            win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
-        else:
-            skeleton.move()
-
-
-        ingrid.move()
+        skeleton.move()
+        ingrid.update()
         ingrid.walkCount += 1
         background.scroll += 5
         world.scroll += 1
@@ -96,11 +104,8 @@ def redrawGameWindow():
         ingrid.hurt_floor = math.floor(ingrid.hurt)
         skeleton.idle_floor = math.floor(skeleton.idle)
         skeleton.move()
-        #ingrid.move()
-        if ingrid.attack:
-            win.blit(ingrid.char_attack[ingrid.attackCount], (ingrid.x, ingrid.y))
-        else:
-            win.blit(ingrid.char[ingrid.idle_floor], (ingrid.x, ingrid.y))
+        ingrid.update()
+
 
         if check_collided():
             win.blit(ingrid.char_hurt[ingrid.hurt_floor], (ingrid.x, ingrid.y))
@@ -113,14 +118,7 @@ def redrawGameWindow():
 
     pygame.display.update()
 
-def check_collided():
-    collide = False
 
-    if (ingrid.x + ingrid.width/2 >= skeleton.x and ingrid.x - ingrid.width/2 <= skeleton.x):
-        if (ingrid.y + ingrid.height/2 >= skeleton.y):
-            collide = True
-
-    return collide
 
 run = True
 while run:
@@ -133,21 +131,23 @@ while run:
 
     keys = pygame.key.get_pressed()
     
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] and not check_collided_world():
         if ingrid.x > window_width/8:
             ingrid.x -= vel
         ingrid.left = True
         ingrid.right = False
+        ingrid.status = "walk_left"
         if ingrid.face != "Left":
             ingrid.reverse_warrior()
             ingrid.face = "Left"
         skeleton.x += vel - 2
 
-    elif keys[pygame.K_RIGHT]:
+    elif keys[pygame.K_RIGHT] and not check_collided_world():
         if ingrid.x < window_width/2+500 - vel - ingrid.width:
             ingrid.x += vel
         ingrid.left = False
         ingrid.right = True
+        ingrid.status = "walk_right"
         if ingrid.face != "Right":
             ingrid.reverse_warrior()
             ingrid.face = "Right"
@@ -158,23 +158,16 @@ while run:
         ingrid.right = False
         ingrid.walkCount = 0
         skeleton.x -= vel*0.2
+        ingrid.status = "idle"
 
-    if not ingrid.attack:
-        if keys[pygame.K_LCTRL]:
-            ingrid.attack = True
-            ingrid.attackCount = 0
-            pygame.mixer.Sound.play(ouch)
-
-    else:
-        if ingrid.attackCount < 11:
-            ingrid.attackCount += 1
-        else:
-            ingrid.attackCount = 0
-            ingrid.attack = False
+    if keys[pygame.K_LCTRL]:
+        ingrid.attack = True
+        ingrid.status = "attack"
 
     if not ingrid.isJump:
         if keys[pygame.K_SPACE]:
             ingrid.isJump = True
+            ingrid.status = "jump"
             ingrid.walkCount = 0
             pygame.mixer.Sound.play(ouch)
 
@@ -184,11 +177,17 @@ while run:
             ingrid.jumpCount -= 1
         else: 
             ingrid.jumpCount = 10
+            if check_collided_world():
+                ingrid.isJump = False
             ingrid.isJump = False
 
     if check_collided():
-        hud.live -= 1
-        pygame.mixer.Sound.play(hurt)
+        if ingrid.status == "attack":
+            skeleton.x = window_width - skeleton.width
+        else:
+            hud.live -= 1
+            pygame.mixer.Sound.play(hurt)
+
 
     redrawGameWindow()
     

@@ -1,8 +1,8 @@
 import pygame
 from settings import *
 from random import randint
-
-
+from sounds import *
+from sprite import *
 class Warrior():
 
     def __init__(self):
@@ -30,7 +30,9 @@ class Warrior():
         self.char_hurt = []
         self.char_attack = []
         self.floor1 = []
-
+        self.sprite = Sprite
+        self.status = "idle"
+        self.attackCount = 0
 
         #Sprite Run Left and Right
         for z in range(1, 9):
@@ -39,30 +41,37 @@ class Warrior():
             self.walkRight[z - 1] = pygame.transform.scale(self.walkRight[z - 1], (self.width, self.height))
             self.walkLeft[z - 1] = pygame.transform.scale(self.walkLeft[z - 1], (self.width, self.height))
             self.walkLeft[z - 1] = pygame.transform.flip(self.walkLeft[z - 1], True, False)
+        self.walkRight_rect = self.walkRight[0].get_rect()
+        self.walkLeft_rect = self.walkLeft[0].get_rect()
+
+
 
         #Sprite idle
         for z in range(1, 7):
             self.char.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/idle/Warrior_Idle_{z}.png"))
             self.char[z - 1] = pygame.transform.scale(self.char[z - 1], (self.width, self.height))
+        self.char_rect = self.char[0].get_rect()
+
 
 
         #Sprite jump
         for z in range(1, 4):
             self.char_jump.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{z}.png"))
             self.char_jump[z - 1] = pygame.transform.scale(self.char_jump[z - 1], (self.width, self.height))
+        self.char_jump_rect = self.char_jump[0].get_rect()
 
         #Sprite hurt
         for z in range(1,5):
             self.char_hurt.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{z}.png"))
             self.char_hurt[z - 1] = pygame.transform.scale(self.char_hurt[z - 1], (self.width, self.height))
+        self.char_hurt_rect = self.char_hurt[0].get_rect()
 
 
         #Sprite atack
         for z in range(1,13):
             self.char_attack.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{z}.png"))
             self.char_attack[z - 1] = pygame.transform.scale(self.char_attack[z - 1], (self.width, self.height))
-
-        self.char_rect = self.char[0].get_rect()
+        self.char_attack_rect = self.char_attack[0].get_rect()
 
 
     def reverse_warrior(self):
@@ -83,12 +92,45 @@ class Warrior():
             self.char_attack[z - 1] = pygame.transform.flip(self.char_attack[z - 1], True, False)
 
 
-    def move(self):
+    def update(self):
         self.char_rect.x = self.x
         self.char_rect.y = self.y
-        if self.face == "Right":
-            win.blit(self.walkRight[self.walkCount // 3], (self.x, self.y))
-        elif self.face == "Left":
-            win.blit(self.walkLeft[self.walkCount // 3], (self.x, self.y))
+        self.walkLeft_rect.x = self.x
+        self.walkLeft_rect.y = self.y
+        self.walkRight_rect.x = self.x
+        self.walkRight_rect.y = self.y
+        self.char_attack_rect.x = self.x
+        self.char_attack_rect.y = self.y
+        self.char_hurt_rect.x = self.x
+        self.char_hurt_rect.y = self.y
+        self.char_jump_rect.x = self.x
+        self.char_jump_rect.y = self.y
 
+        if self.face == "Right" and self.status == "walk_right":
+            win.blit(self.walkRight[self.walkCount // 3], (self.x, self.y))
+            #pygame.draw.rect(win, (255,255,255), self.walkRight_rect, 2)
+            if self.status == "attack":
+                win.blit(self.char_attack[self.attackCount], (self.x, self.y))
+
+        elif self.face == "Left" and self.status == "walk_left":
+            win.blit(self.walkLeft[self.walkCount // 3], (self.x, self.y))
+            #pygame.draw.rect(win, (255,255,255), self.walkLeft_rect, 2)
+            if self.status == "attack":
+                win.blit(self.char_attack[self.attackCount], (self.x, self.y))
+
+        if self.attack and self.status == "attack":
+            win.blit(self.char_attack[self.attackCount], (self.x, self.y))
+            if self.attackCount < 11:
+                self.attackCount += 1
+                print(self.attackCount)
+            else:
+                self.attackCount = 0
+                self.attack = False
+            pygame.mixer.Sound.play(ouch)
+
+        if self.status == "idle":
+            win.blit(self.char[self.idle_floor], (self.x, self.y))
+
+        #if ingrid.isJump:
+        #    print(" ingrid is jump")
 
