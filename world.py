@@ -57,24 +57,27 @@ class World():
 
     def check_collided_world(self, warrior):
         offset = int(tile_size)
-        for tile in self.tile_list:
+        self.collide = "none"
 
+        for tile in self.tile_list:
 
             if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height):
                 # check for collision in x direction
-                if warrior.char_rect.top + 42 >= tile[1].bottom:
+                if warrior.char_rect.top >= tile[1].bottom:
                     self.collide = "top"
-                elif tile[1].colliderect(warrior.char_rect.x - offset, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.char_rect.x < tile[1].x:
+                if warrior.char_rect.bottom <= tile[1].bottom:
+                    self.collide = "bottom"
+                    #warrior.y = tile[1].y - 100
+                if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.x < tile[1].x - offset:
                     self.collide = "left_side"
-                elif tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.char_rect.x + offset * 2 > tile[1].x:
+                if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.x + offset > tile[1].x:
                     self.collide = "right_side"
 
-
-            if warrior.y > tile[1].y:
-                self.collide = "bottom"
+        if self.collide == "none" and not warrior.isJump:
+            warrior.y = window_height - warrior.height - tile_size
 
         print(self.collide)
-        #print (warrior.char_rect.bottom, tile[1].top)
+
 
     def drawgrid(self):
         for line in range(0, 400):
