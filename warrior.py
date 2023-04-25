@@ -41,8 +41,7 @@ class Warrior():
             self.walkRight[z - 1] = pygame.transform.scale(self.walkRight[z - 1], (self.width, self.height))
             self.walkLeft[z - 1] = pygame.transform.scale(self.walkLeft[z - 1], (self.width, self.height))
             self.walkLeft[z - 1] = pygame.transform.flip(self.walkLeft[z - 1], True, False)
-        self.walkRight_rect = self.walkRight[0].get_rect()
-        self.walkLeft_rect = self.walkLeft[0].get_rect()
+
 
 
 
@@ -58,20 +57,17 @@ class Warrior():
         for z in range(1, 4):
             self.char_jump.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{z}.png"))
             self.char_jump[z - 1] = pygame.transform.scale(self.char_jump[z - 1], (self.width, self.height))
-        self.char_jump_rect = self.char_jump[0].get_rect()
 
         #Sprite hurt
         for z in range(1,5):
             self.char_hurt.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{z}.png"))
             self.char_hurt[z - 1] = pygame.transform.scale(self.char_hurt[z - 1], (self.width, self.height))
-        self.char_hurt_rect = self.char_hurt[0].get_rect()
 
 
         #Sprite atack
         for z in range(1,13):
             self.char_attack.append(pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{z}.png"))
             self.char_attack[z - 1] = pygame.transform.scale(self.char_attack[z - 1], (self.width, self.height))
-        self.char_attack_rect = self.char_attack[0].get_rect()
 
 
     def reverse_warrior(self):
@@ -95,16 +91,6 @@ class Warrior():
     def update(self):
         self.char_rect.x = self.x
         self.char_rect.y = self.y
-        self.walkLeft_rect.x = self.x
-        self.walkLeft_rect.y = self.y
-        self.walkRight_rect.x = self.x
-        self.walkRight_rect.y = self.y
-        self.char_attack_rect.x = self.x
-        self.char_attack_rect.y = self.y
-        self.char_hurt_rect.x = self.x
-        self.char_hurt_rect.y = self.y
-        self.char_jump_rect.x = self.x
-        self.char_jump_rect.y = self.y
 
         if self.face == "Right" and self.status == "walk_right":
             win.blit(self.walkRight[self.walkCount // 3], (self.x, self.y))

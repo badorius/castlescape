@@ -8,6 +8,7 @@ class World():
         self.floor1 = []
         self.scroll = 0
         self.speed = 1
+        self.collide = "none"
 
 
         #Load floor1 images
@@ -54,6 +55,26 @@ class World():
             img_rect = tile[1]
             img_rect.x -= direction
 
+    def check_collided_world(self, warrior):
+        offset = int(tile_size)
+        for tile in self.tile_list:
+
+
+            if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height):
+                # check for collision in x direction
+                if warrior.char_rect.top + 42 >= tile[1].bottom:
+                    self.collide = "top"
+                elif tile[1].colliderect(warrior.char_rect.x - offset, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.char_rect.x < tile[1].x:
+                    self.collide = "left_side"
+                elif tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.char_rect.x + offset * 2 > tile[1].x:
+                    self.collide = "right_side"
+
+
+            if warrior.y > tile[1].y:
+                self.collide = "bottom"
+
+        print(self.collide)
+        #print (warrior.char_rect.bottom, tile[1].top)
 
     def drawgrid(self):
         for line in range(0, 400):

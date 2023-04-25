@@ -31,17 +31,6 @@ ingrid.y -= floor_y
 clock = pygame.time.Clock()
 
 
-def check_collided_world():
-    collide = False
-
-    for tile in world.tile_list:
-        # check for collision in x direction
-        if tile[1].colliderect(ingrid.char_rect.x, ingrid.char_rect.y, ingrid.width/2, ingrid.height):
-            print("Collide x")
-            #ingrid.y = tile[1].y/2
-            collide = True
-    return collide
-
 def check_collided():
     collide = False
 
@@ -84,8 +73,6 @@ def redrawGameWindow():
         world.scroll -= 1
         world.move(-5)
 
-
-
     elif ingrid.right and background.scroll < 3000:
         skeleton.move()
         ingrid.update()
@@ -93,8 +80,6 @@ def redrawGameWindow():
         background.scroll += 5
         world.scroll += 1
         world.move(5)
-
-
 
     elif background.scroll > 0 or background.scroll < 3000:
         ingrid.idle += 0.2
@@ -119,7 +104,6 @@ def redrawGameWindow():
     pygame.display.update()
 
 
-
 run = True
 while run:
 
@@ -131,7 +115,7 @@ while run:
 
     keys = pygame.key.get_pressed()
     
-    if keys[pygame.K_LEFT] and not check_collided_world():
+    if keys[pygame.K_LEFT] and not world.collide == "left_side":
         if ingrid.x > window_width/8:
             ingrid.x -= vel
         ingrid.left = True
@@ -142,7 +126,8 @@ while run:
             ingrid.face = "Left"
         skeleton.x += vel - 2
 
-    elif keys[pygame.K_RIGHT] and not check_collided_world():
+
+    elif keys[pygame.K_RIGHT] and not world.collide == "right_side":
         if ingrid.x < window_width/2+500 - vel - ingrid.width:
             ingrid.x += vel
         ingrid.left = False
@@ -152,6 +137,7 @@ while run:
             ingrid.reverse_warrior()
             ingrid.face = "Right"
         skeleton.x -= vel + 2
+
 
     else: 
         ingrid.left = False
@@ -166,6 +152,7 @@ while run:
 
     if not ingrid.isJump:
         if keys[pygame.K_SPACE]:
+
             ingrid.isJump = True
             ingrid.status = "jump"
             ingrid.walkCount = 0
@@ -175,11 +162,12 @@ while run:
         if ingrid.jumpCount >= -10:
             ingrid.y -= (ingrid.jumpCount * abs(ingrid.jumpCount)) * 0.5
             ingrid.jumpCount -= 1
-        else: 
+        else:
             ingrid.jumpCount = 10
-            if check_collided_world():
-                ingrid.isJump = False
             ingrid.isJump = False
+
+
+    world.check_collided_world(ingrid)
 
     if check_collided():
         if ingrid.status == "attack":
