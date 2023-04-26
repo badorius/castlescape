@@ -1,23 +1,22 @@
 import pygame
 from settings import *
+from enemy import *
 from random import randint
 
 class World():
-    def __init__(self, data):
+    def __init__(self, data, ghost_group):
         self.tile_list = []
         self.floor1 = []
         self.scroll = 0
         self.speed = 1
         self.collide = "none"
 
-
         #Load floor1 images
         for z in range(1, 5):
             self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
 
-        floor_tile_2 = pygame.image.load('assets/Tiles/floor_tile_2.png')
-        barrel_img = pygame.image.load('assets/Decorations/barrel.png')
-        door_img = pygame.image.load('assets/Decorations/door.png')
+        floor_tile_1 = pygame.image.load('assets/Tiles/floor_tile_2.png')
+        barrel_img_2= pygame.image.load('assets/Decorations/barrel.png')
 
         # Add image to tile list map with rect
         def to_tile_list(tile_img, tile,  col, row):
@@ -35,11 +34,12 @@ class World():
             col_count = 0
             for tile in row:
                 if tile == 1:
-                    to_tile_list(floor_tile_2, tile, col_count, row_count)
+                    to_tile_list(floor_tile_1, tile, col_count, row_count)
                 if tile == 2:
-                    to_tile_list(barrel_img, tile, col_count, row_count)
+                    to_tile_list(barrel_img_2, tile, col_count, row_count)
                 if tile == 3:
-                    to_tile_list(door_img, tile, col_count, row_count)
+                    ghost = Enemy(col_count * tile_size, row_count * tile_size - 55)
+                    ghost_group.add(ghost)
                 col_count += 1
             row_count += 1
 
@@ -54,29 +54,6 @@ class World():
             img = tile[0]
             img_rect = tile[1]
             img_rect.x -= direction
-
-    def check_collided_world(self, warrior):
-        offset = int(tile_size)
-        self.collide = "none"
-
-        for tile in self.tile_list:
-
-            if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height):
-                # check for collision in x direction
-                if warrior.char_rect.top >= tile[1].bottom:
-                    self.collide = "top"
-                if warrior.char_rect.bottom <= tile[1].bottom:
-                    self.collide = "bottom"
-                    #warrior.y = tile[1].y - 100
-                if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.x < tile[1].x - offset:
-                    self.collide = "left_side"
-                if tile[1].colliderect(warrior.char_rect.x, warrior.char_rect.y, warrior.char_rect.width, warrior.char_rect.height) and warrior.x + offset > tile[1].x:
-                    self.collide = "right_side"
-
-        if self.collide == "none" and not warrior.isJump:
-            warrior.y = window_height - warrior.height - tile_size
-
-        print(self.collide)
 
 
     def drawgrid(self):
