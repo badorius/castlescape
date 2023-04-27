@@ -20,6 +20,8 @@ class Warrior():
         self.index_run = 0
         self.index_idle = 0
         self.counter = 0
+        self.dx = 0
+        self.dy = 0
 
         #Sprite RUN
         for num in range(1, 9):
@@ -76,50 +78,9 @@ class Warrior():
         self.direction = 0
 
     def update(self, world):
-        dx = 0
-        dy = 0
+        self.dx = 0
+        self.dy = 0
         walk_cooldown = 5
-
-        # get keypresses
-        key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE] and self.jumped == False:
-            pygame.mixer.Sound.play(ouch)
-            self.vel_y = -15
-            self.jumped = True
-            self.idle = False
-
-        if key[pygame.K_SPACE] == False:
-            self.jumped = False
-
-        if key[pygame.K_LEFT]:
-            self.left = True
-            self.right = False
-            self.idle = False
-            dx -= 5
-            self.counter += 1
-            self.direction = -1
-        if key[pygame.K_RIGHT]:
-            self.left = False
-            self.right = True
-            self.idle = False
-            dx += 5
-            self.counter += 1
-            self.direction = 1
-
-        if key[pygame.K_LCTRL]:
-            self.attack = True
-            self.idle = False
-            pygame.mixer.Sound.play(ouch)
-
-
-        if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
-            self.left = False
-            self.right = False
-            self.idle = True
-            self.attack = False
-            self.counter = 0
-            self.index_run = 0
-
 
         # handle animation
         if self.counter > walk_cooldown:
@@ -138,9 +99,10 @@ class Warrior():
                 if self.attack:
                     self.image = self.images_attack_left[self.index_run]
 
+            # IDLE
 
-        # IDLE
-        if not (self.right or self.left):
+        if self.idle:
+            print("idle")
             self.index_idle += 1
             if self.index_idle >= len(self.images_idle_right):
                 self.index_idle = 0
@@ -158,31 +120,31 @@ class Warrior():
         self.vel_y += 1
         if self.vel_y > 10:
             self.vel_y = 10
-        dy += self.vel_y
+        self.dy += self.vel_y
 
         # check for collision
         for tile in world.tile_list:
             # check for collision in x direction
-            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                dx = 0
+            if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
+                self.dx = 0
             # check for collision in y direction
-            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+            if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
                 # check if below the ground i.e. jumping
                 if self.vel_y < 0:
-                    dy = tile[1].bottom - self.rect.top
+                    self.dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
                 # check if above the ground i.e. falling
                 elif self.vel_y >= 0:
-                    dy = tile[1].top - self.rect.bottom
+                    self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
 
         # update player coordinates
-        self.rect.x += dx
-        self.rect.y += dy
+        self.rect.x += self.dx
+        self.rect.y += self.dy
 
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
-            dy = 0
+            self.dy = 0
 
         # draw player onto screen
         win.blit(self.image, self.rect)

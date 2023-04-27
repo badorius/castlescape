@@ -13,12 +13,12 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.move_direction = 1
+        self.move_direction = 5
         self.move_counter = 0
 
     def update(self):
         self.rect.x += self.move_direction
-        self.move_counter += 1
-        if abs(self.move_counter) > 50:
+        self.move_counter += 10
+        if abs(self.move_counter) > 300:
             self.move_direction *= -1
             self.move_counter *= -1
