@@ -22,11 +22,13 @@ class Warrior():
         self.counter = 0
         self.dx = 0
         self.dy = 0
+        self.size = tile_size * 2
+
 
         #Sprite RUN
         for num in range(1, 9):
             img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png')
-            img_right = pygame.transform.scale(img_right, (100, 100))
+            img_right = pygame.transform.scale(img_right, (self.size, self.size))
             img_left = pygame.transform.flip(img_right, True, False)
             self.images_right.append(img_right)
             self.images_left.append(img_left)
@@ -34,7 +36,7 @@ class Warrior():
         #Sprite idle
         for num in range(1, 7):
             img_idle_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/idle/Warrior_Idle_{num}.png")
-            img_idle_right = pygame.transform.scale(img_idle_right, (100, 100))
+            img_idle_right = pygame.transform.scale(img_idle_right, (self.size, self.size))
             img_idle_left = pygame.transform.flip(img_idle_right, True, False)
             self.images_idle_right.append(img_idle_right)
             self.images_idle_left.append(img_idle_left)
@@ -42,7 +44,7 @@ class Warrior():
         #Sprite jump
         for num in range(1, 4):
             img_jump_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{num}.png")
-            img_jump_right = pygame.transform.scale(img_jump_right, (100, 100))
+            img_jump_right = pygame.transform.scale(img_jump_right, (self.size, self.size))
             img_jump_left = pygame.transform.flip(img_jump_right, True, False)
             self.images_jump_right.append(img_jump_right)
             self.images_jump_left.append(img_jump_left)
@@ -50,7 +52,7 @@ class Warrior():
         #Sprite hurt
         for num in range(1,5):
             img_hurt_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{num}.png")
-            img_hurt_right = pygame.transform.scale(img_hurt_right, (100, 100))
+            img_hurt_right = pygame.transform.scale(img_hurt_right, (self.size, self.size))
             img_hurt_left = pygame.transform.flip(img_hurt_right, True, False)
             self.images_hurt_right.append(img_hurt_right)
             self.images_hurt_left.append(img_hurt_left)
@@ -58,12 +60,12 @@ class Warrior():
         #Sprite atack
         for num in range(1,13):
             img_attack_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{num}.png")
-            img_attack_right = pygame.transform.scale(img_attack_right, (100, 100))
+            img_attack_right = pygame.transform.scale(img_attack_right, (self.size, self.size))
             img_attack_left = pygame.transform.flip(img_attack_right, True, False)
             self.images_attack_right.append(img_attack_right)
             self.images_attack_left.append(img_attack_left)
 
-        self.image = self.images_right[self.index_run]
+        self.image = self.images_idle_right[self.index_run]
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -92,28 +94,12 @@ class Warrior():
                 self.index_run = 0
             if self.direction == 1:
                 self.image = self.images_right[self.index_run]
-                if self.attack:
-                    self.image = self.images_attack_right[self.index_run]
+                # self.image = self.images_idle_right[self.index_run]
+                #self.image = self.images_attack_right[self.index_run]
             if self.direction == -1:
                 self.image = self.images_left[self.index_run]
-                if self.attack:
-                    self.image = self.images_attack_left[self.index_run]
-
-            # IDLE
-
-        if self.idle:
-            print("idle")
-            self.index_idle += 1
-            if self.index_idle >= len(self.images_idle_right):
-                self.index_idle = 0
-            if self.direction == 1:
-                self.image = self.images_idle_right[self.index_idle]
-                if self.attack:
-                    self.image = self.images_attack_left[self.index_run]
-            if self.direction == -1:
-                self.image = self.images_idle_left[self.index_idle]
-                if self.attack:
-                    self.image = self.images_attack_left[self.index_run]
+                #self.image = self.images_idle_left[self.index_run]
+                #self.image = self.images_attack_left[self.index_run]
 
 
         # add gravity

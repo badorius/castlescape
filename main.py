@@ -35,7 +35,8 @@ def redrawGameWindow():
     world.draw()
     ghost_group.update()
     ghost_group.draw(win)
-    #world.drawgrid()
+    world.drawgrid()
+
 
     if hud.live <= 1:
         background.draw_game_over()
@@ -71,12 +72,14 @@ def keypress():
     if key[pygame.K_LEFT]:
         ingrid.left = True
         ingrid.right = False
+        ingrid.idle = False
         ingrid.dx -= 5
         ingrid.counter += 1
         ingrid.direction = -1
     if key[pygame.K_RIGHT]:
         ingrid.left = False
         ingrid.right = True
+        ingrid.idle = False
         ingrid.dx += 5
         ingrid.counter += 1
         ingrid.direction = 1
