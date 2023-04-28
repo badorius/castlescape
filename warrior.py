@@ -25,6 +25,8 @@ class Warrior():
         self.dy = 0
         self.size_width = 100
         self.size_height = 100
+        self.collide_x = False
+        self.collide_y = False
 
 
         #Sprite RUN
@@ -98,7 +100,6 @@ class Warrior():
                     self.image = self.images_right[self.index_run]
                 if self.idle and not self.attack:
                     self.image = self.images_idle_right[self.index_run//2]
-
                 if self.attack and not self.idle:
                     self.image = self.images_attack_right[self.index_run]
                     print(self.index_run, self.counter)
@@ -124,9 +125,10 @@ class Warrior():
             # check for collision in x direction
             if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
                 self.dx = 0
+                self.collide_x = True
                 print("Collide x")
-
-
+            else:
+                self.collide_x = False
 
             # check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
@@ -134,10 +136,16 @@ class Warrior():
                 if self.vel_y < 0:
                     self.dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
+                    self.collide_y = True
+
                 # check if above the ground i.e. falling
                 elif self.vel_y >= 0:
                     self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
+                    self.collide_y = True
+
+            else:
+                self.collide_y = False
 
 
 
