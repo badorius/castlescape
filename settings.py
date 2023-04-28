@@ -10,4 +10,4 @@ screen_width = window_width
 screen_height = len(world_data_1) * tile_size
 
 win = pygame.display.set_mode((window_width,window_height))
-pygame.display.set_caption("First Game")
+pygame.display.set_caption("Castle Mania")

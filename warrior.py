@@ -20,15 +20,17 @@ class Warrior():
         self.index_run = 0
         self.index_idle = 0
         self.counter = 0
+        self.jump_counter = 0
         self.dx = 0
         self.dy = 0
-        self.size = tile_size * 2
+        self.size_width = 100
+        self.size_height = 100
 
 
         #Sprite RUN
         for num in range(1, 9):
             img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png')
-            img_right = pygame.transform.scale(img_right, (self.size, self.size))
+            img_right = pygame.transform.scale(img_right, (self.size_width, self.size_height))
             img_left = pygame.transform.flip(img_right, True, False)
             self.images_right.append(img_right)
             self.images_left.append(img_left)
@@ -36,7 +38,7 @@ class Warrior():
         #Sprite idle
         for num in range(1, 7):
             img_idle_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/idle/Warrior_Idle_{num}.png")
-            img_idle_right = pygame.transform.scale(img_idle_right, (self.size, self.size))
+            img_idle_right = pygame.transform.scale(img_idle_right, (self.size_width, self.size_height))
             img_idle_left = pygame.transform.flip(img_idle_right, True, False)
             self.images_idle_right.append(img_idle_right)
             self.images_idle_left.append(img_idle_left)
@@ -44,7 +46,7 @@ class Warrior():
         #Sprite jump
         for num in range(1, 4):
             img_jump_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{num}.png")
-            img_jump_right = pygame.transform.scale(img_jump_right, (self.size, self.size))
+            img_jump_right = pygame.transform.scale(img_jump_right, (self.size_width, self.size_height))
             img_jump_left = pygame.transform.flip(img_jump_right, True, False)
             self.images_jump_right.append(img_jump_right)
             self.images_jump_left.append(img_jump_left)
@@ -52,7 +54,7 @@ class Warrior():
         #Sprite hurt
         for num in range(1,5):
             img_hurt_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{num}.png")
-            img_hurt_right = pygame.transform.scale(img_hurt_right, (self.size, self.size))
+            img_hurt_right = pygame.transform.scale(img_hurt_right, (self.size_width, self.size_height))
             img_hurt_left = pygame.transform.flip(img_hurt_right, True, False)
             self.images_hurt_right.append(img_hurt_right)
             self.images_hurt_left.append(img_hurt_left)
@@ -60,13 +62,14 @@ class Warrior():
         #Sprite atack
         for num in range(1,13):
             img_attack_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{num}.png")
-            img_attack_right = pygame.transform.scale(img_attack_right, (self.size, self.size))
+            img_attack_right = pygame.transform.scale(img_attack_right, (self.size_width, self.size_height))
             img_attack_left = pygame.transform.flip(img_attack_right, True, False)
             self.images_attack_right.append(img_attack_right)
             self.images_attack_left.append(img_attack_left)
 
         self.image = self.images_idle_right[self.index_run]
         self.rect = self.image.get_rect()
+        self.rect.size=(75,100)
         self.rect.x = x
         self.rect.y = y
         self.left = False
@@ -83,23 +86,31 @@ class Warrior():
         self.dx = 0
         self.dy = 0
         walk_cooldown = 5
-
         # handle animation
         if self.counter > walk_cooldown:
-
             self.counter = 0
-            # RUN
             self.index_run += 1
             if self.index_run >= len(self.images_right):
                 self.index_run = 0
+
             if self.direction == 1:
-                self.image = self.images_right[self.index_run]
-                # self.image = self.images_idle_right[self.index_run]
-                #self.image = self.images_attack_right[self.index_run]
+                if self.right:
+                    self.image = self.images_right[self.index_run]
+                if self.idle and not self.attack:
+                    self.image = self.images_idle_right[self.index_run//2]
+
+                if self.attack and not self.idle:
+                    self.image = self.images_attack_right[self.index_run]
+                    print(self.index_run, self.counter)
+
             if self.direction == -1:
-                self.image = self.images_left[self.index_run]
-                #self.image = self.images_idle_left[self.index_run]
-                #self.image = self.images_attack_left[self.index_run]
+                if self.left:
+                    self.image = self.images_left[self.index_run]
+                if self.attack and not self.idle:
+                    self.image = self.images_attack_left[self.index_run]
+                    print(self.index_run)
+                if self.idle and not self.attack:
+                    self.image = self.images_idle_left[self.index_run//2]
 
 
         # add gravity
@@ -113,6 +124,10 @@ class Warrior():
             # check for collision in x direction
             if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
                 self.dx = 0
+                print("Collide x")
+
+
+
             # check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
                 # check if below the ground i.e. jumping
@@ -124,6 +139,9 @@ class Warrior():
                     self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
 
+
+
+
         # update player coordinates
         self.rect.x += self.dx
         self.rect.y += self.dy
@@ -134,6 +152,6 @@ class Warrior():
 
         # draw player onto screen
         win.blit(self.image, self.rect)
-        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
 

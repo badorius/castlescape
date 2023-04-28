@@ -35,6 +35,7 @@ def redrawGameWindow():
     world.draw()
     ghost_group.update()
     ghost_group.draw(win)
+
     world.drawgrid()
 
 
@@ -61,40 +62,52 @@ def redrawGameWindow():
 def keypress():
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE] and ingrid.jumped == False:
-        pygame.mixer.Sound.play(ouch)
-        ingrid.vel_y = -15
-        ingrid.jumped = True
-        ingrid.idle = False
-
+        print(ingrid.jump_counter)
+        if ingrid.jump_counter <= 2:
+            ingrid.jump_counter += 1
+            pygame.mixer.Sound.play(ouch)
+            ingrid.vel_y = -15
+            ingrid.jumped = True
+            ingrid.idle = False
     if key[pygame.K_SPACE] == False:
         ingrid.jumped = False
+        if ingrid.jump_counter > 2:
+            ingrid.jump_counter = 0
+            print(ingrid.jump_counter)
+
+    if key[pygame.K_LCTRL] and ingrid.attack == False:
+        pygame.mixer.Sound.play(ouch)
+        ingrid.attack = True
+        ingrid.idle = False
+        ingrid.counter += 1
+    if key[pygame.K_LCTRL] == False:
+        ingrid.attack = False
 
     if key[pygame.K_LEFT]:
+        ingrid.dx -= 5
         ingrid.left = True
         ingrid.right = False
         ingrid.idle = False
-        ingrid.dx -= 5
         ingrid.counter += 1
         ingrid.direction = -1
+
+
     if key[pygame.K_RIGHT]:
+        ingrid.dx += 5
         ingrid.left = False
         ingrid.right = True
         ingrid.idle = False
-        ingrid.dx += 5
         ingrid.counter += 1
         ingrid.direction = 1
 
-    if key[pygame.K_LCTRL]:
-        ingrid.attack = True
-        pygame.mixer.Sound.play(ouch)
 
     if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False and key[pygame.K_LCTRL] == False:
         ingrid.idle = True
-        ingrid.attack = False
         ingrid.left = False
         ingrid.right = False
-        ingrid.counter = 0
-        ingrid.index_run = 0
+        ingrid.attack = False
+        ingrid.counter += 1
+        #ingrid.index_run = 1
 
 
 run = True

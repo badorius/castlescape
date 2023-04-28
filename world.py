@@ -47,12 +47,14 @@ class World():
     def draw(self):
         for tile in self.tile_list:
             win.blit(tile[0], tile[1])
+            pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
 
     def move(self, direction):
         for z in range(len(self.tile_list)):
             tile = self.tile_list[z]
             img = tile[0]
             img_rect = tile[1]
+            pygame.draw.rect(win, (255, 255, 255), img_rect, 2)
             img_rect.x -= direction
 
 
