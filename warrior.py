@@ -136,16 +136,12 @@ class Warrior():
                 if self.vel_y < 0:
                     self.dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
-                    self.collide_y = True
 
                 # check if above the ground i.e. falling
                 elif self.vel_y >= 0:
                     self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
-                    self.collide_y = True
 
-            else:
-                self.collide_y = False
 
 
 
@@ -160,6 +156,6 @@ class Warrior():
 
         # draw player onto screen
         win.blit(self.image, self.rect)
-        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
 

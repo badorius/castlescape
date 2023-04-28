@@ -36,7 +36,7 @@ def redrawGameWindow():
     ghost_group.update()
     ghost_group.draw(win)
 
-    world.drawgrid()
+    #world.drawgrid()
 
 
     if hud.live <= 1:
@@ -61,20 +61,19 @@ def redrawGameWindow():
 
 def keypress():
     key = pygame.key.get_pressed()
-    if key[pygame.K_SPACE] and ingrid.jumped == False and ingrid.jump_counter < 2:
-        ingrid.jump_counter += 1
-        print(ingrid.jump_counter)
-        pygame.mixer.Sound.play(ouch)
-        ingrid.vel_y = -15
-        ingrid.jumped = True
-        ingrid.idle = False
+    if key[pygame.K_SPACE] and ingrid.jumped == False:
+        if ingrid.jump_counter < 2:
+            ingrid.jump_counter += 1
+            print(ingrid.jump_counter)
+            pygame.mixer.Sound.play(ouch)
+            ingrid.vel_y = -15
+            ingrid.jumped = True
+            ingrid.idle = False
+        elif ingrid.vel_y == 0:
+            ingrid.jump_counter = 0
     if key[pygame.K_SPACE] == False:
         ingrid.jumped = False
 
-    if ingrid.collide_y:
-        ingrid.jump_counter = 0
-        print ("Collide y")
-        #print(ingrid.jump_counter)
 
     if key[pygame.K_LCTRL] and ingrid.attack == False:
         pygame.mixer.Sound.play(ouch)
