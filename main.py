@@ -1,11 +1,13 @@
 import pygame
 
 import level_map
+import obstacle
+import sounds
 from gameObject import GameObject
 from random import randint
 import math
 from warrior import Warrior
-from enemy import Enemy
+from obstacle import Obstacle
 from world import World
 from background import Background
 from settings import *
@@ -22,40 +24,48 @@ vel = 5
 level = 1
 
 # Instance Objects
-ghost_group = pygame.sprite.Group()
-world = World(world_data_1, ghost_group)
+obstacle_group = pygame.sprite.Group()
+world = World(world_data_1, obstacle_group)
 background = Background()
 ingrid = Warrior(screen_width/2 - 55, screen_height)
-hud = Hud()
+hud = Hud(ingrid.live)
 
 
 def redrawGameWindow():
-    background.drwaBG()
-    hud.draw_hud()
-    world.draw()
-    ghost_group.update()
-    ghost_group.draw(win)
 
-    #world.drawgrid()
+    if ingrid.live <= 1:
+        win.blit(hud.game_over_img, (window_width / 6, window_height / 6))
+        pygame.mixer.music.stop()
+        pygame.mixer.Sound.play(game_over)
+
+    else:
+
+        background.drwaBG()
+        hud.draw_hud(ingrid.live)
+        world.draw()
+        obstacle_group.draw(win)
+        # world.drawgrid()
+
+        if ingrid.left and background.scroll > 0:
+            background.scroll -= 5
+            world.scroll -= 5
+            world.move(-5)
+            ingrid.update(world, obstacle_group)
+            obstacle_group.update(-5)
+
+        elif ingrid.right and background.scroll < 6000:
+            background.scroll += 5
+            world.scroll += 5
+            world.move(5)
+            ingrid.update(world, obstacle_group)
+            obstacle_group.update(+5)
 
 
-    if hud.live <= 1:
-        background.draw_game_over()
 
-    if ingrid.left and background.scroll > 0:
-        ingrid.update(world)
-        background.scroll -= 5
-        world.scroll -= 5
-        world.move(-5)
+        elif background.scroll > 0 or background.scroll < 3000:
+            ingrid.update(world, obstacle_group)
+            obstacle_group.update(0)
 
-    elif ingrid.right and background.scroll < 6000:
-        ingrid.update(world)
-        background.scroll += 5
-        world.scroll += 5
-        world.move(5)
-
-    elif background.scroll > 0 or background.scroll < 3000:
-        ingrid.update(world)
 
     pygame.display.update()
 
@@ -64,10 +74,12 @@ def keypress():
     if key[pygame.K_SPACE] and ingrid.jumped == False:
         if ingrid.jump_counter < 2:
             ingrid.jump_counter += 1
-            print(ingrid.jump_counter)
+            ingrid.counter += 1
             pygame.mixer.Sound.play(ouch)
             ingrid.vel_y = -15
             ingrid.jumped = True
+            ingrid.left = False
+            ingrid.right = False
             ingrid.idle = False
         elif ingrid.vel_y == 0:
             ingrid.jump_counter = 0
@@ -75,13 +87,13 @@ def keypress():
         ingrid.jumped = False
 
 
-    if key[pygame.K_LCTRL] and ingrid.attack == False:
+    if key[pygame.K_LCTRL]:
         pygame.mixer.Sound.play(ouch)
         ingrid.attack = True
+        ingrid.left = False
+        ingrid.right = False
         ingrid.idle = False
         ingrid.counter += 1
-    if key[pygame.K_LCTRL] == False:
-        ingrid.attack = False
 
     if key[pygame.K_LEFT]:
         ingrid.dx -= 5

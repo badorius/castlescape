@@ -1,10 +1,10 @@
 import pygame
 from settings import *
-from enemy import *
+from obstacle import *
 from random import randint
 
 class World():
-    def __init__(self, data, ghost_group):
+    def __init__(self, data, obstacle_group):
         self.tile_list = []
         self.floor1 = []
         self.scroll = 0
@@ -38,8 +38,8 @@ class World():
                 if tile == 2:
                     to_tile_list(barrel_img_2, tile, col_count, row_count)
                 if tile == 3:
-                    ghost = Enemy(col_count * tile_size, row_count * tile_size - 55)
-                    ghost_group.add(ghost)
+                    obstacle = Obstacle(col_count * tile_size, row_count * tile_size - 150)
+                    obstacle_group.add(obstacle)
                 col_count += 1
             row_count += 1
 

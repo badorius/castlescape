@@ -5,3 +5,6 @@ pygame.mixer.music.load('assets/music/background/2020-02-04_-_Powerful_-_David_F
 pygame.mixer.music.play()
 ouch = pygame.mixer.Sound('assets/music/fast-simple-chop-5-6270.mp3')
 hurt = pygame.mixer.Sound('assets/music/female_hurt-87490.mp3')
+game_over = pygame.mixer.Sound('assets/music/game-over.mp3')
+
+

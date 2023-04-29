@@ -4,6 +4,7 @@ from random import randint
 from sounds import *
 from sprite import *
 from math import *
+from sounds import *
 class Warrior():
 
     def __init__(self, x, y):
@@ -17,16 +18,23 @@ class Warrior():
         self.images_hurt_left = []
         self.images_attack_right = []
         self.images_attack_left = []
+        self.live = 450
+
         self.index_run = 0
         self.index_idle = 0
+        self.index_attack = 0
+        self.index_hurt = 0
+        self.index_jump = 0
+
         self.counter = 0
         self.jump_counter = 0
         self.dx = 0
         self.dy = 0
         self.size_width = 100
         self.size_height = 100
-        self.collide_x = False
-        self.collide_y = False
+        self.collide_enemy = False
+        self.collide_obstacle = False
+
 
 
         #Sprite RUN
@@ -84,34 +92,65 @@ class Warrior():
         self.vel_y = 0
         self.direction = 0
 
-    def update(self, world):
+    def update(self, world, obstacle_group):
         self.dx = 0
         self.dy = 0
-        walk_cooldown = 5
+        walk_cooldown = 4
+
         # handle animation
         if self.counter > walk_cooldown:
             self.counter = 0
             self.index_run += 1
-            if self.index_run >= len(self.images_right):
-                self.index_run = 0
+            self.index_attack += 1
+            self.index_idle += 1
 
-            if self.direction == 1:
-                if self.right:
+            #RUN
+            if self.right or self.left:
+                if self.index_run >= len(self.images_right):
+                    self.index_run = 0
+                if self.direction == 1:
                     self.image = self.images_right[self.index_run]
-                if self.idle and not self.attack:
-                    self.image = self.images_idle_right[self.index_run//2]
-                if self.attack and not self.idle:
-                    self.image = self.images_attack_right[self.index_run]
-                    print(self.index_run, self.counter)
-
-            if self.direction == -1:
-                if self.left:
+                if self.direction == -1:
                     self.image = self.images_left[self.index_run]
-                if self.attack and not self.idle:
-                    self.image = self.images_attack_left[self.index_run]
-                    print(self.index_run)
-                if self.idle and not self.attack:
-                    self.image = self.images_idle_left[self.index_run//2]
+
+            #ATTACK
+            if self.attack:
+                if self.index_attack >= len(self.images_attack_right):
+                    self.index_attack = 0
+                if self.direction == 1:
+                    self.image = self.images_attack_right[self.index_attack]
+                if self.direction == -1:
+                    self.image = self.images_attack_left[self.index_attack]
+
+            #JUMP
+            if self.jumped:
+                if self.jumped >= len(self.images_jump_right):
+                    self.index_jump = 0
+                if self.direction == 1:
+                    self.image = self.images_jump_right[self.index_jump]
+                if self.direction == -1:
+                    self.image = self.images_jump_left[self.index_jump]
+
+
+            #IDLE
+            if self.idle:
+                if self.index_idle >= len(self.images_idle_right):
+                    self.index_idle = 0
+                if self.direction == 1:
+                    self.image = self.images_idle_right[self.index_idle]
+                if self.direction == -1:
+                    self.image = self.images_idle_left[self.index_idle]
+
+            #HURT
+            if self.collide_obstacle:
+                if self.index_hurt >= len(self.images_hurt_right):
+                    self.index_hurt = 0
+                if self.direction == 1:
+                    self.image = self.images_hurt_right[self.index_hurt]
+                if self.direction == -1:
+                    self.image = self.images_hurt_left[self.index_hurt]
+
+
 
 
         # add gravity
@@ -125,10 +164,6 @@ class Warrior():
             # check for collision in x direction
             if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
                 self.dx = 0
-                self.collide_x = True
-                print("Collide x")
-            else:
-                self.collide_x = False
 
             # check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
@@ -136,15 +171,31 @@ class Warrior():
                 if self.vel_y < 0:
                     self.dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
-
                 # check if above the ground i.e. falling
                 elif self.vel_y >= 0:
                     self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
 
+            # Check collide obstacle
+            if pygame.sprite.spritecollide(self, obstacle_group, False):
+                self.collide_obstacle = True
+                pygame.mixer.Sound.play(hurt)
 
+                self.live -= 0.1
+                if self.direction == 1:
+                    self.dx -= 0.1
+                if self.direction == -1:
+                    self.dx += 0.1
+            else:
+                self.collide_obstacle = False
 
-
+            # FALL DOWN
+            if self.rect.y > window_height - tile_size * 2:
+                pygame.mixer.Sound.play(hurt)
+                self.collide_obstacle = True
+                self.live -= 0.1
+            else:
+                self.collide_obstacle = False
 
         # update player coordinates
         self.rect.x += self.dx

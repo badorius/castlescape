@@ -9,9 +9,6 @@ class Background():
         self.bgs = []
         self.floor1 = []
 
-        # Load GAME-OVER Image
-        self.game_over_img = pygame.image.load("assets/Background/game_over.png")
-
         # Load Background layers images:
         for z in range(1, 4):
             self.bgs.append(pygame.image.load(f"assets/Background/layer_{z}.png"))
@@ -42,6 +39,3 @@ class Background():
             for x in range(1, 5):
                 win.blit(self.floor1[x - 1], (
                 x + z * (self.floor1[x - 1].get_width()) - self.scroll * 2.2, window_height - self.floor1[x - 1].get_height()))
-
-    def draw_game_over(self):
-        win.blit(self.game_over_img, (window_width/6, window_height/6))

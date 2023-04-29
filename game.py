@@ -1,7 +1,7 @@
 import pygame
 from gameObject import GameObject
 from player import Player
-from enemy import Enemy
+from obstacle import Enemy
 from background import Background
 import math
 
