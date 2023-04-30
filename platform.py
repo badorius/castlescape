@@ -3,12 +3,13 @@ from settings import *
 from random import randint
 
 
-class Obstacle(pygame.sprite.Sprite):
+class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.size = tile_size * 1
-        self.image = pygame.image.load('assets/Decorations/sword_2.png')
+        self.image = pygame.image.load('assets/Tiles/brick_1.png')
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y

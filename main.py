@@ -1,13 +1,15 @@
 import pygame
 
 import level_map
-import obstacle
+from obstacle import *
+from platform import *
 import sounds
 from gameObject import GameObject
 from random import randint
 import math
 from warrior import Warrior
 from obstacle import Obstacle
+from platform import Platform
 from world import World
 from background import Background
 from settings import *
@@ -25,7 +27,8 @@ level = 1
 
 # Instance Objects
 obstacle_group = pygame.sprite.Group()
-world = World(world_data_1, obstacle_group)
+platform_group = pygame.sprite.Group()
+world = World(world_data_1, obstacle_group, platform_group)
 background = Background()
 ingrid = Warrior(screen_width/2 - 55, screen_height)
 hud = Hud(ingrid.live)
