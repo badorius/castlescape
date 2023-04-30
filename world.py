@@ -17,6 +17,7 @@ class World():
 
         floor_tile_1 = pygame.image.load('assets/Tiles/floor_tile_2.png')
         barrel_img_2= pygame.image.load('assets/Decorations/barrel.png')
+        potion_1_img_4 = pygame.image.load('assets/Decorations/potion_1.png')
 
         # Add image to tile list map with rect
         def to_tile_list(tile_img, tile,  col, row):
@@ -40,6 +41,8 @@ class World():
                 if tile == 3:
                     obstacle = Obstacle(col_count * tile_size, row_count * tile_size - 150)
                     obstacle_group.add(obstacle)
+                if tile == 4:
+                    to_tile_list(potion_1_img_4, tile, col_count, row_count)
                 col_count += 1
             row_count += 1
 

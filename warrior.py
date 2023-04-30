@@ -79,7 +79,7 @@ class Warrior():
 
         self.image = self.images_idle_right[self.index_run]
         self.rect = self.image.get_rect()
-        self.rect.size=(75,100)
+        self.rect.size=(90,100)
         self.rect.x = x
         self.rect.y = y
         self.left = False
@@ -196,6 +196,10 @@ class Warrior():
                 self.live -= 0.1
             else:
                 self.collide_obstacle = False
+
+            # Collide Potion
+
+            
 
         # update player coordinates
         self.rect.x += self.dx
