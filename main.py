@@ -10,6 +10,7 @@ import math
 from warrior import Warrior
 from obstacle import Obstacle
 from platform import Platform
+from objects import *
 from world import World
 from background import Background
 from settings import *
@@ -28,7 +29,9 @@ level = 1
 # Instance Objects
 obstacle_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
-world = World(world_data_1, obstacle_group, platform_group)
+potion_group = pygame.sprite.Group()
+spikes_group = pygame.sprite.Group()
+world = World(world_data_1, obstacle_group, platform_group, potion_group, spikes_group)
 background = Background()
 ingrid = Warrior(screen_width/2 - 55, screen_height)
 hud = Hud(ingrid.live)
@@ -42,33 +45,42 @@ def redrawGameWindow():
         pygame.mixer.Sound.play(game_over)
 
     else:
-
         background.drwaBG()
         hud.draw_hud(ingrid.live)
         world.draw()
         obstacle_group.draw(win)
-        # world.drawgrid()
+        platform_group.draw(win)
+        potion_group.draw(win)
+        spikes_group.draw(win)
+        #world.drawgrid()
 
         if ingrid.left and background.scroll > 0:
             background.scroll -= 5
             world.scroll -= 5
             world.move(-5)
-            ingrid.update(world, obstacle_group)
+            ingrid.update(world, obstacle_group, platform_group, potion_group, spikes_group)
             obstacle_group.update(-5)
+            platform_group.update(-5)
+            potion_group.update(-5)
+            spikes_group.update(-5)
 
         elif ingrid.right and background.scroll < 6000:
             background.scroll += 5
             world.scroll += 5
             world.move(5)
-            ingrid.update(world, obstacle_group)
+            ingrid.update(world, obstacle_group, platform_group, potion_group, spikes_group)
             obstacle_group.update(+5)
-
+            platform_group.update(+5)
+            potion_group.update(+5)
+            spikes_group.update(+5)
 
 
         elif background.scroll > 0 or background.scroll < 3000:
-            ingrid.update(world, obstacle_group)
+            ingrid.update(world, obstacle_group, platform_group, potion_group, spikes_group)
             obstacle_group.update(0)
-
+            platform_group.update(0)
+            potion_group.update(0)
+            spikes_group.update(0)
 
     pygame.display.update()
 
@@ -78,7 +90,7 @@ def keypress():
         if ingrid.jump_counter < 2:
             ingrid.jump_counter += 1
             ingrid.counter += 1
-            pygame.mixer.Sound.play(ouch)
+            pygame.mixer.Sound.play(jump)
             ingrid.vel_y = -15
             ingrid.jumped = True
             ingrid.left = False
@@ -89,9 +101,8 @@ def keypress():
     if key[pygame.K_SPACE] == False:
         ingrid.jumped = False
 
-
     if key[pygame.K_LCTRL]:
-        pygame.mixer.Sound.play(ouch)
+        pygame.mixer.Sound.play(attack_sound)
         ingrid.attack = True
         ingrid.left = False
         ingrid.right = False
@@ -106,7 +117,6 @@ def keypress():
         ingrid.counter += 1
         ingrid.direction = -1
 
-
     if key[pygame.K_RIGHT]:
         ingrid.dx += 5
         ingrid.left = False
@@ -114,7 +124,6 @@ def keypress():
         ingrid.idle = False
         ingrid.counter += 1
         ingrid.direction = 1
-
 
     if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False and key[pygame.K_LCTRL] == False:
         ingrid.idle = True

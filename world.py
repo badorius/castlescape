@@ -2,10 +2,11 @@ import pygame
 from settings import *
 from obstacle import *
 from platform import *
+from objects import *
 from random import randint
 
 class World():
-    def __init__(self, data, obstacle_group, platform_group):
+    def __init__(self, data, obstacle_group, platform_group, potion_group, spikes_group):
         self.tile_list = []
         self.floor1 = []
         self.scroll = 0
@@ -20,7 +21,8 @@ class World():
         barrel_img_2 = pygame.image.load('assets/Decorations/barrel.png')
         potion_1_img_4 = pygame.image.load('assets/Decorations/potion_1.png')
         brick1_img_5 = pygame.image.load('assets/Tiles/brick_1.png')
-        spikes_img_6 = pygame.image.load('assets/Tiles/spikes.png')
+        column1_img_8 = pygame.image.load('assets/Tiles/column_1.png')
+        column2_img_9 = pygame.image.load('assets/Tiles/column_2.png')
 
         # Add image to tile list map with rect
         def to_tile_list(tile_img, tile,  col, row):
@@ -45,12 +47,20 @@ class World():
                     obstacle = Obstacle(col_count * tile_size, row_count * tile_size - 150)
                     obstacle_group.add(obstacle)
                 if tile == 4:
-                    to_tile_list(potion_1_img_4, tile, col_count, row_count)
+                    potion = Potion(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
+                    potion_group.add(potion)
                 if tile == 5:
-                    platform = Platform(col_count * tile_size, row_count * tile_size - 150)
+                    platform = Platform(col_count * tile_size, row_count * tile_size, 1, 0)
                     platform_group.add(platform)
                 if tile == 6:
-                    to_tile_list(spikes_img_6, tile, col_count, row_count)
+                    spikes = Spikes(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
+                    spikes_group.add(spikes)
+                if tile == 7:
+                    print("None")
+                if tile == 8:
+                    to_tile_list(column1_img_8, tile, col_count, row_count)
+                if tile == 9:
+                    to_tile_list(column2_img_9, tile, col_count, row_count)
                 col_count += 1
             row_count += 1
 

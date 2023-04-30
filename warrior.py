@@ -18,6 +18,7 @@ class Warrior():
         self.images_hurt_left = []
         self.images_attack_right = []
         self.images_attack_left = []
+        self.live_max = 450
         self.live = 450
 
         self.index_run = 0
@@ -34,6 +35,9 @@ class Warrior():
         self.size_height = 100
         self.collide_enemy = False
         self.collide_obstacle = False
+        self.collide_platform = False
+        self.collide_spikes = False
+        self.in_air = True
 
 
 
@@ -79,7 +83,7 @@ class Warrior():
 
         self.image = self.images_idle_right[self.index_run]
         self.rect = self.image.get_rect()
-        self.rect.size=(90,100)
+        self.rect.inflate(70, 100 )
         self.rect.x = x
         self.rect.y = y
         self.left = False
@@ -92,10 +96,11 @@ class Warrior():
         self.vel_y = 0
         self.direction = 0
 
-    def update(self, world, obstacle_group):
+    def update(self, world, obstacle_group, platform_group, potion_group, spikes_group):
         self.dx = 0
         self.dy = 0
-        walk_cooldown = 4
+        walk_cooldown = 5
+        col_thresh = 20
 
         # handle animation
         if self.counter > walk_cooldown:
@@ -131,7 +136,6 @@ class Warrior():
                 if self.direction == -1:
                     self.image = self.images_jump_left[self.index_jump]
 
-
             #IDLE
             if self.idle:
                 if self.index_idle >= len(self.images_idle_right):
@@ -141,16 +145,14 @@ class Warrior():
                 if self.direction == -1:
                     self.image = self.images_idle_left[self.index_idle]
 
-            #HURT
-            if self.collide_obstacle:
+            # Collide obstacle
+            if self.collide_obstacle or self.collide_spikes:
                 if self.index_hurt >= len(self.images_hurt_right):
                     self.index_hurt = 0
                 if self.direction == 1:
                     self.image = self.images_hurt_right[self.index_hurt]
                 if self.direction == -1:
                     self.image = self.images_hurt_left[self.index_hurt]
-
-
 
 
         # add gravity
@@ -160,6 +162,7 @@ class Warrior():
         self.dy += self.vel_y
 
         # check for collision
+        self.in_air = True
         for tile in world.tile_list:
             # check for collision in x direction
             if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
@@ -175,6 +178,7 @@ class Warrior():
                 elif self.vel_y >= 0:
                     self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
+                    self.in_air = True
 
             # Check collide obstacle
             if pygame.sprite.spritecollide(self, obstacle_group, False):
@@ -189,6 +193,38 @@ class Warrior():
             else:
                 self.collide_obstacle = False
 
+            # Check spikes collide
+            if pygame.sprite.spritecollide(self, spikes_group, False):
+                self.collide_spikes = True
+                pygame.mixer.Sound.play(hurt)
+                self.live -= 0.1
+                if self.direction == 1:
+                    self.dy -= 0.1
+                if self.direction == -1:
+                    self.dy += 0.1
+            else:
+                self.collide_spikes = False
+
+            # check for collision with platforms
+            for platform in platform_group:
+                # collision in the x direction
+                if platform.rect.colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
+                    self.dx = 0
+                # collision in the y direction
+                if platform.rect.colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
+                    # check if below platform
+                    if abs((self.rect.top + self.dy) - platform.rect.bottom) < col_thresh:
+                        self.vel_y = 0
+                        self.dy = platform.rect.bottom - self.rect.top
+                    # check if above platform
+                    elif abs((self.rect.bottom + self.dy) - platform.rect.top) < col_thresh:
+                        self.rect.bottom = platform.rect.top - 1
+                        self.in_air = False
+                        self.dy = 0
+                    # move sideways with the platform
+                    if platform.move_x != 0:
+                        self.rect.x += platform.move_direction
+
             # FALL DOWN
             if self.rect.y > window_height - tile_size * 2:
                 pygame.mixer.Sound.play(hurt)
@@ -198,6 +234,14 @@ class Warrior():
                 self.collide_obstacle = False
 
             # Collide Potion
+            if pygame.sprite.spritecollide(self, potion_group, False):
+                if self.live < self.live_max - 10:
+                    pygame.mixer.Sound.play(get_potion)
+                    self.live += 10
+                else:
+                    self.live = self.live_max
+                    pygame.mixer.Sound.play(get_potion)
+
 
             
 
