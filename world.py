@@ -17,12 +17,6 @@ class World():
         for z in range(1, 5):
             self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
 
-        floor_tile_1 = pygame.image.load('assets/Tiles/floor_tile_2.png')
-        barrel_img_2 = pygame.image.load('assets/Decorations/barrel.png')
-        potion_1_img_4 = pygame.image.load('assets/Decorations/potion_1.png')
-        brick1_img_5 = pygame.image.load('assets/Tiles/brick_1.png')
-        column1_img_8 = pygame.image.load('assets/Tiles/column_1.png')
-        column2_img_9 = pygame.image.load('assets/Tiles/column_2.png')
 
         # Add image to tile list map with rect
         def to_tile_list(tile_img, tile,  col, row):
@@ -42,25 +36,34 @@ class World():
                 if tile == 1:
                     to_tile_list(floor_tile_1, tile, col_count, row_count)
                 if tile == 2:
-                    to_tile_list(barrel_img_2, tile, col_count, row_count)
+                    to_tile_list(floor_tile_2, tile, col_count, row_count)
                 if tile == 3:
+                    to_tile_list(floor_tile_3, tile, col_count, row_count)
+                if tile == 4:
+                    to_tile_list(floor_tile_4, tile, col_count, row_count)
+                if tile == 5:
+                    to_tile_list(barrel_img_2, tile, col_count, row_count)
+                if tile == 6:
                     obstacle = Obstacle(col_count * tile_size, row_count * tile_size - 150)
                     obstacle_group.add(obstacle)
-                if tile == 4:
+                if tile == 7:
                     potion = Potion(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
                     potion_group.add(potion)
-                if tile == 5:
+                if tile == 8:
                     platform = Platform(col_count * tile_size, row_count * tile_size, 1, 0)
                     platform_group.add(platform)
-                if tile == 6:
+                if tile == 9:
+                    platform = Platform(col_count * tile_size, row_count * tile_size, 0, 1)
+                    platform_group.add(platform)
+                if tile == 10:
                     spikes = Spikes(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
                     spikes_group.add(spikes)
-                if tile == 7:
-                    print("None")
-                if tile == 8:
+                if tile == 11:
                     to_tile_list(column1_img_8, tile, col_count, row_count)
-                if tile == 9:
+                if tile == 12:
                     to_tile_list(column2_img_9, tile, col_count, row_count)
+                if tile == 13:
+                    to_tile_list(door_img_13, tile, col_count, row_count)
                 col_count += 1
             row_count += 1
 
