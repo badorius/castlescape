@@ -31,8 +31,8 @@ class Warrior():
         self.jump_counter = 0
         self.dx = 0
         self.dy = 0
-        self.size_width = 100
-        self.size_height = 100
+        self.size_width = 44 * 1.5
+        self.size_height = 64 * 1.5
         self.collide_enemy = False
         self.collide_obstacle = False
         self.collide_platform = False
@@ -82,17 +82,17 @@ class Warrior():
             self.images_attack_left.append(img_attack_left)
 
         self.image = self.images_idle_right[self.index_run]
-        self.rect = self.image.get_rect()
-        self.rect.inflate(70, 100 )
-        self.rect.x = x
-        self.rect.y = y
+        self.sprite = self.image.subsurface(pygame.Rect((0, 0), (self.size_width, self.size_height)))
+        self.rect = self.sprite.get_rect()
+        self.rect.width = self.size_width
+        self.rect.height = self.size_height
+        self.rect.centerx = x
+        self.rect.centery = y
         self.left = False
         self.right = False
         self.attack = False
         self.jumped = False
         self.idle = True
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
         self.vel_y = 0
         self.direction = 0
 
@@ -165,11 +165,11 @@ class Warrior():
         self.in_air = True
         for tile in world.tile_list:
             # check for collision in x direction
-            if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
+            if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
                 self.dx = 0
 
             # check for collision in y direction
-            if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
+            if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height):
                 # check if below the ground i.e. jumping
                 if self.vel_y < 0:
                     self.dy = tile[1].bottom - self.rect.top
@@ -208,10 +208,10 @@ class Warrior():
             # check for collision with platforms
             for platform in platform_group:
                 # collision in the x direction
-                if platform.rect.colliderect(self.rect.x + self.dx, self.rect.y, self.width, self.height):
+                if platform.rect.colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
                     self.dx = 0
                 # collision in the y direction
-                if platform.rect.colliderect(self.rect.x, self.rect.y + self.dy, self.width, self.height):
+                if platform.rect.colliderect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height):
                     # check if below platform
                     if abs((self.rect.top + self.dy) - platform.rect.bottom) < col_thresh:
                         self.vel_y = 0
@@ -255,6 +255,6 @@ class Warrior():
 
         # draw player onto screen
         win.blit(self.image, self.rect)
-        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
 
