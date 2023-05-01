@@ -31,19 +31,21 @@ class Warrior():
         self.jump_counter = 0
         self.dx = 0
         self.dy = 0
-        self.size_width = 44 * 1.5
-        self.size_height = 64 * 1.5
+        #self.size_width = 44
+        #self.size_height = 64
+        self.size_width = 100
+        self.size_height = 100
         self.collide_enemy = False
         self.collide_obstacle = False
         self.collide_platform = False
         self.collide_spikes = False
-        self.in_air = True
+        self.in_air = False
 
 
 
         #Sprite RUN
         for num in range(1, 9):
-            img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png')
+            img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png').convert_alpha()
             img_right = pygame.transform.scale(img_right, (self.size_width, self.size_height))
             img_left = pygame.transform.flip(img_right, True, False)
             self.images_right.append(img_right)
@@ -51,7 +53,7 @@ class Warrior():
 
         #Sprite idle
         for num in range(1, 7):
-            img_idle_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/idle/Warrior_Idle_{num}.png")
+            img_idle_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/idle/Warrior_Idle_{num}.png").convert_alpha()
             img_idle_right = pygame.transform.scale(img_idle_right, (self.size_width, self.size_height))
             img_idle_left = pygame.transform.flip(img_idle_right, True, False)
             self.images_idle_right.append(img_idle_right)
@@ -59,7 +61,7 @@ class Warrior():
 
         #Sprite jump
         for num in range(1, 4):
-            img_jump_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{num}.png")
+            img_jump_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{num}.png").convert_alpha()
             img_jump_right = pygame.transform.scale(img_jump_right, (self.size_width, self.size_height))
             img_jump_left = pygame.transform.flip(img_jump_right, True, False)
             self.images_jump_right.append(img_jump_right)
@@ -67,7 +69,7 @@ class Warrior():
 
         #Sprite hurt
         for num in range(1,5):
-            img_hurt_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{num}.png")
+            img_hurt_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{num}.png").convert_alpha()
             img_hurt_right = pygame.transform.scale(img_hurt_right, (self.size_width, self.size_height))
             img_hurt_left = pygame.transform.flip(img_hurt_right, True, False)
             self.images_hurt_right.append(img_hurt_right)
@@ -75,19 +77,19 @@ class Warrior():
 
         #Sprite atack
         for num in range(1,13):
-            img_attack_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{num}.png")
+            img_attack_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{num}.png").convert_alpha()
             img_attack_right = pygame.transform.scale(img_attack_right, (self.size_width, self.size_height))
             img_attack_left = pygame.transform.flip(img_attack_right, True, False)
             self.images_attack_right.append(img_attack_right)
             self.images_attack_left.append(img_attack_left)
 
         self.image = self.images_idle_right[self.index_run]
-        self.sprite = self.image.subsurface(pygame.Rect((0, 0), (self.size_width, self.size_height)))
-        self.rect = self.sprite.get_rect()
-        self.rect.width = self.size_width
-        self.rect.height = self.size_height
-        self.rect.centerx = x
-        self.rect.centery = y
+        self.rect = self.image.get_rect()
+        self.rect.width = self.image.get_width() - 40
+        self.rect.height = self.image.get_height()
+        self.rect.x = x
+        self.rect.y = y
+
         self.left = False
         self.right = False
         self.attack = False
@@ -96,7 +98,7 @@ class Warrior():
         self.vel_y = 0
         self.direction = 0
 
-    def update(self, world, obstacle_group, platform_group, potion_group, spikes_group):
+    def update(self, world, obstacle_group, platform_group, potion_group, spikes_group, enemy_group):
         self.dx = 0
         self.dy = 0
         walk_cooldown = 5
@@ -162,13 +164,13 @@ class Warrior():
         self.dy += self.vel_y
 
         # check for collision
-        self.in_air = True
+        self.in_air = False
         for tile in world.tile_list:
             # check for collision in x direction
             if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
                 self.dx = 0
 
-            # check for collision in y direction
+                # check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height):
                 # check if below the ground i.e. jumping
                 if self.vel_y < 0:
@@ -180,6 +182,8 @@ class Warrior():
                     self.vel_y = 0
                     self.in_air = True
 
+
+
             # Check collide obstacle
             if pygame.sprite.spritecollide(self, obstacle_group, False):
                 self.collide_obstacle = True
@@ -190,6 +194,22 @@ class Warrior():
                     self.dx -= 0.1
                 if self.direction == -1:
                     self.dx += 0.1
+            else:
+                self.collide_obstacle = False
+
+            # Check collide enemy
+            if pygame.sprite.spritecollide(self, enemy_group, False):
+                self.collide_enemy = True
+                if self.attack == True:
+                    print("Enemy Dead!")
+                    
+                else:
+                    pygame.mixer.Sound.play(hurt)
+                    self.live -= 0.1
+                    if self.direction == 1:
+                        self.dx -= 0.1
+                    if self.direction == -1:
+                        self.dx += 0.1
             else:
                 self.collide_obstacle = False
 
@@ -255,6 +275,55 @@ class Warrior():
 
         # draw player onto screen
         win.blit(self.image, self.rect)
-        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+
+    def keypress(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_SPACE] and self.jumped == False:
+            if self.jump_counter < 2:
+                self.jump_counter += 1
+                self.counter += 1
+                pygame.mixer.Sound.play(jump)
+                self.vel_y = -15
+                self.jumped = True
+                self.left = False
+                self.right = False
+                self.idle = False
+            elif self.vel_y == 0:
+                self.jump_counter = 0
+        if key[pygame.K_SPACE] == False:
+            self.jumped = False
+
+        if key[pygame.K_LCTRL]:
+            pygame.mixer.Sound.play(attack_sound)
+            self.attack = True
+            self.left = False
+            self.right = False
+            self.idle = False
+            self.counter += 1
+
+        if key[pygame.K_LEFT]:
+            self.dx -= 5
+            self.left = True
+            self.right = False
+            self.idle = False
+            self.counter += 1
+            self.direction = -1
+
+        if key[pygame.K_RIGHT]:
+            self.dx += 5
+            self.left = False
+            self.right = True
+            self.idle = False
+            self.counter += 1
+            self.direction = 1
+
+        if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False and key[pygame.K_LCTRL] == False:
+            self.idle = True
+            self.left = False
+            self.right = False
+            self.attack = False
+            self.counter += 1
+            # ingrid.index_run = 1
 
 

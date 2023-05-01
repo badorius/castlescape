@@ -3,10 +3,11 @@ from settings import *
 from obstacle import *
 from platform import *
 from objects import *
+from enemy import *
 from random import randint
 
 class World():
-    def __init__(self, data, obstacle_group, platform_group, potion_group, spikes_group):
+    def __init__(self, data, obstacle_group, platform_group, potion_group, spikes_group, enemy_group):
         self.tile_list = []
         self.floor1 = []
         self.scroll = 0
@@ -64,6 +65,9 @@ class World():
                     to_tile_list(column2_img_9, tile, col_count, row_count)
                 if tile == 13:
                     to_tile_list(door_img_13, tile, col_count, row_count)
+                if tile == 14:
+                    enemy = Enemy(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
+                    enemy_group.add(enemy)
                 col_count += 1
             row_count += 1
 
