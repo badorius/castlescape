@@ -40,8 +40,7 @@ class Warrior():
         self.collide_platform = False
         self.collide_spikes = False
         self.in_air = False
-
-
+        self.level_completed = False
 
         #Sprite RUN
         for num in range(1, 9):
@@ -98,7 +97,7 @@ class Warrior():
         self.vel_y = 0
         self.direction = 0
 
-    def update(self, world, obstacle_group, platform_group, potion_group, spikes_group, enemy_group):
+    def update(self, world):
         self.dx = 0
         self.dy = 0
         walk_cooldown = 5
@@ -130,7 +129,7 @@ class Warrior():
                     self.image = self.images_attack_left[self.index_attack]
 
             #JUMP
-            if self.jumped:
+            if self.jumped or self.in_air == False:
                 if self.jumped >= len(self.images_jump_right):
                     self.index_jump = 0
                 if self.direction == 1:
@@ -185,7 +184,7 @@ class Warrior():
 
 
             # Check collide obstacle
-            if pygame.sprite.spritecollide(self, obstacle_group, False):
+            if pygame.sprite.spritecollide(self, world.obstacle_group, False):
                 self.collide_obstacle = True
                 pygame.mixer.Sound.play(hurt)
 
@@ -198,23 +197,22 @@ class Warrior():
                 self.collide_obstacle = False
 
             # Check collide enemy
-            if pygame.sprite.spritecollide(self, enemy_group, False):
-                self.collide_enemy = True
-                if self.attack == True:
-                    print("Enemy Dead!")
-                    
-                else:
+            if self.attack == True:
+                if pygame.sprite.spritecollide(self, world.enemy_group, True):
+                    self.collide_enemy = False
+            else:
+                if pygame.sprite.spritecollide(self, world.enemy_group, False):
+                    self.collide_enemy = True
                     pygame.mixer.Sound.play(hurt)
                     self.live -= 0.1
                     if self.direction == 1:
                         self.dx -= 0.1
                     if self.direction == -1:
                         self.dx += 0.1
-            else:
-                self.collide_obstacle = False
+
 
             # Check spikes collide
-            if pygame.sprite.spritecollide(self, spikes_group, False):
+            if pygame.sprite.spritecollide(self, world.spikes_group, False):
                 self.collide_spikes = True
                 pygame.mixer.Sound.play(hurt)
                 self.live -= 0.1
@@ -226,7 +224,7 @@ class Warrior():
                 self.collide_spikes = False
 
             # check for collision with platforms
-            for platform in platform_group:
+            for platform in world.platform_group:
                 # collision in the x direction
                 if platform.rect.colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
                     self.dx = 0
@@ -254,13 +252,17 @@ class Warrior():
                 self.collide_obstacle = False
 
             # Collide Potion
-            if pygame.sprite.spritecollide(self, potion_group, False):
-                if self.live < self.live_max - 10:
+            if pygame.sprite.spritecollide(self, world.potion_group, True):
+                if self.live < self.live_max - 50:
                     pygame.mixer.Sound.play(get_potion)
-                    self.live += 10
+                    self.live += 50
                 else:
                     self.live = self.live_max
                     pygame.mixer.Sound.play(get_potion)
+
+            # Collide Door
+            if pygame.sprite.spritecollide(self, world.door_group, False):
+                self.level_completed = True
 
 
             

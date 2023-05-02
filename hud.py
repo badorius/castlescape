@@ -11,10 +11,9 @@ class Hud():
         self.x = 20
         self.y = 20
         self.live = live
+        self.timer = 6000
+        self.font = pygame.font.SysFont('arial', 40)
 
-
-        # Load GAME-OVER Image
-        self.game_over_img = pygame.image.load("assets/Background/game_over.png")
         self.bar = pygame.image.load(f"assets/HUD/bar.png")
         self.bar = pygame.transform.scale(self.bar, (self.width, self.height))
         self.bar_background = pygame.image.load(f"assets/HUD/bar_background.png")
@@ -24,7 +23,16 @@ class Hud():
         self.weapon = pygame.image.load(f"assets/HUD/weapon_icon.png")
         #self.weapon = pygame.transform.scale(self.weapon, (1, 1))
 
+
+
     def draw_hud(self, live):
+        self.timer -= 0.1
+        self.timer = int(self.timer)
+        self.font = pygame.font.SysFont('arial', 40)
+        self.title = self.font.render('Tempo Run', True, (220,20,60))
+        self.time_left = self.font.render(str(self.timer), True, (220,20,60))
+
+        #win.blit("Timer", (window_width/2 - self.title.get_width()/2, window_height/2 - title.get_height()/3))
         win.blit(self.weapon, (window_width - self.x - self.weapon.get_height(), self.y))
         win.blit(self.bar_background, (self.x, self.y))
         bar_health = win.blit(self.bar_health, (self.x, self.y))
@@ -35,3 +43,5 @@ class Hud():
             exit()
 
         win.blit(self.bar, (self.x, self.y))
+        win.blit(self.time_left, (window_width - self.x - self.weapon.get_height() * 3, self.y))
+        #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))

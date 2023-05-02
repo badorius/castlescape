@@ -1,20 +1,13 @@
 import pygame
 import threading
-import level_map
-from obstacle import *
-from platform import *
-import sounds
-from gameObject import GameObject
 from random import randint
 import math
 from warrior import Warrior
-from obstacle import Obstacle
-from platform import Platform
-from objects import *
 from world import World
 from background import Background
 from settings import *
 from sounds import *
+from menu import *
 from hud import *
 from level_map import *
 
@@ -27,70 +20,45 @@ vel = 5
 level = 1
 
 # Instance Objects
-obstacle_group = pygame.sprite.Group()
-platform_group = pygame.sprite.Group()
-potion_group = pygame.sprite.Group()
-spikes_group = pygame.sprite.Group()
-enemy_group = pygame.sprite.Group()
-world = World(world_data_1, obstacle_group, platform_group, potion_group, spikes_group, enemy_group)
+
+world = World(world_data_1)
 background = Background()
 ingrid = Warrior(screen_width/2, screen_height - 500)
 hud = Hud(ingrid.live)
+menu = Menu(win)
 
 
 def redrawGameWindow():
 
-    if ingrid.live <= 1:
-        win.blit(hud.game_over_img, (window_width / 6, window_height / 6))
-        pygame.mixer.music.stop()
-        pygame.mixer.Sound.play(game_over)
+    if ingrid.level_completed:
+        menu.draw_start_menu()
+
+    elif ingrid.live <= 1:
+        menu.draw_game_over_win()
+
+    elif hud.timer <= 0:
+        menu.draw_game_over_win()
 
     else:
         background.drwaBG()
         hud.draw_hud(ingrid.live)
         world.draw()
-        obstacle_group.draw(win)
-        platform_group.draw(win)
-        potion_group.draw(win)
-        spikes_group.draw(win)
-        enemy_group.draw(win)
         #world.drawgrid()
 
         if ingrid.left and background.scroll > 0:
             background.scroll -= 5
-            world.scroll -= 5
             world.move(-5)
-            obstacle_group.update(-5)
-            platform_group.update(-5)
-            potion_group.update(-5)
-            spikes_group.update(-5)
-            enemy_group.update(-5)
-
 
         elif ingrid.right and background.scroll < 6000:
             background.scroll += 5
-            world.scroll += 5
             world.move(5)
-            obstacle_group.update(+5)
-            platform_group.update(+5)
-            potion_group.update(+5)
-            spikes_group.update(+5)
-            enemy_group.update(+5)
-
 
         elif background.scroll > 0 or background.scroll < 3000:
-            obstacle_group.update(0)
-            platform_group.update(0)
-            potion_group.update(0)
-            spikes_group.update(0)
-            enemy_group.update(0)
+            world.move(0)
 
-
-        ingrid.update(world, obstacle_group, platform_group, potion_group, spikes_group, enemy_group)
+        ingrid.update(world)
 
     pygame.display.update()
-
-
 
 
 run = True
@@ -101,6 +69,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
     ingrid.keypress()
     redrawGameWindow()
     
