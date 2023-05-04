@@ -1,7 +1,5 @@
 import pygame
 from settings import *
-from obstacle import *
-from platform import *
 from objects import *
 from enemy import *
 
@@ -63,7 +61,7 @@ class World():
                     platform = Platform(col_count * tile_size, row_count * tile_size, 0, 1)
                     self.platform_group.add(platform)
                 if tile == 10:
-                    spikes = Spikes(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
+                    spikes = Spikes(col_count * tile_size, row_count * tile_size - 150)
                     self.spikes_group.add(spikes)
                 if tile == 11:
                     to_tile_list(column1_img_8, tile, col_count, row_count)
@@ -85,18 +83,27 @@ class World():
 
 
     def draw(self):
+        self.spikes_group.draw(win)
+        self.obstacle_group.draw(win)
+        self.platform_group.draw(win)
+        self.potion_group.draw(win)
+        self.enemy_group.draw(win)
+        self.door_group.draw(win)
+
         for tile in self.tile_list:
             win.blit(tile[0], tile[1])
             #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
 
-        self.obstacle_group.draw(win)
-        self.platform_group.draw(win)
-        self.potion_group.draw(win)
-        self.spikes_group.draw(win)
-        self.enemy_group.draw(win)
-        self.door_group.draw(win)
+
 
     def move(self, direction):
+        self.spikes_group.update(direction)
+        self.obstacle_group.update(direction)
+        self.platform_group.update(direction)
+        self.potion_group.update(direction)
+        self.door_group.update(direction)
+        self.enemy_group.update(direction)
+
         for z in range(len(self.tile_list)):
             tile = self.tile_list[z]
             img = tile[0]
@@ -104,12 +111,7 @@ class World():
             img_rect.x -= direction
             #pygame.draw.rect(win, (255, 255, 255), img_rect, 2)
 
-        self.obstacle_group.update(direction)
-        self.platform_group.update(direction)
-        self.potion_group.update(direction)
-        self.door_group.update(direction)
-        self.spikes_group.update(direction)
-        self.enemy_group.update(direction)
+
 
 
     def drawgrid(self):

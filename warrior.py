@@ -1,5 +1,7 @@
 from settings import *
 from sounds import *
+import spritesheet
+
 class Warrior():
 
     def __init__(self, x, y):
@@ -36,9 +38,10 @@ class Warrior():
         self.collide_spikes = False
         self.in_air = False
         self.level_completed = False
+        BLACK = (0, 0, 0)
 
         #Sprite RUN
-        for num in range(1, 9):
+        for num in range(1, 3):
             img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png').convert_alpha()
             img_right = pygame.transform.scale(img_right, (self.size_width, self.size_height))
             img_left = pygame.transform.flip(img_right, True, False)
@@ -272,7 +275,7 @@ class Warrior():
 
         # draw player onto screen
         win.blit(self.image, self.rect)
-        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
     def keypress(self):
         key = pygame.key.get_pressed()
