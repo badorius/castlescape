@@ -1,9 +1,4 @@
-import pygame
 from settings import *
-from random import randint
-from sounds import *
-from sprite import *
-from math import *
 from sounds import *
 class Warrior():
 
