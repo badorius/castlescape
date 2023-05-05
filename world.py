@@ -78,6 +78,14 @@ class World():
                 if tile == 16:
                     to_tile_list(stairs_tile_4_right_16, tile, col_count, row_count)
 
+                if tile == 21:
+                    to_tile_list(window_glass_tall_1_21, tile, col_count, row_count)
+                if tile == 22:
+                    to_tile_list(window_glass_tall_1_22, tile, col_count, row_count)
+                if tile == 23:
+                    to_tile_list(window_glass_tall_1_23, tile, col_count, row_count)
+
+
                 col_count += 1
             row_count += 1
 

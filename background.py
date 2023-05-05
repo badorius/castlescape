@@ -27,10 +27,10 @@ class Background():
             for bg in self.bgs:
                 if self.bgs.index(bg) != 2:
                     win.blit(bg, ((x * window_width) - self.scroll * speed, 0))
-                    speed += 0.2
+                    speed += 0.1
                 elif self.bgs.index(bg) == 2:
                     win.blit(bg, ((x * window_width) - self.scroll * speed, window_height - 30))
-                    speed += 0.2
+                    speed += 0.1
 
     def draw_ground(self):
         floor_rnd = randint(1, 10)

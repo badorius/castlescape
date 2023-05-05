@@ -12,6 +12,7 @@ class Hud():
         self.y = 20
         self.live = live
         self.timer = 6000
+        self.score = 0
         self.font = pygame.font.SysFont('arial', 40)
 
         self.bar = pygame.image.load(f"assets/HUD/bar.png")
