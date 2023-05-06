@@ -1,3 +1,5 @@
+import pygame.transform
+
 from settings import *
 from sounds import *
 import spritesheet
@@ -28,10 +30,10 @@ class Warrior():
         self.jump_counter = 0
         self.dx = 0
         self.dy = 0
-        #self.size_width = 44
-        #self.size_height = 64
-        self.size_width = 100
-        self.size_height = 100
+        self.size_width = 44
+        self.size_height = 64
+        #self.size_width = 100
+        #self.size_height = 100
         self.collide_enemy = False
         self.collide_obstacle = False
         self.collide_platform = False
@@ -43,7 +45,7 @@ class Warrior():
         #Sprite RUN
         for num in range(1, 3):
             img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png').convert_alpha()
-            img_right = pygame.transform.scale(img_right, (self.size_width, self.size_height))
+            img_right = pygame.transform.scale_by(img_right, (2))
             img_left = pygame.transform.flip(img_right, True, False)
             self.images_right.append(img_right)
             self.images_left.append(img_left)
@@ -51,7 +53,7 @@ class Warrior():
         #Sprite idle
         for num in range(1, 7):
             img_idle_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/idle/Warrior_Idle_{num}.png").convert_alpha()
-            img_idle_right = pygame.transform.scale(img_idle_right, (self.size_width, self.size_height))
+            img_idle_right = pygame.transform.scale_by(img_idle_right, (2))
             img_idle_left = pygame.transform.flip(img_idle_right, True, False)
             self.images_idle_right.append(img_idle_right)
             self.images_idle_left.append(img_idle_left)
@@ -59,7 +61,7 @@ class Warrior():
         #Sprite jump
         for num in range(1, 4):
             img_jump_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Jump/Warrior_Jump_{num}.png").convert_alpha()
-            img_jump_right = pygame.transform.scale(img_jump_right, (self.size_width, self.size_height))
+            img_jump_right = pygame.transform.scale_by(img_jump_right, (2))
             img_jump_left = pygame.transform.flip(img_jump_right, True, False)
             self.images_jump_right.append(img_jump_right)
             self.images_jump_left.append(img_jump_left)
@@ -67,7 +69,7 @@ class Warrior():
         #Sprite hurt
         for num in range(1,5):
             img_hurt_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Hurt-Effect/Warrior_hurt_{num}.png").convert_alpha()
-            img_hurt_right = pygame.transform.scale(img_hurt_right, (self.size_width, self.size_height))
+            img_hurt_right = pygame.transform.scale_by(img_hurt_right, (2))
             img_hurt_left = pygame.transform.flip(img_hurt_right, True, False)
             self.images_hurt_right.append(img_hurt_right)
             self.images_hurt_left.append(img_hurt_left)
@@ -75,14 +77,14 @@ class Warrior():
         #Sprite atack
         for num in range(1,13):
             img_attack_right = pygame.image.load(f"assets/Characters/Warrior/IndividualSprite/Attack/Warrior_Attack_{num}.png").convert_alpha()
-            img_attack_right = pygame.transform.scale(img_attack_right, (self.size_width, self.size_height))
+            img_attack_right = pygame.transform.scale_by(img_attack_right, (2))
             img_attack_left = pygame.transform.flip(img_attack_right, True, False)
             self.images_attack_right.append(img_attack_right)
             self.images_attack_left.append(img_attack_left)
 
         self.image = self.images_idle_right[self.index_run]
         self.rect = self.image.get_rect()
-        self.rect.width = self.image.get_width() - 40
+        self.rect.width = self.image.get_width() 
         self.rect.height = self.image.get_height()
         self.rect.x = x
         self.rect.y = y
