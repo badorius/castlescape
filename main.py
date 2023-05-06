@@ -44,6 +44,8 @@ def redrawGameWindow():
         hud.draw_hud(ingrid.live)
         world.draw()
         #world.drawgrid()
+        ingrid.update(world)
+
 
         if ingrid.left and background.scroll > 0:
             background.scroll -= 5
@@ -56,7 +58,7 @@ def redrawGameWindow():
         elif background.scroll > 0 or background.scroll < 3000:
             world.move(0)
 
-        ingrid.update(world)
+        #ingrid.update(world)
 
     pygame.display.update()
 

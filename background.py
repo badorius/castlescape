@@ -37,5 +37,4 @@ class Background():
         for z in range(1000):
 
             for x in range(1, 5):
-                win.blit(self.floor1[x - 1], (
-                x + z * (self.floor1[x - 1].get_width()) - self.scroll * 2.2, window_height - self.floor1[x - 1].get_height()))
+                win.blit(self.floor1[x - 1], (x + z * (self.floor1[x - 1].get_width()) - self.scroll * 2.2, window_height - self.floor1[x - 1].get_height()))

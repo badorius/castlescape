@@ -19,7 +19,7 @@ class Warrior():
         self.images_attack_left = []
         self.live_max = 450
         self.live = 450
-
+        self.direction = 1
         self.index_run = 0
         self.index_idle = 0
         self.index_attack = 0
@@ -32,6 +32,7 @@ class Warrior():
         self.dy = 0
         self.size_width = 44
         self.size_height = 64
+        self.offset = 10
         #self.size_width = 100
         #self.size_height = 100
         self.collide_enemy = False
@@ -43,7 +44,7 @@ class Warrior():
         BLACK = (0, 0, 0)
 
         #Sprite RUN
-        for num in range(1, 3):
+        for num in range(1, 9):
             img_right = pygame.image.load(f'assets/Characters/Warrior/IndividualSprite/Run/Warrior_Run_{num}.png').convert_alpha()
             img_right = pygame.transform.scale_by(img_right, (2))
             img_left = pygame.transform.flip(img_right, True, False)
@@ -82,12 +83,13 @@ class Warrior():
             self.images_attack_right.append(img_attack_right)
             self.images_attack_left.append(img_attack_left)
 
-        self.image = self.images_idle_right[self.index_run]
+        self.image = self.images_idle_right[self.index_run].convert_alpha()
         self.rect = self.image.get_rect()
-        self.rect.width = self.image.get_width() 
-        self.rect.height = self.image.get_height()
+        self.rect.width = self.image.get_width()/3
+        self.rect.height = self.image.get_height()/1.2
         self.rect.x = x
         self.rect.y = y
+
 
         self.left = False
         self.right = False
@@ -129,7 +131,7 @@ class Warrior():
                     self.image = self.images_attack_left[self.index_attack]
 
             #JUMP
-            if self.jumped or self.in_air == False:
+            if self.jumped:
                 if self.jumped >= len(self.images_jump_right):
                     self.index_jump = 0
                 if self.direction == 1:
@@ -239,6 +241,8 @@ class Warrior():
                         self.rect.bottom = platform.rect.top - 1
                         self.in_air = False
                         self.dy = 0
+                        self.counter += 1
+
                     # move sideways with the platform
                     if platform.move_x != 0:
                         self.rect.x += platform.move_direction
@@ -275,9 +279,13 @@ class Warrior():
             self.rect.bottom = screen_height
             self.dy = 0
 
-        # draw player onto screen
-        win.blit(self.image, self.rect)
-        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        # draw player onto screen -30 and - 20 offset to put image on to rect
+        if self.direction == 1:
+            win.blit(self.image, (self.rect.x - 30, self.rect.y - 20, self.rect.width, self.rect.height))
+        if self.direction == -1:
+            win.blit(self.image, (self.rect.x - 50, self.rect.y - 20, self.rect.width, self.rect.height))
+
+        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
     def keypress(self):
         key = pygame.key.get_pressed()
