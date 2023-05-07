@@ -7,11 +7,23 @@ class Menu():
         self.game_over_img = pygame.image.load("assets/Background/game_over.png")
         self.status = 0 # 0 main, 1 restart, 3 quit, 4 next
 
-    def draw_start_menu(self):
+    def draw_level_menu(self, score, timer):
         pygame.mixer.music.stop()
         pygame.mixer.Sound.play(next_level)
 
         font = pygame.font.SysFont('arial', 40)
+        #REST FOR TO LOOP SCORE POINTS
+        score += timer // 10
+        timer -= timer
+        title = font.render('Level Completed!!!', True, (255, 255, 255))
+        time_left = font.render(str(timer), True, (220, 20, 60))
+        total_score = font.render(str(score), True, (255, 255, 0))
+        win.blit(title, (window_width / 2 - title.get_width() / 2, window_height / 2 - title.get_height() / 3))
+        win.blit(total_score, (window_width / 2 - title.get_width() / 7, window_height / 3 - title.get_height() /5))
+
+        pygame.display.update()
+
+            # hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
         title = font.render('Level Completed!!!', True, (255, 255, 255))
         restart_button = font.render('R - Restart', True, (255, 255, 255))
         quit_button = font.render('N - Next', True, (255, 255, 255))

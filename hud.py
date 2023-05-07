@@ -3,7 +3,7 @@ from settings import *
 
 class Hud():
 
-    def __init__(self, live):
+    def __init__(self, live, timer):
         self.width = window_width
         self.height = window_height
         self.width = 500
@@ -11,8 +11,7 @@ class Hud():
         self.x = 20
         self.y = 20
         self.live = live
-        self.timer = 6000
-        self.score = 0
+        self.timer = timer
         self.font = pygame.font.SysFont('arial', 40)
 
         self.bar = pygame.image.load(f"assets/HUD/bar.png")
@@ -26,12 +25,12 @@ class Hud():
 
 
 
-    def draw_hud(self, live):
-        self.timer -= 0.1
-        self.timer = int(self.timer)
+    def draw_hud(self, live, score, timer):
+
         self.font = pygame.font.SysFont('arial', 40)
         self.title = self.font.render('Tempo Run', True, (220,20,60))
-        self.time_left = self.font.render(str(self.timer), True, (220,20,60))
+        self.time_left = self.font.render(str(timer), True, (220,20,60))
+        self.total_score = self.font.render(str(score), True, (255,255,0))
 
         #win.blit("Timer", (window_width/2 - self.title.get_width()/2, window_height/2 - title.get_height()/3))
         win.blit(self.weapon, (window_width - self.x - self.weapon.get_height(), self.y))
@@ -45,4 +44,6 @@ class Hud():
 
         win.blit(self.bar, (self.x, self.y))
         win.blit(self.time_left, (window_width - self.x - self.weapon.get_height() * 3, self.y))
+        win.blit(self.total_score, (window_width - self.x - self.weapon.get_height() * 8, self.y))
+
         #screen.blit(font.render(text, True, (0, 0, 0)), (32, 48))

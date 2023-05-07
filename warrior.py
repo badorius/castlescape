@@ -5,8 +5,7 @@ from sounds import *
 import spritesheet
 
 class Warrior():
-
-    def __init__(self, x, y):
+    def __init__(self, x, y, world):
         self.images_right = []
         self.images_left = []
         self.images_idle_right = []
@@ -25,7 +24,7 @@ class Warrior():
         self.index_attack = 0
         self.index_hurt = 0
         self.index_jump = 0
-
+        self.world = world
         self.counter = 0
         self.jump_counter = 0
         self.dx = 0
@@ -39,8 +38,12 @@ class Warrior():
         self.collide_obstacle = False
         self.collide_platform = False
         self.collide_spikes = False
-        self.in_air = False
+        self.in_air = True
         self.level_completed = False
+        self.collide_right = False
+        self.collide_left = False
+        self.timer = 6000
+        self.score = 0
         BLACK = (0, 0, 0)
 
         #Sprite RUN
@@ -89,8 +92,6 @@ class Warrior():
         self.rect.height = self.image.get_height()/1.2
         self.rect.x = x
         self.rect.y = y
-
-
         self.left = False
         self.right = False
         self.attack = False
@@ -99,11 +100,10 @@ class Warrior():
         self.vel_y = 0
         self.direction = 0
 
-    def update(self, world):
-        self.dx = 0
-        self.dy = 0
+    def update(self):
         walk_cooldown = 5
-        col_thresh = 20
+        self.timer -= 1
+        self.timer = int(self.timer)
 
         # handle animation
         if self.counter > walk_cooldown:
@@ -111,6 +111,7 @@ class Warrior():
             self.index_run += 1
             self.index_attack += 1
             self.index_idle += 1
+            #self.index_jump += 1
 
             #RUN
             if self.right or self.left:
@@ -157,39 +158,59 @@ class Warrior():
                 if self.direction == -1:
                     self.image = self.images_hurt_left[self.index_hurt]
 
-
         # add gravity
         self.vel_y += 1
         if self.vel_y > 10:
             self.vel_y = 10
         self.dy += self.vel_y
 
+        if self.rect.bottom > screen_height:
+            self.rect.bottom = screen_height
+            self.dy = 0
+
+        # update player coordinates
+        self.rect.x += self.dx
+        self.rect.y += self.dy
+
+
+
+        # draw player onto screen -30 and - 20 offset to put image on to rect
+        if self.direction == 1:
+            win.blit(self.image, (self.rect.x - 30, self.rect.y - 20, self.rect.width, self.rect.height))
+        if self.direction == -1:
+            win.blit(self.image, (self.rect.x - 50, self.rect.y - 20, self.rect.width, self.rect.height))
+        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+
+
+
+    def check_collide(self):
+        self.in_air = True
+        col_thresh = 20
+        self.dx = 0
+        self.dy = 0
         # check for collision
-        self.in_air = False
-        for tile in world.tile_list:
+        for tile in self.world.tile_list:
             # check for collision in x direction
             if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
                 self.dx = 0
-
-                # check for collision in y direction
+            # check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height):
                 # check if below the ground i.e. jumping
-                if self.vel_y < 0:
+                if self.vel_y < - 15:
                     self.dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
+                    print("ah")
                 # check if above the ground i.e. falling
                 elif self.vel_y >= 0:
                     self.dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
-                    self.in_air = True
-
+                    self.in_air = False
 
 
             # Check collide obstacle
-            if pygame.sprite.spritecollide(self, world.obstacle_group, False):
+            if pygame.sprite.spritecollide(self, self.world.obstacle_group, False):
                 self.collide_obstacle = True
                 pygame.mixer.Sound.play(hurt)
-
                 self.live -= 0.1
                 if self.direction == 1:
                     self.dx -= 0.1
@@ -200,10 +221,11 @@ class Warrior():
 
             # Check collide enemy
             if self.attack == True:
-                if pygame.sprite.spritecollide(self, world.enemy_group, True):
+                if pygame.sprite.spritecollide(self, self.world.enemy_group, True):
                     self.collide_enemy = False
+                    self.score += 1
             else:
-                if pygame.sprite.spritecollide(self, world.enemy_group, False):
+                if pygame.sprite.spritecollide(self, self.world.enemy_group, False):
                     self.collide_enemy = True
                     pygame.mixer.Sound.play(hurt)
                     self.live -= 0.1
@@ -214,7 +236,7 @@ class Warrior():
 
 
             # Check spikes collide
-            if pygame.sprite.spritecollide(self, world.spikes_group, False):
+            if pygame.sprite.spritecollide(self, self.world.spikes_group, False):
                 self.collide_spikes = True
                 pygame.mixer.Sound.play(hurt)
                 self.live -= 0.1
@@ -226,7 +248,7 @@ class Warrior():
                 self.collide_spikes = False
 
             # check for collision with platforms
-            for platform in world.platform_group:
+            for platform in self.world.platform_group:
                 # collision in the x direction
                 if platform.rect.colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
                     self.dx = 0
@@ -238,7 +260,7 @@ class Warrior():
                         self.dy = platform.rect.bottom - self.rect.top
                     # check if above platform
                     elif abs((self.rect.bottom + self.dy) - platform.rect.top) < col_thresh:
-                        self.rect.bottom = platform.rect.top - 1
+                        self.rect.bottom = platform.rect.top
                         self.in_air = False
                         self.dy = 0
                         self.counter += 1
@@ -256,7 +278,7 @@ class Warrior():
                 self.collide_obstacle = False
 
             # Collide Potion
-            if pygame.sprite.spritecollide(self, world.potion_group, True):
+            if pygame.sprite.spritecollide(self, self.world.potion_group, True):
                 if self.live < self.live_max - 50:
                     pygame.mixer.Sound.play(get_potion)
                     self.live += 50
@@ -265,42 +287,20 @@ class Warrior():
                     pygame.mixer.Sound.play(get_potion)
 
             # Collide Door
-            if pygame.sprite.spritecollide(self, world.door_group, False):
+            if pygame.sprite.spritecollide(self, self.world.door_group, False):
                 self.level_completed = True
 
 
-            
-
-        # update player coordinates
-        self.rect.x += self.dx
-        self.rect.y += self.dy
-
-        if self.rect.bottom > screen_height:
-            self.rect.bottom = screen_height
-            self.dy = 0
-
-        # draw player onto screen -30 and - 20 offset to put image on to rect
-        if self.direction == 1:
-            win.blit(self.image, (self.rect.x - 30, self.rect.y - 20, self.rect.width, self.rect.height))
-        if self.direction == -1:
-            win.blit(self.image, (self.rect.x - 50, self.rect.y - 20, self.rect.width, self.rect.height))
-
-        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
-
     def keypress(self):
         key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE] and self.jumped == False:
-            if self.jump_counter < 2:
-                self.jump_counter += 1
-                self.counter += 1
-                pygame.mixer.Sound.play(jump)
-                self.vel_y = -15
-                self.jumped = True
-                self.left = False
-                self.right = False
-                self.idle = False
-            elif self.vel_y == 0:
-                self.jump_counter = 0
+        if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
+            pygame.mixer.Sound.play(jump)
+            self.vel_y = - 15
+            self.jumped = True
+            self.left = False
+            self.right = False
+            self.idle = False
+            self.counter += 1
         if key[pygame.K_SPACE] == False:
             self.jumped = False
 
@@ -310,14 +310,12 @@ class Warrior():
             self.left = False
             self.right = False
             self.idle = False
-            #self.counter += 1
             for z in (0, len(self.images_attack_right)):
-                print(" attack")
                 self.counter += 1
 
 
         if key[pygame.K_LEFT]:
-            self.dx -= 5
+            self.dx -= vel
             self.left = True
             self.right = False
             self.idle = False
@@ -325,7 +323,7 @@ class Warrior():
             self.direction = -1
 
         if key[pygame.K_RIGHT]:
-            self.dx += 5
+            self.dx += vel
             self.left = False
             self.right = True
             self.idle = False
@@ -339,5 +337,10 @@ class Warrior():
             self.attack = False
             self.counter += 1
             # ingrid.index_run = 1
+
+        self.check_collide()
+        self.update()
+
+
 
 

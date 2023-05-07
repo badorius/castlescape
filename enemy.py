@@ -34,7 +34,6 @@ class Enemy(pygame.sprite.Sprite):
                 #print(self.direction)
             self.move_counter *= -1
             if self.move_direction > 1:
-                print("Change")
                 self.direction = 1
                 self.image = pygame.image.load('assets/Characters/enemy/burning-ghoul-3.png').convert_alpha()
                 self.image = self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
