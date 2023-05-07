@@ -310,7 +310,11 @@ class Warrior():
             self.left = False
             self.right = False
             self.idle = False
-            self.counter += 1
+            #self.counter += 1
+            for z in (0, len(self.images_attack_right)):
+                print(" attack")
+                self.counter += 1
+
 
         if key[pygame.K_LEFT]:
             self.dx -= 5
