@@ -5,7 +5,7 @@ from sounds import *
 class Menu():
     def __init__(self, win):
         self.game_over_img = pygame.image.load("assets/Background/game_over.png")
-
+        self.status = 0 # 0 main, 1 restart, 3 quit, 4 next
 
     def draw_start_menu(self):
         pygame.mixer.music.stop()
@@ -19,6 +19,7 @@ class Menu():
         win.blit(restart_button, (window_width/2 - restart_button.get_width()/2, window_height/1.9 + restart_button.get_height()))
         win.blit(quit_button, (window_width/2 - quit_button.get_width()/2, window_height/2 + quit_button.get_height()/2))
         pygame.display.update()
+        self.keypress()
 
     def draw_game_over_win(self):
         win.blit(self.game_over_img, (window_width / 6, window_height / 6))
@@ -40,8 +41,11 @@ class Menu():
     def keypress(self):
         key = pygame.key.get_pressed()
         if key[pygame.K_r]:
-            print ("Return")
+            self.status = 1 # restart
+            return self.status
         if key[pygame.K_q]:
-            print("quit")
+            self.status = 3 # quit
+            return self.status
         if key[pygame.K_n]:
-            print ("Next")
+            self.status = 4 # Next
+            return self.status
