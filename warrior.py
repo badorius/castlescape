@@ -98,7 +98,6 @@ class Warrior():
         self.jumped = False
         self.idle = True
         self.vel_y = 0
-        self.direction = 0
 
     def update(self):
         walk_cooldown = 5
@@ -338,8 +337,6 @@ class Warrior():
             self.counter += 1
             # ingrid.index_run = 1
 
-        self.check_collide()
-        self.update()
 
 
 

@@ -46,6 +46,8 @@ def main():
             hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
             world.draw()
             ingrid.keypress()
+            ingrid.check_collide()
+            ingrid.update()
             #world.drawgrid()
 
             if ingrid.left and background.scroll > 0:
@@ -58,7 +60,6 @@ def main():
 
             elif background.scroll > 0 or background.scroll < 3000:
                 world.move(0)
-
 
         pygame.display.update()
 
