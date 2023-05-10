@@ -50,16 +50,17 @@ def main():
             ingrid.update()
             #world.drawgrid()
 
-            if ingrid.left and background.scroll > 0:
+            if ingrid.left and background.scroll > 0 and not ingrid.collide_left:
                 background.scroll -= vel
                 world.move(-vel)
 
-            elif ingrid.right and background.scroll < 6000:
+            elif ingrid.right and background.scroll < 6000 and not ingrid.collide_right:
                 background.scroll += vel
                 world.move(vel)
 
             elif background.scroll > 0 or background.scroll < 3000:
                 world.move(0)
+
 
         pygame.display.update()
 

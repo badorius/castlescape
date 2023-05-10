@@ -188,17 +188,28 @@ class Warrior():
         self.dx = 0
         self.dy = 0
         # check for collision
+        self.collide_right = False
+        self.collide_left = False
         for tile in self.world.tile_list:
             # check for collision in x direction
-            if tile[1].colliderect(self.rect.x + self.dx, self.rect.y, self.rect.width, self.rect.height):
-                self.dx = 0
+            if self.direction == 1:
+                if tile[1].colliderect(self.rect.x + self.dx + vel, self.rect.y - vel, self.rect.width, self.rect.height):
+                    self.dx = -vel
+                    self.collide_right = True
+            if self.direction == -1:
+                if tile[1].colliderect(self.rect.x + self.dx - vel, self.rect.y - vel, self.rect.width, self.rect.height):
+                    self.dx = vel
+                    self.collide_left = True
+
+            #print(self.collide_right, self.collide_left)
+
             # check for collision in y direction
             if tile[1].colliderect(self.rect.x, self.rect.y + self.dy, self.rect.width, self.rect.height):
+                #print("collide y")
                 # check if below the ground i.e. jumping
                 if self.vel_y < - 15:
                     self.dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
-                    print("ah")
                 # check if above the ground i.e. falling
                 elif self.vel_y >= 0:
                     self.dy = tile[1].top - self.rect.bottom
