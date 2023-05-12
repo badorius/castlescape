@@ -27,13 +27,66 @@ def main():
     hud = Hud(ingrid.live, ingrid.timer)
     menu = Menu(win)
 
+    def keypress():
+        key = pygame.key.get_pressed()
+        if key[pygame.K_SPACE] and ingrid.jumped == False and ingrid.in_air == False:
+            pygame.mixer.Sound.play(jump)
+            ingrid.vel_y = - 15
+            ingrid.jumped = True
+            ingrid.left = False
+            ingrid.right = False
+            ingrid.idle = False
+            ingrid.counter += 1
+        if key[pygame.K_SPACE] == False:
+            ingrid.jumped = False
+
+        if key[pygame.K_LCTRL]:
+            pygame.mixer.Sound.play(attack_sound)
+            ingrid.attack = True
+            ingrid.left = False
+            ingrid.right = False
+            ingrid.idle = False
+            for z in (0, len(ingrid.images_attack_right)):
+                ingrid.counter += 1
+
+        if key[pygame.K_LEFT]:
+            if background.scroll > 0 and not ingrid.collide_left:
+                background.scroll -= vel
+                world.move(-vel)
+                ingrid.dx -= vel
+            ingrid.left = True
+            ingrid.right = False
+            ingrid.idle = False
+            ingrid.counter += 1
+            ingrid.direction = -1
+
+        if key[pygame.K_RIGHT]:
+            if background.scroll < 6000 and not ingrid.collide_right:
+                background.scroll += vel
+                world.move(vel)
+                print(ingrid.collide_right)
+            ingrid.dx += vel
+            ingrid.left = False
+            ingrid.right = True
+            ingrid.idle = False
+            ingrid.counter += 1
+            ingrid.direction = 1
+
+        if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False and key[pygame.K_LCTRL] == False:
+            ingrid.idle = True
+            ingrid.left = False
+            ingrid.right = False
+            ingrid.attack = False
+            ingrid.counter += 1
+            # ingrid.index_run = 1
+
+        ingrid.collide_right = False
+        ingrid.collide_left = False
 
     def redrawGameWindow():
 
         if ingrid.level_completed:
             menu.draw_level_menu(ingrid.score, ingrid.timer)
-
-
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()
@@ -45,21 +98,12 @@ def main():
             background.drwaBG()
             hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
             world.draw()
-            ingrid.keypress()
+            keypress()
             ingrid.check_collide()
             ingrid.update()
             #world.drawgrid()
-
-            if ingrid.left and background.scroll > 0 and not ingrid.collide_left:
-                background.scroll -= vel
-                world.move(-vel)
-
-            elif ingrid.right and background.scroll < 6000 and not ingrid.collide_right:
-                background.scroll += vel
-                world.move(vel)
-
-            elif background.scroll > 0 or background.scroll < 3000:
-                world.move(0)
+            #if background.scroll > 0 or background.scroll < 3000:
+            world.move(0)
 
 
         pygame.display.update()

@@ -180,25 +180,21 @@ class Warrior():
             win.blit(self.image, (self.rect.x - 50, self.rect.y - 20, self.rect.width, self.rect.height))
         #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
-
-
     def check_collide(self):
         self.in_air = True
         col_thresh = 20
         self.dx = 0
         self.dy = 0
         # check for collision
-        self.collide_right = False
-        self.collide_left = False
         for tile in self.world.tile_list:
             # check for collision in x direction
             if self.direction == 1:
                 if tile[1].colliderect(self.rect.x + self.dx + vel, self.rect.y - vel, self.rect.width, self.rect.height):
-                    self.dx = -vel
+                    #self.dx = -vel
                     self.collide_right = True
             if self.direction == -1:
                 if tile[1].colliderect(self.rect.x + self.dx - vel, self.rect.y - vel, self.rect.width, self.rect.height):
-                    self.dx = vel
+                    #self.dx = vel
                     self.collide_left = True
 
             #print(self.collide_right, self.collide_left)
@@ -301,52 +297,7 @@ class Warrior():
                 self.level_completed = True
 
 
-    def keypress(self):
-        key = pygame.key.get_pressed()
-        if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
-            pygame.mixer.Sound.play(jump)
-            self.vel_y = - 15
-            self.jumped = True
-            self.left = False
-            self.right = False
-            self.idle = False
-            self.counter += 1
-        if key[pygame.K_SPACE] == False:
-            self.jumped = False
 
-        if key[pygame.K_LCTRL]:
-            pygame.mixer.Sound.play(attack_sound)
-            self.attack = True
-            self.left = False
-            self.right = False
-            self.idle = False
-            for z in (0, len(self.images_attack_right)):
-                self.counter += 1
-
-
-        if key[pygame.K_LEFT]:
-            self.dx -= vel
-            self.left = True
-            self.right = False
-            self.idle = False
-            self.counter += 1
-            self.direction = -1
-
-        if key[pygame.K_RIGHT]:
-            self.dx += vel
-            self.left = False
-            self.right = True
-            self.idle = False
-            self.counter += 1
-            self.direction = 1
-
-        if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False and key[pygame.K_LCTRL] == False:
-            self.idle = True
-            self.left = False
-            self.right = False
-            self.attack = False
-            self.counter += 1
-            # ingrid.index_run = 1
 
 
 
