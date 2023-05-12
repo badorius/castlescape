@@ -3,7 +3,7 @@ import math
 from random import randint
 from settings import *
 
-class Background1():
+class Background():
     def __init__(self, level):
         self.scroll = 0
         self.bgs = []

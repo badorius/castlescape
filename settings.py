@@ -1,5 +1,5 @@
 import pygame
-from level_map import *
+from level_map_1 import *
 
 
 window_width = 1280

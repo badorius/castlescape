@@ -39,6 +39,7 @@ class Warrior():
         self.collide_platform = False
         self.collide_spikes = False
         self.in_air = True
+        self.level = 1
         self.level_completed = False
         self.collide_right = False
         self.collide_left = False

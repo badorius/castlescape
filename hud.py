@@ -12,7 +12,7 @@ class Hud():
         self.y = 20
         self.live = live
         self.timer = timer
-        self.font = pygame.font.SysFont('arial', 40)
+        self.font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
 
         self.bar = pygame.image.load(f"assets/HUD/bar.png")
         self.bar = pygame.transform.scale(self.bar, (self.width, self.height))
@@ -27,7 +27,7 @@ class Hud():
 
     def draw_hud(self, live, score, timer):
 
-        self.font = pygame.font.SysFont('arial', 40)
+        self.font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
         self.title = self.font.render('Tempo Run', True, (220,20,60))
         self.time_left = self.font.render(str(timer), True, (220,20,60))
         self.total_score = self.font.render(str(score), True, (255,255,0))

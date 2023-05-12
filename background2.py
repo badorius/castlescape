@@ -3,8 +3,8 @@ import math
 from random import randint
 from settings import *
 
-class Background():
-    def __init__(self):
+class Background2():
+    def __init__(self, level):
         self.scroll = 0
         self.bgs = []
         self.floor1 = []

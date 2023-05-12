@@ -5,7 +5,7 @@ from enemy import *
 
 from random import randint
 
-class World():
+class World1():
     def __init__(self, data):
         self.tile_list = []
         self.floor1 = []

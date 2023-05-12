@@ -2,7 +2,7 @@ import pygame
 from gameObject import GameObject
 from player import Player
 from TODELETEobstacle import Enemy
-from background import Background
+from TODELETEbackground import Background
 import math
 
 class Game:

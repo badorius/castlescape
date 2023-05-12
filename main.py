@@ -3,27 +3,26 @@ import threading
 from random import randint
 import math
 from warrior import Warrior
-from world import World
-from background import Background
+from world1 import *
+from world2 import *
+from background1 import *
+from background2 import *
 from settings import *
 from sounds import *
 from menu import *
 from hud import *
-from level_map import *
+from level_map_1 import *
+from level_map_2 import *
 
 def main():
     pygame.init()
 
-    # Vars
+    # Vars and Instance Objects
 
     clock = pygame.time.Clock()
-    level = 1
-
-    # Instance Objects
-
-    world = World(world_data_1)
-    background = Background()
+    world = World1(world_data_1)
     ingrid = Warrior(screen_width/2, screen_height - 500, world)
+    background = Background1(ingrid.level)
     hud = Hud(ingrid.live, ingrid.timer)
     menu = Menu(win)
 
@@ -64,7 +63,6 @@ def main():
             if background.scroll < 6000 and not ingrid.collide_right:
                 background.scroll += vel
                 world.move(vel)
-                print(ingrid.collide_right)
             ingrid.dx += vel
             ingrid.left = False
             ingrid.right = True
@@ -87,6 +85,7 @@ def main():
 
         if ingrid.level_completed:
             menu.draw_level_menu(ingrid.score, ingrid.timer)
+            ingrid.level += 1
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()
