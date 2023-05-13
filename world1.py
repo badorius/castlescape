@@ -2,11 +2,14 @@ import pygame
 from settings import *
 from objects import *
 from enemy import *
+from level_map_1 import *
+from level_map_2 import *
+
 
 from random import randint
 
 class World1():
-    def __init__(self, data):
+    def __init__(self, level):
         self.tile_list = []
         self.floor1 = []
         self.speed = 1
@@ -17,6 +20,10 @@ class World1():
         self.door_group = pygame.sprite.Group()
         self.spikes_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
+        if level == 1:
+            data = world_data_1
+        elif level == 2:
+            data == world_data_2
 
         #Load floor1 images
         for z in range(1, 5):

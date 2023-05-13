@@ -18,11 +18,11 @@ def main():
     pygame.init()
 
     # Vars and Instance Objects
-
+    world_level = 1
     clock = pygame.time.Clock()
-    world = World1(world_data_1)
+    world = World1(world_level)
     ingrid = Warrior(screen_width/2, screen_height - 500, world)
-    background = Background1(ingrid.level)
+    background = Background1(world_level)
     hud = Hud(ingrid.live, ingrid.timer)
     menu = Menu(win)
 
@@ -86,6 +86,9 @@ def main():
         if ingrid.level_completed:
             menu.draw_level_menu(ingrid.score, ingrid.timer)
             ingrid.level += 1
+            global world_level
+            world_level = ingrid.level
+            print (world_level)
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()
