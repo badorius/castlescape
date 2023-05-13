@@ -4,6 +4,7 @@ from sounds import *
 
 class Menu():
     def __init__(self, win):
+        self.clock = pygame.time.Clock()
         self.game_over_img = pygame.image.load("assets/Background/game_over.png")
         self.status = 0 # 0 main, 1 restart, 3 quit, 4 next
 
@@ -31,7 +32,6 @@ class Menu():
         win.blit(restart_button, (window_width/2 - restart_button.get_width()/2, window_height/1.9 + restart_button.get_height()))
         win.blit(quit_button, (window_width/2 - quit_button.get_width()/2, window_height/2 + quit_button.get_height()/2))
         pygame.display.update()
-        self.keypress()
 
     def draw_game_over_win(self):
         win.blit(self.game_over_img, (window_width / 6, window_height / 6))
@@ -47,17 +47,24 @@ class Menu():
         win.blit(restart_button, (window_width/2 - restart_button.get_width()/2, window_height/1.9 + restart_button.get_height()))
         win.blit(quit_button, (window_width/2 - quit_button.get_width()/2, window_height/2 + quit_button.get_height()/2))
         pygame.display.update()
-        self.keypress()
 
 
     def keypress(self):
-        key = pygame.key.get_pressed()
-        if key[pygame.K_r]:
-            self.status = 1 # restart
-            return self.status
-        if key[pygame.K_q]:
-            self.status = 3 # quit
-            return self.status
-        if key[pygame.K_n]:
-            self.status = 4 # Next
-            return self.status
+        run = True
+        while run:
+            self.clock.tick(FPS)
+            for event in pygame.event.get():
+                key = pygame.key.get_pressed()
+                print(run)
+                if key[pygame.K_r]:
+                    self.status = 1 # restart
+                    run = False
+                    return self.status
+                if key[pygame.K_q]:
+                    self.status = 3 # quit
+                    run = False
+                    return self.status
+                if key[pygame.K_n]:
+                    self.status = 4 # Next
+                    run = False
+                    return self.status

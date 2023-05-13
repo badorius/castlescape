@@ -14,6 +14,7 @@ from hud import *
 from level_map_1 import *
 from level_map_2 import *
 
+
 def main():
     pygame.init()
 
@@ -85,16 +86,20 @@ def main():
 
         if ingrid.level_completed:
             menu.draw_level_menu(ingrid.score, ingrid.timer)
+            menu.keypress()
             ingrid.level += 1
+            ingrid.level_completed = False
             global world_level
             world_level = ingrid.level
             print (world_level)
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()
+            menu.keypress()
 
         elif ingrid.timer <= 0:
             menu.draw_game_over_win()
+            menu.keypress()
 
         else:
             background.drwaBG()
