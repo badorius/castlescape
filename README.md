@@ -6,4 +6,4 @@ Install pygame library as requirement.
 run: ```python main.py```
 
 
-![IMG](IMG/castlescape.gif)
+![IMG](IMG/screen.avi)
