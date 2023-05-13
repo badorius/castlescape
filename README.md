@@ -6,4 +6,4 @@ Install pygame library as requirement.
 run: ```python main.py```
 
 
-![IMG](IMG/screen.avi)
+![IMG](IMG/screenshot.png)
