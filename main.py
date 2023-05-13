@@ -25,7 +25,7 @@ def main():
     ingrid = Warrior(screen_width/2, screen_height - 500, world)
     background = Background1(world_level)
     hud = Hud(ingrid.live, ingrid.timer)
-    menu = Menu(win)
+    menu = Menu()
 
     def keypress():
         key = pygame.key.get_pressed()
@@ -83,15 +83,31 @@ def main():
         ingrid.collide_left = False
 
     def redrawGameWindow():
-
         if ingrid.level_completed:
-            menu.draw_level_menu(ingrid.score, ingrid.timer)
-            menu.keypress()
+            # REST FOR TO LOOP SCORE POINTS
+            ingrid.score += 10
+            # score += timer // 10
+            ingrid.timer -= 10
+            pygame.mixer.music.stop()
+            pygame.mixer.Sound.play(score_up)
+            background.drwaBG()
+            hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
+            world.draw()
+            # world.drawgrid()
+            # if background.scroll > 0 or background.scroll < 3000:
+            world.move(0)
+
+            if ingrid.timer <= 0:
+                ingrid.level_completed = False
+                menu.draw_level_menu()
+                menu.keypress()
+                pygame.mixer.music.play()
+                main()
+
             ingrid.level += 1
-            ingrid.level_completed = False
             global world_level
             world_level = ingrid.level
-            print (world_level)
+            #main()
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()
@@ -111,18 +127,21 @@ def main():
             #world.drawgrid()
             #if background.scroll > 0 or background.scroll < 3000:
             world.move(0)
-
-
         pygame.display.update()
 
+    def run_menu():
+        if menu.status is 0:
+            menu.main_menu()
+            menu.keypress()
+        if menu.status is 1:
+            main()
 
     run = True
     while run:
-
         clock.tick(FPS)
+        if menu.status is not 5:
+            run_menu()
         for event in pygame.event.get():
-            if menu.status == 1:
-                main()
             if event.type == pygame.QUIT or menu.status == 3:
                 run = False
         redrawGameWindow()

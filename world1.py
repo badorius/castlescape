@@ -11,6 +11,7 @@ from random import randint
 class World1():
     def __init__(self, level):
         self.tile_list = []
+        self.tile_list_bg = []
         self.floor1 = []
         self.speed = 1
         self.collide = "none"
@@ -23,7 +24,7 @@ class World1():
         if level == 1:
             data = world_data_1
         elif level == 2:
-            data == world_data_2
+            data = world_data_2
 
         #Load floor1 images
         for z in range(1, 5):
@@ -38,6 +39,14 @@ class World1():
             img_rect.y = row * tile_size
             tile = (img, img_rect)
             self.tile_list.append(tile)
+
+        def to_tile_list_bg(tile_img, tile,  col, row):
+            img = pygame.transform.scale(tile_img, (tile_size * 2, tile_size * 2))
+            img_rect = img.get_rect()
+            img_rect.x = col * tile_size - tile_size
+            img_rect.y = row * tile_size - tile_size
+            tile = (img, img_rect)
+            self.tile_list_bg.append(tile)
 
 
         # Double for to full tile map with row and columns.
@@ -84,14 +93,32 @@ class World1():
                     to_tile_list(stairs_tile_3_right_15, tile, col_count, row_count)
                 if tile == 16:
                     to_tile_list(stairs_tile_4_right_16, tile, col_count, row_count)
-
                 if tile == 21:
                     to_tile_list(window_glass_tall_1_21, tile, col_count, row_count)
                 if tile == 22:
                     to_tile_list(window_glass_tall_1_22, tile, col_count, row_count)
                 if tile == 23:
                     to_tile_list(window_glass_tall_1_23, tile, col_count, row_count)
-
+                if tile == 24:
+                    to_tile_list_bg(bg_tree1, tile, col_count, row_count)
+                if tile == 25:
+                    to_tile_list_bg(bg_tree2, tile, col_count, row_count)
+                if tile == 26:
+                    to_tile_list_bg(bg_tree3, tile, col_count, row_count)
+                if tile == 27:
+                    to_tile_list_bg(bg_stone1, tile, col_count, row_count)
+                if tile == 28:
+                    to_tile_list_bg(bg_stone2, tile, col_count, row_count)
+                if tile == 29:
+                    to_tile_list_bg(bg_stone3, tile, col_count, row_count)
+                if tile == 30:
+                    to_tile_list_bg(bg_stone4, tile, col_count, row_count)
+                if tile == 31:
+                    to_tile_list_bg(bg_statue, tile, col_count, row_count)
+                if tile == 32:
+                    to_tile_list_bg(bg_bushsmall, tile, col_count, row_count)
+                if tile == 33:
+                    to_tile_list_bg(bg_bushlarge, tile, col_count, row_count)
 
                 col_count += 1
             row_count += 1
@@ -109,6 +136,10 @@ class World1():
             win.blit(tile[0], tile[1])
             #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
 
+        for tile in self.tile_list_bg:
+            win.blit(tile[0], tile[1])
+            #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
+
 
 
     def move(self, direction):
@@ -121,6 +152,12 @@ class World1():
 
         for z in range(len(self.tile_list)):
             tile = self.tile_list[z]
+            img = tile[0]
+            img_rect = tile[1]
+            img_rect.x -= direction
+
+        for z in range(len(self.tile_list_bg)):
+            tile = self.tile_list_bg[z]
             img = tile[0]
             img_rect = tile[1]
             img_rect.x -= direction
