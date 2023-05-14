@@ -130,16 +130,16 @@ def main():
         pygame.display.update()
 
     def run_menu():
-        if menu.status is 0:
+        if menu.status == 0:
             menu.main_menu()
             menu.keypress()
-        if menu.status is 1:
+        if menu.status == 1:
             main()
 
     run = True
     while run:
         clock.tick(FPS)
-        if menu.status is not 5:
+        if menu.status != 5:
             run_menu()
         for event in pygame.event.get():
             if event.type == pygame.QUIT or menu.status == 3:
