@@ -2,6 +2,8 @@ import pygame
 import threading
 from random import randint
 import math
+
+import world1
 from warrior import Warrior
 from world1 import *
 from world2 import *
@@ -17,13 +19,13 @@ from level_map_2 import *
 
 def main():
     pygame.init()
+    clock = pygame.time.Clock()
 
     # Vars and Instance Objects
-    world_level = 1
-    clock = pygame.time.Clock()
-    world = World1(world_level)
+    level = 1
+    world = World1(level)
     ingrid = Warrior(screen_width/2, screen_height - 500, world)
-    background = Background1(world_level)
+    background = Background1(level)
     hud = Hud(ingrid.live, ingrid.timer)
     menu = Menu()
 
@@ -88,6 +90,9 @@ def main():
             ingrid.score += 10
             # score += timer // 10
             ingrid.timer -= 10
+            if ingrid.timer < 0:
+                ingrid.timer = 0
+
             pygame.mixer.music.stop()
             pygame.mixer.Sound.play(score_up)
             background.drwaBG()
@@ -98,16 +103,19 @@ def main():
             world.move(0)
 
             if ingrid.timer <= 0:
+                global level
                 ingrid.level_completed = False
                 menu.draw_level_menu()
                 menu.keypress()
                 pygame.mixer.music.play()
-                main()
 
-            ingrid.level += 1
-            global world_level
-            world_level = ingrid.level
-            #main()
+                ingrid.level += 1
+                level = ingrid.level
+                world.reset(level)
+                background.reset(level)
+                ingrid.reset(screen_width / 2, screen_height - 500, world)
+                redrawGameWindow()
+
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()

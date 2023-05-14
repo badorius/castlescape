@@ -18,10 +18,9 @@ class Menu():
 
 
     def draw_game_over_win(self):
-        win.blit(self.game_over_img, (window_width / 6, window_height / 6))
         pygame.mixer.music.stop()
         pygame.mixer.Sound.play(game_over)
-
+        win.blit(self.game_over_img, (window_width / 6, window_height / 6))
         #win.fill((0, 0, 0))
         font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
         title = font.render('Game Over', True, (255, 0, 0))
@@ -34,6 +33,8 @@ class Menu():
 
 
     def main_menu(self):
+        #pygame.mixer.music.load('assets/music/that-halloween-story.mp3')
+        #pygame.mixer.music.play()
         font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
         title = font.render('', True, (255, 0, 0))
         restart_button = font.render('S - Start Game', True, (255, 0, 0))

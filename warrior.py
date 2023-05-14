@@ -100,6 +100,13 @@ class Warrior():
         self.idle = True
         self.vel_y = 0
 
+    def reset(self, x, y, world):
+        self.live = self.live_max
+        self.timer = 6000
+        self.rect.x = x
+        self.rect.y = y
+        self.world = world
+
     def update(self):
         walk_cooldown = 5
         self.timer -= 1
@@ -230,7 +237,7 @@ class Warrior():
             if self.attack == True:
                 if pygame.sprite.spritecollide(self, self.world.enemy_group, True):
                     self.collide_enemy = False
-                    self.score += 1
+                    self.score += 10
             else:
                 if pygame.sprite.spritecollide(self, self.world.enemy_group, False):
                     self.collide_enemy = True
