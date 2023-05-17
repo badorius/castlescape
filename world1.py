@@ -91,9 +91,10 @@ class World1():
                         door = Door(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
                         self.door_group.add(door)
                     if tile == 14:
-                        enemy = Enemy(col_count * tile_size + (tile_size // 2),
-                                      row_count * tile_size + (tile_size // 2))
+                        enemy = Enemy(col_count * tile_size + (tile_size),
+                                      row_count * tile_size + (tile_size))
                         self.enemy_group.add(enemy)
+
                     if tile == 15:
                         to_tile_list(stairs_tile_3_right_15, tile, col_count, row_count)
                     if tile == 16:
@@ -139,7 +140,7 @@ class World1():
         self.obstacle_group.draw(win)
         self.platform_group.draw(win)
         self.potion_group.draw(win)
-        self.enemy_group.draw(win)
+        #self.enemy_group.draw(win)
         self.door_group.draw(win)
 
         for tile in self.tile_list:

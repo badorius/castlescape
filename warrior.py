@@ -225,11 +225,11 @@ class Warrior():
             if pygame.sprite.spritecollide(self, self.world.obstacle_group, False):
                 self.collide_obstacle = True
                 pygame.mixer.Sound.play(hurt)
-                self.live -= 0.1
+                self.live -= 0.01
                 if self.direction == 1:
-                    self.dx -= 0.1
+                    self.dx -= 0.01
                 if self.direction == -1:
-                    self.dx += 0.1
+                    self.dx += 0.01
             else:
                 self.collide_obstacle = False
 
@@ -242,22 +242,22 @@ class Warrior():
                 if pygame.sprite.spritecollide(self, self.world.enemy_group, False):
                     self.collide_enemy = True
                     pygame.mixer.Sound.play(hurt)
-                    self.live -= 0.1
+                    self.live -= 0.01
                     if self.direction == 1:
-                        self.dx -= 0.1
+                        self.dx -= 0.01
                     if self.direction == -1:
-                        self.dx += 0.1
+                        self.dx += 0.01
 
 
             # Check spikes collide
             if pygame.sprite.spritecollide(self, self.world.spikes_group, False):
                 self.collide_spikes = True
                 pygame.mixer.Sound.play(hurt)
-                self.live -= 0.1
+                self.live -= 0.01
                 if self.direction == 1:
-                    self.dy -= 0.1
+                    self.dy -= 0.01
                 if self.direction == -1:
-                    self.dy += 0.1
+                    self.dy += 0.01
             else:
                 self.collide_spikes = False
 
@@ -287,7 +287,7 @@ class Warrior():
             if self.rect.y > window_height - tile_size * 2:
                 pygame.mixer.Sound.play(hurt)
                 self.collide_obstacle = True
-                self.live -= 0.1
+                self.live -= 0.01
             else:
                 self.collide_obstacle = False
 
