@@ -85,8 +85,6 @@ def main():
         ingrid.collide_left = False
 
     def redrawGameWindow():
-        if ingrid.level_completed:
-            # REST FOR TO LOOP SCORE POINTS
             ingrid.score += 10
             # score += timer // 10
             ingrid.timer -= 10
@@ -120,10 +118,12 @@ def main():
         elif ingrid.live <= 1:
             menu.draw_game_over_win()
             menu.keypress()
+            run_menu()
 
         elif ingrid.timer <= 0:
             menu.draw_game_over_win()
             menu.keypress()
+            run_menu()
 
         else:
             background.drwaBG()
@@ -138,21 +138,26 @@ def main():
         pygame.display.update()
 
     def run_menu():
-        if menu.status == 0:
-            menu.main_menu()
-            menu.keypress()
-        if menu.status == 1:
-            main()
+        # 0 main, 1 restart, 3 quit, 4 next, 5 run
+        if menu.status != 5:
+            if menu.status == 0:
+                menu.main_menu()
+                menu.keypress()
+            if menu.status == 1:
+                menu.status == 5
+                #main()
+
 
     run = True
     while run:
         clock.tick(FPS)
-        if menu.status != 5:
-            run_menu()
         for event in pygame.event.get():
             if event.type == pygame.QUIT or menu.status == 3:
                 run = False
+
+        run_menu()
         redrawGameWindow()
+
 
     pygame.quit()
 
