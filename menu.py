@@ -3,12 +3,14 @@ from settings import *
 from sounds import *
 from time import *
 
+
 class Menu():
     def __init__(self):
         self.game_over_img = pygame.image.load("assets/Background/game_over.png")
         self.game_main_img = pygame.image.load("assets/Background/Menu/night-town-background-previewx2.png")
         self.game_main_img = pygame.transform.scale(self.game_main_img, (window_width, window_height))
         self.status = 0 # 0 main, 1 restart, 3 quit, 4 next, 5 run
+
 
     def draw_level_menu(self):
         pygame.mixer.music.stop()
@@ -44,11 +46,17 @@ class Menu():
         font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
         title = font.render('', True, (255, 0, 0))
         restart_button = font.render('S - Start Game', True, (255, 0, 0))
+        redefine_button = font.render('R - Redefine controls', True, (255, 0, 0))
+        settings_button = font.render('S - Settings', True, (255, 0, 0))
         quit_button = font.render('Q - Quit', True, (255, 0, 0))
-        win.blit(title, (window_width/2 - title.get_width()/2, window_height/2 - title.get_height()/3))
-        win.blit(restart_button, (window_width/2 - restart_button.get_width()/2, window_height/1.9 + restart_button.get_height()))
+        win.blit(title, (window_width/2 - title.get_width()/2, window_height/2 - title.get_height()/4))
+        win.blit(restart_button, (window_width/2 - restart_button.get_width()/2, window_height/4 + restart_button.get_height()))
+        win.blit(redefine_button, (window_width/2 - redefine_button.get_width()/2, window_height/3 + redefine_button.get_height()))
+        win.blit(settings_button, (window_width/2 - settings_button.get_width()/2, window_height/2.5 + settings_button.get_height()))
         win.blit(quit_button, (window_width/2 - quit_button.get_width()/2, window_height/2 + quit_button.get_height()/2))
+
         pygame.display.update()
+
 
 
     def keypress(self):
