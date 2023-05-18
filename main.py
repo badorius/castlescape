@@ -85,6 +85,8 @@ def main():
         ingrid.collide_left = False
 
     def redrawGameWindow():
+        if ingrid.level_completed:
+            #LOOP SCORE
             ingrid.score += 10
             # score += timer // 10
             ingrid.timer -= 10
@@ -113,7 +115,6 @@ def main():
                 background.reset(level)
                 ingrid.reset(screen_width / 2, screen_height - 500, world)
                 redrawGameWindow()
-
 
         elif ingrid.live <= 1:
             menu.draw_game_over_win()

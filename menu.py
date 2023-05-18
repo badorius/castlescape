@@ -39,6 +39,7 @@ class Menu():
     def main_menu(self):
         #pygame.mixer.music.load('assets/music/that-halloween-story.mp3')
         #pygame.mixer.music.play()
+
         win.blit(self.game_main_img, (window_width /100, window_height/100))
         font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
         title = font.render('', True, (255, 0, 0))
