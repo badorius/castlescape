@@ -9,7 +9,7 @@ class Menu():
         self.game_over_img = pygame.image.load("assets/Background/game_over.png")
         self.game_main_img = pygame.image.load("assets/Background/Menu/night-town-background-previewx2.png")
         self.game_main_img = pygame.transform.scale(self.game_main_img, (window_width, window_height))
-        self.status = 0 # 0 main, 1 restart, 3 quit, 4 next, 5 run
+        self.status = 0 # 0 main, 1 restart, 3 quit, 4 next, 5 run, 6 gameover
 
 
     def draw_level_menu(self):
@@ -89,6 +89,9 @@ class Menu():
                             return self.status
                         if key[pygame.K_s]:
                             self.status = 5  # run
+                            return self.status
+                        if key[pygame.K_m]:
+                            self.status = 0  # run
                             return self.status
                 else:
                     run = False
