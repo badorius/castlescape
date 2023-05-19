@@ -1,4 +1,6 @@
 import pygame
+
+import sounds
 from settings import *
 from objects import *
 from enemy import *
@@ -47,10 +49,20 @@ class World1():
             self.tile_list_bg.append(tile)
 
         def create_level(level):
+            if level == 0:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load(sounds.songs[level])
+                pygame.mixer.music.play()
             if level == 1:
                 data = world_data_1
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load(sounds.songs[level])
+                pygame.mixer.music.play()
             elif level == 2:
                 data = world_data_2
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load(sounds.songs[level])
+                pygame.mixer.music.play()
 
             # Double for to full tile map with row and columns.
             row_count = 0

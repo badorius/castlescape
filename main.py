@@ -105,9 +105,8 @@ def main():
             if ingrid.timer <= 0:
                 global level
                 ingrid.level_completed = False
-                menu.draw_level_menu()
-                menu.keypress()
-                pygame.mixer.music.play()
+                menu.status = 4
+                run_menu()
 
                 ingrid.level += 1
                 level = ingrid.level
@@ -142,13 +141,33 @@ def main():
         # 0 main, 1 restart, 3 quit, 4 next, 5 run
         if menu.status != 5:
             if menu.status == 0:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load(sounds.songs[0])
+                pygame.mixer.music.play()
                 menu.main_menu()
                 menu.keypress()
             if menu.status == 1:
                 menu.status == 5
-                #main()
+                ingrid.level = 1
+                level = ingrid.level
+                world.reset(level)
+                background.reset(level)
+                ingrid.reset(screen_width / 2, screen_height - 500, world)
+                redrawGameWindow()
+            if menu.status == 4:
+                menu.draw_level_menu()
+                menu.keypress()
+                pygame.mixer.music.play()
+        else:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(sounds.songs[ingrid.level])
+            pygame.mixer.music.play()
 
-
+    run_menu()
+    ingrid.level = 1
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(sounds.songs[ingrid.level])
+    pygame.mixer.music.play()
     run = True
     while run:
         clock.tick(FPS)
@@ -156,7 +175,6 @@ def main():
             if event.type == pygame.QUIT or menu.status == 3:
                 run = False
 
-        run_menu()
         redrawGameWindow()
 
 

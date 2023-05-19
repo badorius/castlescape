@@ -17,7 +17,10 @@ class Menu():
         pygame.mixer.Sound.play(level_completed_trumped)
         font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
         title = font.render('Level Completed!!!', True, (255, 0, 0))
+        title2 = font.render('Press N for next level', True, (255, 0, 0))
         win.blit(title, (window_width / 2 - title.get_width() / 2, window_height / 2 - title.get_height() / 3))
+        win.blit(title2, (window_width / 2 - title2.get_width() / 2, window_height / 1.5 - title2.get_height() / 3))
+
         pygame.display.update()
 
 
