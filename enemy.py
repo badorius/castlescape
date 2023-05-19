@@ -45,6 +45,9 @@ class Enemy(pygame.sprite.Sprite):
         self.direction = 1
         self.live = 10
 
+    def killme(self):
+        self.die =True
+
     def update(self, x):
         self.move_counter += 10
 
@@ -68,7 +71,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.x += self.move_direction
         self.rect.x -= x
 
-        if self.live > 1:
+        if not self.die:
             if self.counter >= len(self.images_right):
                 self.counter = 0
             else:
@@ -83,6 +86,17 @@ class Enemy(pygame.sprite.Sprite):
                     win.blit(self.image, (self.rect.x - 100, self.rect.y - 60, self.rect.width, self.rect.height))
 
                 self.counter += 1
+        else:
+            if self.direction == 1:
+                self.image = self.image_death_left[self.counter]
+                self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
+                win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
+
+            elif self.direction == -1:
+                    self.image = self.images_death_right[self.counter]
+                    self.image = pygame.transform.scale(self.image, (self.size * 4 , self.size * 4))
+                    win.blit(self.image, (self.rect.x - 100, self.rect.y - 60, self.rect.width, self.rect.height))
+
 
         #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 

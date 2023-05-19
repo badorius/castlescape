@@ -112,11 +112,11 @@ class World1():
                     if tile == 16:
                         to_tile_list(stairs_tile_4_right_16, tile, col_count, row_count)
                     if tile == 21:
-                        to_tile_list(window_glass_tall_1_21, tile, col_count, row_count)
+                        to_tile_list_bg(window_glass_tall_1_21, tile, col_count, row_count)
                     if tile == 22:
-                        to_tile_list(window_glass_tall_1_22, tile, col_count, row_count)
+                        to_tile_list_bg(window_glass_tall_1_22, tile, col_count, row_count)
                     if tile == 23:
-                        to_tile_list(window_glass_tall_1_23, tile, col_count, row_count)
+                        to_tile_list_bg(window_glass_tall_1_23, tile, col_count, row_count)
                     if tile == 24:
                         to_tile_list_bg(bg_tree1, tile, col_count, row_count)
                     if tile == 25:

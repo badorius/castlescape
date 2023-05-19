@@ -1,5 +1,4 @@
-import pygame.transform
-
+import pygame
 from settings import *
 from sounds import *
 import spritesheet

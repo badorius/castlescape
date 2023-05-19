@@ -33,11 +33,11 @@ class Menu():
         title = font.render('Game Over', True, (255, 0, 0))
         restart_button = font.render('R - Restart', True, (255, 0, 0))
         main_button = font.render('M - Main Menu', True, (255, 0, 0))
-        quit_button = font.render('Q - Quit', True, (255, 0, 0))
+        #quit_button = font.render('Q - Quit', True, (255, 0, 0))
         win.blit(title, (window_width/2 - title.get_width()/2, window_height/3 - title.get_height()/3))
         win.blit(restart_button, (window_width/2 - restart_button.get_width()/2, window_height/2.5 + restart_button.get_height()))
         win.blit(main_button, (window_width/2 - main_button.get_width()/2, window_height/2 + main_button.get_height()))
-        win.blit(quit_button, (window_width/2 - quit_button.get_width()/2, window_height/1.5 + quit_button.get_height()/2))
+        #win.blit(quit_button, (window_width/2 - quit_button.get_width()/2, window_height/1.5 + quit_button.get_height()/2))
         pygame.display.update()
 
 
