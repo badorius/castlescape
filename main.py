@@ -130,7 +130,7 @@ def main():
             hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
             world.draw()
             keypress()
-            ingrid.check_collide()
+            check_collide()
             ingrid.update()
             #world.drawgrid()
             #if background.scroll > 0 or background.scroll < 3000:
@@ -173,6 +173,124 @@ def main():
             pygame.mixer.music.stop()
             pygame.mixer.music.load(sounds.songs[ingrid.level])
             pygame.mixer.music.play()
+
+
+    def check_collide():
+        ingrid.in_air = True
+        col_thresh = 20
+        ingrid.dx = 0
+        ingrid.dy = 0
+        # check for collision
+        for tile in world.tile_list:
+            # check for collision in x direction
+            if ingrid.direction == 1:
+                if tile[1].colliderect(ingrid.rect.x + ingrid.dx + vel, ingrid.rect.y - vel, ingrid.rect.width, ingrid.rect.height):
+                    #self.dx = -vel
+                    ingrid.collide_right = True
+            if ingrid.direction == -1:
+                if tile[1].colliderect(ingrid.rect.x + ingrid.dx - vel, ingrid.rect.y - vel, ingrid.rect.width, ingrid.rect.height):
+                    #self.dx = vel
+                    ingrid.collide_left = True
+
+            #print(self.collide_right, self.collide_left)
+
+            # check for collision in y direction
+            if tile[1].colliderect(ingrid.rect.x, ingrid.rect.y + ingrid.dy, ingrid.rect.width, ingrid.rect.height):
+                #print("collide y")
+                # check if below the ground i.e. jumping
+                if ingrid.vel_y < - 15:
+                    ingrid.dy = tile[1].bottom - ingrid.rect.top
+                    ingrid.vel_y = 0
+                # check if above the ground i.e. falling
+                elif ingrid.vel_y >= 0:
+                    ingrid.dy = tile[1].top - ingrid.rect.bottom
+                    ingrid.vel_y = 0
+                    ingrid.in_air = False
+
+
+            # Check collide obstacle
+            if pygame.sprite.spritecollide(ingrid, world.obstacle_group, False):
+                ingrid.collide_obstacle = True
+                pygame.mixer.Sound.play(hurt)
+                ingrid.live -= 0.01
+                if ingrid.direction == 1:
+                    ingrid.dx -= 0.01
+                if ingrid.direction == -1:
+                    ingrid.dx += 0.01
+            else:
+                ingrid.collide_obstacle = False
+
+            # Check collide enemy
+            if ingrid.attack == True:
+                if pygame.sprite.spritecollide(ingrid, world.enemy_group, True):
+                    ingrid.collide_enemy = False
+                    ingrid.score += 10
+            else:
+                if pygame.sprite.spritecollide(ingrid, world.enemy_group, False):
+                    ingrid.collide_enemy = True
+                    pygame.mixer.Sound.play(hurt)
+                    ingrid.live -= 0.01
+                    if ingrid.direction == 1:
+                        ingrid.dx -= 0.01
+                    if ingrid.direction == -1:
+                        ingrid.dx += 0.01
+
+
+            # Check spikes collide
+            if pygame.sprite.spritecollide(ingrid, world.spikes_group, False):
+                ingrid.collide_spikes = True
+                pygame.mixer.Sound.play(hurt)
+                ingrid.live -= 0.01
+                if ingrid.direction == 1:
+                    ingrid.dy -= 0.01
+                if ingrid.direction == -1:
+                    ingrid.dy += 0.01
+            else:
+                ingrid.collide_spikes = False
+
+            # check for collision with platforms
+            for platform in world.platform_group:
+                # collision in the x direction
+                if platform.rect.colliderect(ingrid.rect.x + ingrid.dx, ingrid.rect.y, ingrid.rect.width, ingrid.rect.height):
+                    ingrid.dx = 0
+                # collision in the y direction
+                if platform.rect.colliderect(ingrid.rect.x, ingrid.rect.y + ingrid.dy, ingrid.rect.width, ingrid.rect.height):
+                    # check if below platform
+                    if abs((ingrid.rect.top + ingrid.dy) - platform.rect.bottom) < col_thresh:
+                        ingrid.vel_y = 0
+                        ingrid.dy = platform.rect.bottom - ingrid.rect.top
+                    # check if above platform
+                    elif abs((ingrid.rect.bottom + ingrid.dy) - platform.rect.top) < col_thresh:
+                        ingrid.rect.bottom = platform.rect.top
+                        ingrid.in_air = False
+                        ingrid.dy = 0
+                        ingrid.counter += 1
+
+                    # move sideways with the platform
+                    if platform.move_x != 0:
+                        ingrid.rect.x += platform.move_direction
+
+            # FALL DOWN
+            if ingrid.rect.y > window_height - tile_size * 2:
+                pygame.mixer.Sound.play(hurt)
+                ingrid.collide_obstacle = True
+                ingrid.live -= 0.01
+            else:
+                ingrid.collide_obstacle = False
+
+            # Collide Potion 
+            if pygame.sprite.spritecollide(ingrid, world.potion_group, True):
+                if ingrid.live < ingrid.live_max - 50:
+                    pygame.mixer.Sound.play(get_potion)
+                    ingrid.live += 50
+                else:
+                    ingrid.live = ingrid.live_max
+                    pygame.mixer.Sound.play(get_potion)
+
+            # Collide Door
+            if pygame.sprite.spritecollide(ingrid, world.door_group, False):
+                ingrid.level_completed = True
+
 
     run_menu()
     ingrid.level = 1
