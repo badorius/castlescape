@@ -5,6 +5,7 @@ import math
 
 import world1
 from warrior import Warrior
+from enemy import *
 from world1 import *
 from world2 import *
 from background1 import *
@@ -19,6 +20,7 @@ from level_map_2 import *
 
 def main():
     pygame.init()
+    
     clock = pygame.time.Clock()
 
     # Vars and Instance Objects
@@ -42,14 +44,18 @@ def main():
         if key[pygame.K_SPACE] == False:
             ingrid.jumped = False
 
-        if key[pygame.K_LCTRL]:
+        if key[pygame.K_LCTRL] and ingrid.attack == False:
             pygame.mixer.Sound.play(attack_sound)
             ingrid.attack = True
             ingrid.left = False
             ingrid.right = False
             ingrid.idle = False
+
+        if ingrid.attack == True:
             for z in (0, len(ingrid.images_attack_right)):
                 ingrid.counter += 1
+        if key[pygame.K_LCTRL] == False:
+            ingrid.attack = False
 
         if key[pygame.K_LEFT]:
             if background.scroll > 0 and not ingrid.collide_left:
@@ -83,6 +89,8 @@ def main():
 
         ingrid.collide_right = False
         ingrid.collide_left = False
+
+    
 
     def redrawGameWindow():
         if ingrid.level_completed:
@@ -222,7 +230,10 @@ def main():
 
             # Check collide enemy
             if ingrid.attack == True:
-                if pygame.sprite.spritecollide(ingrid, world.enemy_group, True):
+                collided_enemies = pygame.sprite.spritecollide(ingrid, world.enemy_group, False)
+                for enemy in collided_enemies:
+                    pygame.mixer.Sound.play(enemy1_die)
+                    enemy.killme()
                     ingrid.collide_enemy = False
                     ingrid.score += 10
             else:

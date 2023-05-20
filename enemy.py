@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from sounds import *
 from random import randint
 
 
@@ -35,7 +36,6 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.images_right [self.counter]
         self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
         self.rect = self.image.get_rect()
-        self.rect = self.image.get_rect()
         self.rect.width = self.image.get_width()/3
         self.rect.height = self.image.get_height() - tile_size * 1.5
         self.rect.x = x
@@ -46,7 +46,13 @@ class Enemy(pygame.sprite.Sprite):
         self.live = 10
 
     def killme(self):
+        pygame.mixer.Sound.play(enemy1_die)
+        self.counter = 0
+        self.move_direction = 0
+        self.move_counter = 0
         self.die =True
+        
+
 
     def update(self, x):
         self.move_counter += 10
@@ -55,18 +61,10 @@ class Enemy(pygame.sprite.Sprite):
             self.move_direction *= -1
             if self.move_direction < 0:
                 self.direction = -1
-                #self.image = self.images_right[self.counter]
-                #self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
-
-                #self.image = pygame.transform.flip(self.image, True, False)
-                #print(self.direction)
+            else:
+                self.direction = 1
 
             self.move_counter *= -1
-            if self.move_direction > 1:
-                self.direction = 1
-                #self.image = self.images_right[self.counter]
-                #self.image = self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
-                #self.image = pygame.transform.flip(self.image, True, False)
 
         self.rect.x += self.move_direction
         self.rect.x -= x
@@ -74,34 +72,37 @@ class Enemy(pygame.sprite.Sprite):
         if not self.die:
             if self.counter >= len(self.images_right):
                 self.counter = 0
+
+            if self.direction == 1:
+                self.image = self.images_left[self.counter]
+            elif self.direction == -1:
+                self.image = self.images_right[self.counter]
+
+            self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
+            win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
+
+            self.counter += 1
+        else:
+            if self.counter >= len(self.images_death_right):
+                self.kill()
+                #self.counter = 0
             else:
                 if self.direction == 1:
-                    self.image = self.images_left[self.counter]
-                    self.image = pygame.transform.scale(self.image, (self.size * 4 , self.size * 4))
-                    win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
+                    self.image = self.images_death_left[self.counter]
+                else:
+                    self.image = self.images_death_right[self.counter]
 
-                elif self.direction == -1:
-                    self.image = self.images_right[self.counter]
-                    self.image = pygame.transform.scale(self.image, (self.size * 4 , self.size * 4))
-                    win.blit(self.image, (self.rect.x - 100, self.rect.y - 60, self.rect.width, self.rect.height))
-
-                self.counter += 1
-        else:
-            if self.direction == 1:
-                self.image = self.image_death_left[self.counter]
                 self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
                 win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
 
-            elif self.direction == -1:
-                    self.image = self.images_death_right[self.counter]
-                    self.image = pygame.transform.scale(self.image, (self.size * 4 , self.size * 4))
-                    win.blit(self.image, (self.rect.x - 100, self.rect.y - 60, self.rect.width, self.rect.height))
+                self.counter += 1
+                print(f'Enemy die: {self.counter}')
 
 
-        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+            #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
-        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+            #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
-        #self.counter += 1
-        #print(self.move_counter)
+            #self.counter += 1
+            #print(self.move_counter)
 
