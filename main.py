@@ -54,6 +54,7 @@ def main():
         if ingrid.attack == True:
             for z in (0, len(ingrid.images_attack_right)):
                 ingrid.counter += 1
+
         if key[pygame.K_LCTRL] == False:
             ingrid.attack = False
 

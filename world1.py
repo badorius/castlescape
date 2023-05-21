@@ -96,14 +96,14 @@ class World1():
                         spikes = Spikes(col_count * tile_size, row_count * tile_size - 150)
                         self.spikes_group.add(spikes)
                     if tile == 11:
-                        to_tile_list(column1_img_8, tile, col_count, row_count)
+                        to_tile_list_bg(column1_img_8, tile, col_count, row_count)
                     if tile == 12:
-                        to_tile_list(column2_img_9, tile, col_count, row_count)
+                        to_tile_list_bg(column2_img_9, tile, col_count, row_count)
                     if tile == 13:
                         door = Door(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
                         self.door_group.add(door)
                     if tile == 14:
-                        enemy = Enemy(col_count * tile_size + (tile_size),
+                        enemy = Bringer(col_count * tile_size + (tile_size),
                                       row_count * tile_size + (tile_size))
                         self.enemy_group.add(enemy)
 
@@ -137,6 +137,15 @@ class World1():
                         to_tile_list_bg(bg_bushsmall, tile, col_count, row_count)
                     if tile == 33:
                         to_tile_list_bg(bg_bushlarge, tile, col_count, row_count)
+                    if tile == 34:
+                        enemy = Ghost(col_count * tile_size + (tile_size),
+                                      row_count * tile_size + (tile_size))
+                        self.enemy_group.add(enemy)
+                    if tile == 35:
+                        enemy = Gato(col_count * tile_size + (tile_size),
+                                      row_count * tile_size + (tile_size))
+                        self.enemy_group.add(enemy)
+
 
                     col_count += 1
                 row_count += 1
