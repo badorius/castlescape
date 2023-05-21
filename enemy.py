@@ -307,7 +307,7 @@ class Gato(pygame.sprite.Sprite): # Object 35
 
             #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
-        pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+        #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 
             #self.counter += 1
             #print(self.move_counter)
