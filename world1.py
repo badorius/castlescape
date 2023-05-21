@@ -63,6 +63,11 @@ class World1():
                 pygame.mixer.music.stop()
                 pygame.mixer.music.load(sounds.songs[level])
                 pygame.mixer.music.play()
+            elif level == 3:
+                data = world_data_3
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load(sounds.songs[level])
+                pygame.mixer.music.play()
 
             # Double for to full tile map with row and columns.
             row_count = 0
@@ -111,6 +116,10 @@ class World1():
                         to_tile_list(stairs_tile_3_right_15, tile, col_count, row_count)
                     if tile == 16:
                         to_tile_list(stairs_tile_4_right_16, tile, col_count, row_count)
+                    if tile == 17:
+                        to_tile_list(stairs_tile_1_left_17, tile, col_count, row_count)
+                    if tile == 18:
+                        to_tile_list(stairs_tile_2_left_18, tile, col_count, row_count)
                     if tile == 21:
                         to_tile_list_bg(window_glass_tall_1_21, tile, col_count, row_count)
                     if tile == 22:
@@ -145,6 +154,53 @@ class World1():
                         enemy = Gato(col_count * tile_size + (tile_size),
                                       row_count * tile_size + (tile_size))
                         self.enemy_group.add(enemy)
+                    if tile == 50:
+                        to_tile_list_bg(bg_merlons_1, tile, col_count, row_count)
+                    if tile == 51:
+                        to_tile_list_bg(bg_merlons_2, tile, col_count, row_count)
+                    if tile == 52:
+                        to_tile_list_bg(bg_merlons_3, tile, col_count, row_count)
+                    if tile == 53:
+                        to_tile_list_bg(bg_merlons_4, tile, col_count, row_count)
+                    if tile == 54:
+                        to_tile_list_bg(bg_merlons_5, tile, col_count, row_count)
+                    if tile == 61:
+                        to_tile_list_bg(bg_wall_1, tile, col_count, row_count)
+                    if tile == 62:
+                        to_tile_list_bg(bg_wall_2, tile, col_count, row_count)
+                    if tile == 63:
+                        to_tile_list_bg(bg_wall_3, tile, col_count, row_count)
+                    if tile == 64:
+                        to_tile_list_bg(bg_wall_4, tile, col_count, row_count)
+                    if tile == 65:
+                        to_tile_list_bg(bg_wall_5, tile, col_count, row_count)
+                    if tile == 66:
+                        to_tile_list_bg(bg_wall_6, tile, col_count, row_count)
+                    if tile == 67:
+                        to_tile_list_bg(bg_wall_7, tile, col_count, row_count)
+                    if tile == 68:
+                        to_tile_list_bg(bg_wall_8, tile, col_count, row_count)
+                    if tile == 69:
+                        to_tile_list_bg(bg_wall_9, tile, col_count, row_count)
+                    if tile == 70:
+                        to_tile_list_bg(bg_wall_10, tile, col_count, row_count)
+                    if tile == 71:
+                        to_tile_list_bg(bg_wall_11, tile, col_count, row_count)
+                    if tile == 72:
+                        to_tile_list_bg(bg_wall_12, tile, col_count, row_count)
+                    if tile == 73:
+                        to_tile_list_bg(bg_wall_13, tile, col_count, row_count)
+                    if tile == 74:
+                        to_tile_list_bg(bg_wall_14, tile, col_count, row_count)
+                    if tile == 75:
+                        to_tile_list_bg(bg_wall_15, tile, col_count, row_count)
+                    if tile == 76:
+                        to_tile_list_bg(bg_wall_16, tile, col_count, row_count)
+                    if tile == 77:
+                        to_tile_list_bg(bg_wall_17, tile, col_count, row_count)
+                    if tile == 78:
+                        to_tile_list_bg(bg_wall_18, tile, col_count, row_count)
+
 
 
                     col_count += 1

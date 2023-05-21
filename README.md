@@ -1,5 +1,5 @@
 # castlescape
-castlescpae my first python game!
+castlescpae my first pythone game!
 
 Install pygame library as requirement.
 

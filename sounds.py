@@ -1,7 +1,7 @@
 import pygame
 
 pygame.mixer.init()
-songs = ['assets/music/friendly-ghost-121391.mp3', 'assets/music/that-halloween-story.mp3', 'assets/music/halloween-114610.mp3', 'assets/music/halloween-scary-horror-and-creepy-spooky-funny-children-music-116006.mp3']
+songs = ['assets/music/friendly-ghost-121391.mp3', 'assets/music/that-halloween-story.mp3', 'assets/music/halloween-114610.mp3', 'assets/music/halloween-scary-horror-and-creepy-spooky-funny-children-music-116006.mp3', 'assets/music/friendly-ghost-121391.mp3']
 pygame.mixer.music.load(songs[0])
 pygame.mixer.music.play()
 hurt = pygame.mixer.Sound('assets/music/ow.mp3')
