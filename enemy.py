@@ -121,7 +121,7 @@ class Ghost(pygame.sprite.Sprite): # Object 34
 
         #Sprite RUN
         for num in range(1, 5):
-            self.img_right = pygame.image.load(f'/home/darthv/git/badorius/castlescape/assets/Characters/enemy/ghost/ghost-{num}.png').convert_alpha()
+            self.img_right = pygame.image.load(f'assets/Characters/enemy/ghost/ghost-{num}.png').convert_alpha()
             self.img_right = pygame.transform.scale_by(self.img_right, (5))
             self.img_left = pygame.transform.flip(self.img_right, True, False)
             self.images_right.append(self.img_right)
@@ -129,7 +129,7 @@ class Ghost(pygame.sprite.Sprite): # Object 34
 
         #Sprite DEATH
         for num in range(1, 6):
-            self.image_death_right = pygame.image.load(f'/home/darthv/git/badorius/castlescape/assets/Characters/enemy/enemy-death/enemy-death-{num}.png').convert_alpha()
+            self.image_death_right = pygame.image.load(f'assets/Characters/enemy/enemy-death/enemy-death-{num}.png').convert_alpha()
             self.image_death_right = pygame.transform.scale_by(self.image_death_right, (5))
             self.image_death_left = pygame.transform.flip(self.image_death_right, True, False)
             self.images_death_right.append(self.image_death_right)
@@ -224,7 +224,7 @@ class Gato(pygame.sprite.Sprite): # Object 35
 
         #Sprite RUN
         for num in range(1, 14):
-            self.img_right = pygame.image.load(f'/home/darthv/git/badorius/castlescape/assets/Characters/enemy/hell-gato/hellgato-{num}.png').convert_alpha()
+            self.img_right = pygame.image.load(f'assets/Characters/enemy/hell-gato/hellgato-{num}.png').convert_alpha()
             self.img_right = pygame.transform.scale_by(self.img_right, (2))
             self.img_left = pygame.transform.flip(self.img_right, True, False)
             self.images_right.append(self.img_right)
@@ -232,7 +232,7 @@ class Gato(pygame.sprite.Sprite): # Object 35
 
         #Sprite DEATH
         for num in range(1, 6):
-            self.image_death_right = pygame.image.load(f'/home/darthv/git/badorius/castlescape/assets/Characters/enemy/enemy-death/enemy-death-{num}.png').convert_alpha()
+            self.image_death_right = pygame.image.load(f'assets/Characters/enemy/enemy-death/enemy-death-{num}.png').convert_alpha()
             self.image_death_right = pygame.transform.scale_by(self.image_death_right, (5))
             self.image_death_left = pygame.transform.flip(self.image_death_right, True, False)
             self.images_death_right.append(self.image_death_right)
