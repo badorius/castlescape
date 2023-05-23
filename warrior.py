@@ -1,7 +1,6 @@
-import pygame
 from settings import *
 from sounds import *
-import spritesheet
+
 
 class Warrior():
     def __init__(self, x, y, world):

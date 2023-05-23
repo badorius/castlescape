@@ -1,22 +1,11 @@
-import pygame
-import threading
-from random import randint
-import math
-
-import world1
 import controls
 from warrior import Warrior
-from enemy import *
 from world1 import *
-from world2 import *
 from background1 import *
-from background2 import *
-from settings import *
-from sounds import *
 from menu import *
 from hud import *
-from level_map_1 import *
-from level_map_2 import *
+import pygame
+import threading
 
 
 def main():
@@ -75,14 +64,19 @@ def main():
             run_menu()
 
         else:
-            background.drwaBG()
+            threading.Thread(target=background.drwaBG).start()
+            #background.drwaBG()
+            hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
+            threading.Thread(target=world.draw).start()
+            #world.draw()
             hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
             world.move(0)
-            world.draw()
             controls.keypress(ingrid, background, world)
             #controls.joypress(ingrid, background, world)
-            check_collide()
-            ingrid.update()
+            threading.Thread(target=check_collide).start()
+            #check_collide()
+            threading.Thread(target=ingrid.update).start()
+            #ingrid.update()
             #world.drawgrid()
             #if background.scroll > 0 or background.scroll < 3000:
         pygame.display.update()
@@ -252,12 +246,12 @@ def main():
     pygame.mixer.music.load(sounds.songs[ingrid.level])
     pygame.mixer.music.play()
     run = True
+
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT or menu.status == 3:
                 run = False
-
         redrawGameWindow()
 
 

@@ -1,14 +1,8 @@
-import pygame
-
 import sounds
-from settings import *
 from objects import *
 from enemy import *
 from level_map_1 import *
-from level_map_2 import *
 
-
-from random import randint
 
 class World1():
     def __init__(self, level):
@@ -217,13 +211,15 @@ class World1():
         self.obstacle_group.draw(win)
         self.platform_group.draw(win)
 
+        for tile in self.tile_list_bg:
+            win.blit(tile[0], tile[1])
+            #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
+
         for tile in self.tile_list:
             win.blit(tile[0], tile[1])
             #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
 
-        for tile in self.tile_list_bg:
-            win.blit(tile[0], tile[1])
-            #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
+
 
         #self.enemy_group.draw(win)
         self.potion_group.draw(win)
@@ -240,18 +236,20 @@ class World1():
         self.door_group.update(direction)
         self.enemy_group.update(direction)
 
-        for z in range(len(self.tile_list)):
-            tile = self.tile_list[z]
-            img = tile[0]
-            img_rect = tile[1]
-            img_rect.x -= direction
-
         for z in range(len(self.tile_list_bg)):
             tile = self.tile_list_bg[z]
             img = tile[0]
             img_rect = tile[1]
             img_rect.x -= direction
             #pygame.draw.rect(win, (255, 255, 255), img_rect, 2)
+
+
+        for z in range(len(self.tile_list)):
+            tile = self.tile_list[z]
+            img = tile[0]
+            img_rect = tile[1]
+            img_rect.x -= direction
+
 
 
 

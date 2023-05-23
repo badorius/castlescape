@@ -30,6 +30,10 @@ def keypress(ingrid, background, world):
         ingrid.right = False
         ingrid.idle = False
         ingrid.counter += 1
+    if ingrid.jumped == True:
+        for z in (0, len(ingrid.images_jump_right)):
+            ingrid.counter += 1
+
     if key[pygame.K_SPACE] == False:
         ingrid.jumped = False
 

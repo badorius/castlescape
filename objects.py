@@ -7,7 +7,7 @@ class Potion(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		img = pygame.image.load('assets/Decorations/potion_1.png')
-		self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
+		self.image = pygame.transform.scale_by(img, (3))
 		self.rect = self.image.get_rect()
 		self.rect.center = (x, y)
 

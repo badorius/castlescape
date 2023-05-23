@@ -1,31 +1,31 @@
 import pygame
 
-floor_tile_1 = pygame.image.load('assets/Tiles/floor_tile_1.png')
-floor_tile_2 = pygame.image.load('assets/Tiles/floor_tile_2.png')
-floor_tile_3 = pygame.image.load('assets/Tiles/floor_tile_3.png')
-floor_tile_4 = pygame.image.load('assets/Tiles/floor_tile_4.png')
+floor_tile_1 = pygame.image.load('../assets/Tiles/floor_tile_1.png')
+floor_tile_2 = pygame.image.load('../assets/Tiles/floor_tile_2.png')
+floor_tile_3 = pygame.image.load('../assets/Tiles/floor_tile_3.png')
+floor_tile_4 = pygame.image.load('../assets/Tiles/floor_tile_4.png')
 
-barrel_img_2 = pygame.image.load('assets/Decorations/barrel.png')
-potion_1_img_4 = pygame.image.load('assets/Decorations/potion_1.png')
-brick1_img_5 = pygame.image.load('assets/Tiles/brick_1.png')
-column1_img_8 = pygame.image.load('assets/Tiles/wall_9.png')
-column2_img_9 = pygame.image.load('assets/Tiles/wall_6.png')
-door_img_13 = pygame.image.load('assets/Decorations/door.png')
+barrel_img_2 = pygame.image.load('../assets/Decorations/barrel.png')
+potion_1_img_4 = pygame.image.load('../assets/Decorations/potion_1.png')
+brick1_img_5 = pygame.image.load('../assets/Tiles/brick_1.png')
+column1_img_8 = pygame.image.load('../assets/Tiles/wall_9.png')
+column2_img_9 = pygame.image.load('../assets/Tiles/wall_6.png')
+door_img_13 = pygame.image.load('../assets/Decorations/door.png')
 
-enemy_img_14 = pygame.image.load('assets/Characters/enemy/burning-ghoul-3.png')
-stairs_tile_3_right_15 = pygame.image.load('assets/Tiles/stairs_tile_3.png')
-stairs_tile_4_right_16 = pygame.image.load('assets/Tiles/stairs_tile_4.png')
-stairs_tile_1_left_15 = pygame.image.load('assets/Tiles/stairs_tile_1.png')
-stairs_tile_2_left_16 = pygame.image.load('assets/Tiles/stairs_tile_2.png')
+enemy_img_14 = pygame.image.load('../assets/Characters/enemy/burning-ghoul-3.png')
+stairs_tile_3_right_15 = pygame.image.load('../assets/Tiles/stairs_tile_3.png')
+stairs_tile_4_right_16 = pygame.image.load('../assets/Tiles/stairs_tile_4.png')
+stairs_tile_1_left_15 = pygame.image.load('../assets/Tiles/stairs_tile_1.png')
+stairs_tile_2_left_16 = pygame.image.load('../assets/Tiles/stairs_tile_2.png')
 
-platform1_17 = pygame.image.load('assets/Tiles/platform_1.png')
-platform2_18 = pygame.image.load('assets/Tiles/platform_2.png')
-platform3_19 = pygame.image.load('assets/Tiles/platform_3.png')
-platform4_20 = pygame.image.load('assets/Tiles/platform_4.png')
+platform1_17 = pygame.image.load('../assets/Tiles/platform_1.png')
+platform2_18 = pygame.image.load('../assets/Tiles/platform_2.png')
+platform3_19 = pygame.image.load('../assets/Tiles/platform_3.png')
+platform4_20 = pygame.image.load('../assets/Tiles/platform_4.png')
 
-window_glass_tall_1_21 = pygame.image.load('assets/Tiles/window_glass_tall_1.png')
-window_glass_tall_1_22 = pygame.image.load('assets/Tiles/window_glass_tall_2.png')
-window_glass_tall_1_23 = pygame.image.load('assets/Tiles/window_glass_tall_3.png')
+window_glass_tall_1_21 = pygame.image.load('../assets/Tiles/window_glass_tall_1.png')
+window_glass_tall_1_22 = pygame.image.load('../assets/Tiles/window_glass_tall_2.png')
+window_glass_tall_1_23 = pygame.image.load('../assets/Tiles/window_glass_tall_3.png')
 
 
 
