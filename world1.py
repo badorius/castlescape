@@ -216,9 +216,6 @@ class World1():
         self.spikes_group.draw(win)
         self.obstacle_group.draw(win)
         self.platform_group.draw(win)
-        self.potion_group.draw(win)
-        #self.enemy_group.draw(win)
-        self.door_group.draw(win)
 
         for tile in self.tile_list:
             win.blit(tile[0], tile[1])
@@ -227,6 +224,11 @@ class World1():
         for tile in self.tile_list_bg:
             win.blit(tile[0], tile[1])
             #pygame.draw.rect(win, (255, 255, 255), tile[1], 2)
+
+        #self.enemy_group.draw(win)
+        self.potion_group.draw(win)
+        self.door_group.draw(win)
+
 
 
 

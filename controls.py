@@ -39,6 +39,7 @@ def keypress(ingrid, background, world):
         ingrid.left = False
         ingrid.right = False
         ingrid.idle = False
+        print("attack")
 
     if ingrid.attack == True:
         for z in (0, len(ingrid.images_attack_right)):

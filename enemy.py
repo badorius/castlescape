@@ -51,25 +51,23 @@ class Bringer(pygame.sprite.Sprite): # Object 14
         self.move_direction = 0
         self.move_counter = 0
         self.die =True
-        
+
 
 
     def update(self, x):
-        self.move_counter += 10
-
-        if abs(self.move_counter) > 300:
-            self.move_direction *= -1
-            if self.move_direction < 0:
-                self.direction = -1
-            else:
-                self.direction = 1
-
-            self.move_counter *= -1
-
-        self.rect.x += self.move_direction
-        self.rect.x -= x
 
         if not self.die:
+            self.move_counter += 10
+            if abs(self.move_counter) > 300:
+                self.move_direction *= -1
+                if self.move_direction < 0:
+                    self.direction = -1
+                else:
+                    self.direction = 1
+                self.move_counter *= -1
+            self.rect.x += self.move_direction
+            self.rect.x -= x
+
             if self.counter >= len(self.images_right):
                 self.counter = 0
 
@@ -82,6 +80,7 @@ class Bringer(pygame.sprite.Sprite): # Object 14
             win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
 
             self.counter += 1
+
         else:
             if self.counter >= len(self.images_death_right):
                 self.kill()
@@ -143,7 +142,7 @@ class Ghost(pygame.sprite.Sprite): # Object 34
         self.rect.height = self.image.get_height() - tile_size * 1.5
         self.rect.x = x
         self.rect.y = y - tile_size * 2.5
-        self.move_direction = 5
+        self.move_direction = 10
         self.move_counter = 0
         self.direction = 1
         self.live = 10
@@ -154,25 +153,24 @@ class Ghost(pygame.sprite.Sprite): # Object 34
         self.move_direction = 0
         self.move_counter = 0
         self.die =True
-        
+
 
 
     def update(self, x):
-        self.move_counter += 10
-
-        if abs(self.move_counter) > 300:
-            self.move_direction *= -1
-            if self.move_direction < 0:
-                self.direction = -1
-            else:
-                self.direction = 1
-
-            self.move_counter *= -1
-
-        self.rect.x += self.move_direction
-        self.rect.x -= x
-
         if not self.die:
+            self.move_counter += 10
+
+            if abs(self.move_counter) > 300:
+                self.move_direction *= -1
+                if self.move_direction < 0:
+                    self.direction = -1
+                else:
+                    self.direction = 1
+
+                self.move_counter *= -1
+
+            self.rect.x += self.move_direction
+            self.rect.x -= x
             if self.counter >= len(self.images_right):
                 self.counter = 0
 
@@ -246,7 +244,7 @@ class Gato(pygame.sprite.Sprite): # Object 35
         self.rect.height = self.image.get_height() - tile_size 
         self.rect.x = x - tile_size / 2
         self.rect.y = y - tile_size * 1.4
-        self.move_direction = 5
+        self.move_direction = 10
         self.move_counter = 0
         self.direction = 1
         self.live = 10
@@ -257,25 +255,26 @@ class Gato(pygame.sprite.Sprite): # Object 35
         self.move_direction = 0
         self.move_counter = 0
         self.die =True
-        
+
 
 
     def update(self, x):
-        self.move_counter += 10
-
-        if abs(self.move_counter) > 300:
-            self.move_direction *= -1
-            if self.move_direction < 0:
-                self.direction = -1
-            else:
-                self.direction = 1
-
-            self.move_counter *= -1
-
-        self.rect.x += self.move_direction
-        self.rect.x -= x
-
         if not self.die:
+
+            self.move_counter += 10
+
+            if abs(self.move_counter) > 300:
+                self.move_direction *= -1
+                if self.move_direction < 0:
+                    self.direction = -1
+                else:
+                    self.direction = 1
+
+                self.move_counter *= -1
+
+            self.rect.x += self.move_direction
+            self.rect.x -= x
+
             if self.counter >= len(self.images_right):
                 self.counter = 0
 
@@ -284,10 +283,10 @@ class Gato(pygame.sprite.Sprite): # Object 35
             elif self.direction == -1:
                 self.image = self.images_right[self.counter]
 
-            #self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
+                #self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
+            self.counter += 1
             win.blit(self.image, (self.rect.x - 20, self.rect.y - 40, self.rect.width, self.rect.height))
 
-            self.counter += 1
         else:
             if self.counter >= len(self.images_death_right):
                 self.kill()

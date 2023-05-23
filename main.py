@@ -77,6 +77,7 @@ def main():
         else:
             background.drwaBG()
             hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
+            world.move(0)
             world.draw()
             controls.keypress(ingrid, background, world)
             #controls.joypress(ingrid, background, world)
@@ -84,7 +85,6 @@ def main():
             ingrid.update()
             #world.drawgrid()
             #if background.scroll > 0 or background.scroll < 3000:
-            world.move(0)
         pygame.display.update()
 
     def run_menu():
@@ -175,9 +175,10 @@ def main():
                 collided_enemies = pygame.sprite.spritecollide(ingrid, world.enemy_group, False)
                 for enemy in collided_enemies:
                     pygame.mixer.Sound.play(enemy1_die)
+                    ingrid.attack = False
                     enemy.killme()
                     ingrid.collide_enemy = False
-                    ingrid.score += 1
+                    ingrid.score += 10
             else:
                 if pygame.sprite.spritecollide(ingrid, world.enemy_group, False):
                     ingrid.collide_enemy = True
