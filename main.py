@@ -64,19 +64,28 @@ def main():
             run_menu()
 
         else:
-            threading.Thread(target=background.drwaBG).start()
-            #background.drwaBG()
-            hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
-            threading.Thread(target=world.draw).start()
+            #threading.Thread(target=background.drwaBG).start()
+            background.drwaBG()
+
+            threading.Thread(target=hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)).start()
+            #hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
+
+            #threading.Thread(target=world.draw).start()
             #world.draw()
-            hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
-            world.move(0)
-            controls.keypress(ingrid, background, world)
+
+            threading.Thread(target=world.move(0)).start()
+            #world.move(0)
+
+            threading.Thread(target=controls.keypress(ingrid, background, world)).start()
+            #controls.keypress(ingrid, background, world)
             #controls.joypress(ingrid, background, world)
+
             threading.Thread(target=check_collide).start()
             #check_collide()
+
             threading.Thread(target=ingrid.update).start()
             #ingrid.update()
+
             #world.drawgrid()
             #if background.scroll > 0 or background.scroll < 3000:
         pygame.display.update()

@@ -2,6 +2,7 @@ import sounds
 from objects import *
 from enemy import *
 from level_map_1 import *
+import threading
 
 
 class World1():
@@ -232,15 +233,23 @@ class World1():
         self.spikes_group.update(direction)
         self.obstacle_group.update(direction)
         self.platform_group.update(direction)
-        self.potion_group.update(direction)
         self.door_group.update(direction)
-        self.enemy_group.update(direction)
+
+        self.door_group.draw(win)
+        self.spikes_group.draw(win)
+        self.obstacle_group.draw(win)
+        self.platform_group.draw(win)
+
+
+
 
         for z in range(len(self.tile_list_bg)):
             tile = self.tile_list_bg[z]
             img = tile[0]
             img_rect = tile[1]
             img_rect.x -= direction
+            win.blit(tile[0], tile[1])
+
             #pygame.draw.rect(win, (255, 255, 255), img_rect, 2)
 
 
@@ -249,8 +258,11 @@ class World1():
             img = tile[0]
             img_rect = tile[1]
             img_rect.x -= direction
+            win.blit(tile[0], tile[1])
 
 
+        self.potion_group.update(direction)
+        self.enemy_group.update(direction)
 
 
 

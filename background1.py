@@ -2,6 +2,7 @@ import pygame
 import math
 from random import randint
 from settings import *
+import threading
 
 class Background1():
     def __init__(self, level):
