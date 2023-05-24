@@ -6,6 +6,7 @@ from menu import *
 from hud import *
 import pygame
 import threading
+import settings
 
 
 def main():

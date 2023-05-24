@@ -14,13 +14,13 @@ class Hud():
         self.timer = timer
         self.font = pygame.font.Font('assets/Fonts/gng.ttf', 40)
 
-        self.bar = pygame.image.load(f"assets/HUD/bar.png")
+        self.bar = pygame.image.load(f"assets/HUD/bar.png").convert_alpha()
         self.bar = pygame.transform.scale(self.bar, (self.width, self.height))
-        self.bar_background = pygame.image.load(f"assets/HUD/bar_background.png")
+        self.bar_background = pygame.image.load(f"assets/HUD/bar_background.png").convert_alpha()
         self.bar_background = pygame.transform.scale(self.bar_background, (self.bar.get_width()-10, self.height))
-        self.bar_health = pygame.image.load(f"assets/HUD/health_bar.png")
+        self.bar_health = pygame.image.load(f"assets/HUD/health_bar.png").convert_alpha()
         #self.bar_health = pygame.transform.scale(self.bar_health, (self.live, self.height))
-        self.weapon = pygame.image.load(f"assets/HUD/weapon_icon.png")
+        self.weapon = pygame.image.load(f"assets/HUD/weapon_icon.png").convert_alpha()
         #self.weapon = pygame.transform.scale(self.weapon, (1, 1))
 
 

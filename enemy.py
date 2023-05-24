@@ -3,7 +3,6 @@ from settings import *
 from sounds import *
 from random import randint
 
-
 class Bringer(pygame.sprite.Sprite): # Object 14
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -269,7 +268,6 @@ class Gato(pygame.sprite.Sprite): # Object 35
                     self.direction = -1
                 else:
                     self.direction = 1
-
                 self.move_counter *= -1
 
             self.rect.x += self.move_direction

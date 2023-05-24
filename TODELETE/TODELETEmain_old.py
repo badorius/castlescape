@@ -1,5 +1,5 @@
 import pygame
-from game import Game
+from TODELETE.game import Game
 
 pygame.init()
 pygame.display.set_caption("Castle Scape Game")

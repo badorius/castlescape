@@ -1,9 +1,8 @@
 import pygame
-from gameObject import GameObject
-from player import Player
+from TODELETE.player import Player
 from TODELETEobstacle import Enemy
 from TODELETEbackground import Background
-import math
+
 
 class Game:
 
@@ -27,9 +26,9 @@ class Game:
         self.reset_map()
 
         pygame.mixer.init()
-        pygame.mixer.music.load('assets/music/04.mp3')
+        pygame.mixer.music.load('../assets/music/04.mp3')
         pygame.mixer.music.play()
-        self.ouch = pygame.mixer.Sound('assets/music/jump.mp3')
+        self.ouch = pygame.mixer.Sound('../assets/music/jump.mp3')
 
 
         self.isJump = False

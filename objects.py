@@ -6,7 +6,7 @@ from random import randint
 class Potion(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('assets/Decorations/potion_1.png')
+		img = pygame.image.load('assets/Decorations/potion_1.png').convert_alpha()
 		self.image = pygame.transform.scale_by(img, (3))
 		self.rect = self.image.get_rect()
 		self.rect.center = (x, y)
@@ -19,7 +19,7 @@ class Spikes(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.size = tile_size * 1
-		self.image = pygame.image.load('assets/Tiles/spikes.png')
+		self.image = pygame.image.load('assets/Tiles/spikes.png').convert_alpha()
 		self.image = pygame.transform.scale(self.image, (self.size, self.size))
 		self.rect = self.image.get_rect()
 		self.rect.x = x
@@ -38,7 +38,7 @@ class Spikes(pygame.sprite.Sprite):
 class Door(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('assets/Decorations/door.png')
+		img = pygame.image.load('assets/Decorations/door.png').convert_alpha()
 		self.image = pygame.transform.scale(img, (tile_size*2, tile_size*2))
 		self.rect = self.image.get_rect()
 		self.rect.x = x
@@ -52,7 +52,7 @@ class Obstacle(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.size = tile_size * 1
-		self.image = pygame.image.load('assets/Decorations/sword_2.png')
+		self.image = pygame.image.load('assets/Decorations/sword_2.png').convert_alpha()
 		self.image = pygame.transform.scale(self.image, (self.size, self.size))
 		self.rect = self.image.get_rect()
 		self.rect.x = x
@@ -72,10 +72,10 @@ class Platform(pygame.sprite.Sprite):
 	def __init__(self, x, y, move_x, move_y):
 		pygame.sprite.Sprite.__init__(self)
 		for i in range(4):
-			img1 = pygame.image.load('assets/Tiles/platform_1.png')
-			img2 = pygame.image.load('assets/Tiles/platform_2.png')
-			img3 = pygame.image.load('assets/Tiles/platform_3.png')
-			img4 = pygame.image.load('assets/Tiles/platform_4.png')
+			img1 = pygame.image.load('assets/Tiles/platform_1.png').convert_alpha()
+			img2 = pygame.image.load('assets/Tiles/platform_2.png').convert_alpha()
+			img3 = pygame.image.load('assets/Tiles/platform_3.png').convert_alpha()
+			img4 = pygame.image.load('assets/Tiles/platform_4.png').convert_alpha()
 
 		self.image = pygame.transform.scale(img2, (tile_size, tile_size // 2))
 		self.rect = self.image.get_rect()

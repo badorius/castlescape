@@ -13,7 +13,7 @@ class Background1():
 
         # Load Background layers images:
         for z in range(1, 4):
-            self.bgs.append(pygame.image.load(f"assets/Background/{self.level}/layer_{z}.png"))
+            self.bgs.append(pygame.image.load(f"assets/Background/{self.level}/layer_{z}.png").convert_alpha())
             if z != 3:
                 self.bgs[z - 1] = pygame.transform.scale(self.bgs[z - 1], (window_width, window_height))
             elif z == 3:
@@ -21,7 +21,7 @@ class Background1():
 
         # Load floor images
         for z in range(1, 5):
-            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
+            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png").convert_alpha())
 
     def drwaBG(self):
         for x in range(10):
@@ -40,7 +40,7 @@ class Background1():
         self.bgs = []
         self.floor1 = []
         for z in range(1, 4):
-            self.bgs.append(pygame.image.load(f"assets/Background/{self.level}/layer_{z}.png"))
+            self.bgs.append(pygame.image.load(f"assets/Background/{self.level}/layer_{z}.png").convert_alpha())
             if z != 3:
                 self.bgs[z - 1] = pygame.transform.scale(self.bgs[z - 1], (window_width, window_height))
             elif z == 3:
@@ -48,7 +48,7 @@ class Background1():
 
         # Load floor images
         for z in range(1, 5):
-            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
+            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png").convert_alpha())
         print(level)
 
 

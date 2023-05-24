@@ -6,7 +6,7 @@ from random import randint
 class Door(pygame.sprite.Sprite):
     def __init__(self, x, y, move_x, move_y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('aassets/Decorations/door.png')
+        img = pygame.image.load('aassets/Decorations/door.png').convert_alpha()
         self.image = pygame.transform.scale(img, (tile_size, tile_size))
         self.rect = self.image.get_rect()
         self.rect.x = x

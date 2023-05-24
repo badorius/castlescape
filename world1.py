@@ -23,7 +23,7 @@ class World1():
 
         #Load floor1 images
         for z in range(1, 5):
-            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png"))
+            self.floor1.append(pygame.image.load(f"assets/Tiles/floor_tile_{z}.png").convert_alpha())
 
 
         # Add image to tile list map with rect

@@ -1,4 +1,5 @@
 import pygame
+import settings
 
 floor_tile_1 = pygame.image.load('assets/Tiles/floor_tile_1.png')
 floor_tile_2 = pygame.image.load('assets/Tiles/floor_tile_2.png')
