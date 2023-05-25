@@ -97,3 +97,54 @@ class Platform(pygame.sprite.Sprite):
 			self.move_counter *= -1
 
 
+class Key(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.keyimage = []
+		self.counter = 0
+		for num in range(0, 6):
+			self.keyimage.append(pygame.image.load(f'assets/Decorations/Key/tile00{num}.png').convert_alpha())
+
+
+
+		self.image = pygame.transform.scale(self.keyimage[self.counter], (tile_size*2, tile_size*2))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y - tile_size*2 + 25
+
+	def update(self, x):
+		if self.counter >= 5.0:
+			self.counter = 0.0
+		else:
+			self.counter += 0.1
+
+		img = int(self.counter)
+		self.image = pygame.transform.scale(self.keyimage[img], (tile_size*2, tile_size*2))
+		self.rect.x -= x
+
+
+class Torch(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.keyimage = []
+		self.counter = 0
+		for num in range(0, 6):
+			self.keyimage.append(pygame.image.load(f'assets/Decorations/Animated Decorations/torch_big/torch_big_{num}.png').convert_alpha())
+		self.image_bg = (pygame.image.load(f'assets/Decorations/Animated Decorations/torch_big/torch_big_background.png').convert_alpha())
+
+		self.image = pygame.transform.scale(self.keyimage[self.counter], (tile_size, tile_size))
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y - tile_size*2 + 25
+
+	def update(self, x):
+		if self.counter >= 5.0:
+			self.counter = 0.0
+		else:
+			self.counter += 0.1
+
+		img = int(self.counter)
+		self.image = pygame.transform.scale(self.keyimage[img], (tile_size, tile_size*2))
+		self.rect.x -= x
+
+

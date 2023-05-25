@@ -115,6 +115,7 @@ class Ghost(pygame.sprite.Sprite): # Object 34
         self.images_death_left = []
         self.counter = 0
         self.die = False
+        self.counter = 0
 
 
         #Sprite RUN
@@ -158,7 +159,12 @@ class Ghost(pygame.sprite.Sprite): # Object 34
     def update(self, x):
         if not self.die:
             self.move_counter += 10
+            if self.counter >= 4.0:
+                self.counter = 0.0
+            else:
+                self.counter += 0.001
 
+            img = int(self.counter)
             if abs(self.move_counter) > 300:
                 self.move_direction *= -1
                 if self.move_direction < 0:
@@ -174,9 +180,9 @@ class Ghost(pygame.sprite.Sprite): # Object 34
                 self.counter = 0
 
             if self.direction == 1:
-                self.image = self.images_right[self.counter]
+                self.image = self.images_right[img]
             elif self.direction == -1:
-                self.image = self.images_left[self.counter]
+                self.image = self.images_left[img]
 
             self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
             win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
@@ -260,6 +266,13 @@ class Gato(pygame.sprite.Sprite): # Object 35
     def update(self, x):
         if not self.die:
 
+            if self.counter >= 13.0:
+                self.counter = 0.0
+            else:
+                self.counter += 0.1
+
+            img = int(self.counter)
+
             self.move_counter += 10
 
             if abs(self.move_counter) > 300:
@@ -277,9 +290,9 @@ class Gato(pygame.sprite.Sprite): # Object 35
                 self.counter = 0
 
             if self.direction == 1:
-                self.image = self.images_left[self.counter]
+                self.image = self.images_left[img]
             elif self.direction == -1:
-                self.image = self.images_right[self.counter]
+                self.image = self.images_right[img]
 
                 #self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
             self.counter += 1

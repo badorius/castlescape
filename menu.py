@@ -12,6 +12,7 @@ class Menu():
         self.status = 0 # 0 main, 1 restart, 3 quit, 4 next, 5 run, 6 gameover
 
 
+
     def draw_level_menu(self):
         pygame.mixer.music.stop()
         pygame.mixer.Sound.play(level_completed_trumped)

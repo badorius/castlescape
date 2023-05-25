@@ -35,8 +35,8 @@ def main():
             pygame.mixer.music.stop()
             pygame.mixer.Sound.play(score_up)
             background.drwaBG()
-            hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
             world.draw()
+            hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
             # world.drawgrid()
             # if background.scroll > 0 or background.scroll < 3000:
             world.move(0)
@@ -68,14 +68,14 @@ def main():
             #threading.Thread(target=background.drwaBG).start()
             background.drwaBG()
 
-            threading.Thread(target=hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)).start()
-            #hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
-
             #threading.Thread(target=world.draw).start()
             #world.draw()
 
             threading.Thread(target=world.move(0)).start()
             #world.move(0)
+
+            threading.Thread(target=hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)).start()
+            #hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
 
             threading.Thread(target=controls.keypress(ingrid, background, world)).start()
             #controls.keypress(ingrid, background, world)
@@ -247,6 +247,10 @@ def main():
 
             # Collide Door
             if pygame.sprite.spritecollide(ingrid, world.door_group, False):
+                ingrid.level_completed = True
+
+            # Collide Key
+            if pygame.sprite.spritecollide(ingrid, world.key_group, True):
                 ingrid.level_completed = True
 
 

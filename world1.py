@@ -1,3 +1,5 @@
+import pygame.sprite
+
 import sounds
 from objects import *
 from enemy import *
@@ -16,7 +18,9 @@ class World1():
         self.obstacle_group = pygame.sprite.Group()
         self.platform_group = pygame.sprite.Group()
         self.potion_group = pygame.sprite.Group()
+        self.torch_group = pygame.sprite.Group()
         self.door_group = pygame.sprite.Group()
+        self.key_group = pygame.sprite.Group()
         self.spikes_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
 
@@ -209,8 +213,13 @@ class World1():
                         to_tile_list_bg(bg_arch_6, tile, col_count, row_count)
                     if tile == 87:
                         to_tile_list_bg(bg_arch_7, tile, col_count, row_count)
-
-
+                    if tile == 88:
+                        key = Key(col_count * tile_size + (tile_size // 2), row_count * tile_size + (tile_size // 2))
+                        self.key_group.add(key)
+                    if tile == 89:
+                        torch = Torch(col_count * tile_size + (tile_size // 2),
+                                        row_count * tile_size + (tile_size // 2))
+                        self.torch_group.add(torch)
 
 
                     col_count += 1
@@ -239,7 +248,9 @@ class World1():
 
         #self.enemy_group.draw(win)
         self.potion_group.draw(win)
+        self.torch_group.draw(win)
         self.door_group.draw(win)
+        self.key_group.draw(win)
 
 
 
@@ -249,8 +260,10 @@ class World1():
         self.obstacle_group.update(direction)
         self.platform_group.update(direction)
         self.door_group.update(direction)
+        self.key_group.update(direction)
 
         self.door_group.draw(win)
+        self.key_group.draw(win)
         self.spikes_group.draw(win)
         self.obstacle_group.draw(win)
         self.platform_group.draw(win)
@@ -277,8 +290,10 @@ class World1():
 
 
         self.potion_group.update(direction)
+        self.torch_group.update(direction)
         self.enemy_group.update(direction)
         self.potion_group.draw(win)
+        self.torch_group.draw(win)
 
 
 
