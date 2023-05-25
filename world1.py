@@ -195,6 +195,21 @@ class World1():
                         to_tile_list_bg(bg_wall_17, tile, col_count, row_count)
                     if tile == 78:
                         to_tile_list_bg(bg_wall_18, tile, col_count, row_count)
+                    if tile == 81:
+                        to_tile_list_bg(bg_arch_1, tile, col_count, row_count)
+                    if tile == 82:
+                        to_tile_list_bg(bg_arch_2, tile, col_count, row_count)
+                    if tile == 83:
+                        to_tile_list_bg(bg_arch_3, tile, col_count, row_count)
+                    if tile == 84:
+                        to_tile_list_bg(bg_arch_4, tile, col_count, row_count)
+                    if tile == 85:
+                        to_tile_list_bg(bg_arch_5, tile, col_count, row_count)
+                    if tile == 86:
+                        to_tile_list_bg(bg_arch_6, tile, col_count, row_count)
+                    if tile == 87:
+                        to_tile_list_bg(bg_arch_7, tile, col_count, row_count)
+
 
 
 
@@ -263,6 +278,8 @@ class World1():
 
         self.potion_group.update(direction)
         self.enemy_group.update(direction)
+        self.potion_group.draw(win)
+
 
 
 
