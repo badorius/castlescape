@@ -132,7 +132,9 @@ class Torch(pygame.sprite.Sprite):
 			self.keyimage.append(pygame.image.load(f'assets/Decorations/Animated Decorations/torch_big/torch_big_{num}.png').convert_alpha())
 		self.image_bg = (pygame.image.load(f'assets/Decorations/Animated Decorations/torch_big/torch_big_background.png').convert_alpha())
 
-		self.image = pygame.transform.scale(self.keyimage[self.counter], (tile_size, tile_size))
+		self.image = pygame.transform.scale(self.keyimage[self.counter], (tile_size, tile_size * 2))
+		self.image_bg = pygame.transform.scale(self.image_bg, (tile_size, tile_size * 2))
+
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y - tile_size*2 + 25
@@ -145,6 +147,8 @@ class Torch(pygame.sprite.Sprite):
 
 		img = int(self.counter)
 		self.image = pygame.transform.scale(self.keyimage[img], (tile_size, tile_size*2))
+		win.blit(self.image_bg, (self.rect.x, self.rect.y))
+		#pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
 		self.rect.x -= x
 
 

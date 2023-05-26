@@ -56,7 +56,14 @@ class Bringer(pygame.sprite.Sprite): # Object 14
     def update(self, x):
 
         if not self.die:
-            self.move_counter += 10
+            self.move_counter += 5
+            if self.counter >= len(self.images_right) - 1:
+                self.counter = 0.0
+            else:
+                self.counter += 0.1
+            img = round(self.counter)
+
+
             if abs(self.move_counter) > 300:
                 self.move_direction *= -1
                 if self.move_direction < 0:
@@ -67,34 +74,39 @@ class Bringer(pygame.sprite.Sprite): # Object 14
             self.rect.x += self.move_direction
             self.rect.x -= x
 
-            if self.counter >= len(self.images_right):
-                self.counter = 0
+            if self.counter >= len(self.images_right) - 1:
+                self.counter = 0.0
+            else:
+                self.counter += 0.1
+            img = round(self.counter)
+
 
             if self.direction == 1:
-                self.image = self.images_left[self.counter]
+                self.image = self.images_left[img]
             elif self.direction == -1:
-                self.image = self.images_right[self.counter]
+                self.image = self.images_right[img]
 
             self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
             win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
 
-            self.counter += 1
 
         else:
-            if self.counter >= len(self.images_death_right):
+            if self.counter >= len(self.images_death_right) - 1:
                 self.kill()
                 #self.counter = 0
             else:
+                self.counter += 0.1
+                img = round(self.counter)
+
                 if self.direction == 1:
-                    self.image = self.images_death_left[self.counter]
+                    self.image = self.images_death_left[img]
                 else:
-                    self.image = self.images_death_right[self.counter]
+                    self.image = self.images_death_right[img]
 
                 self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
                 win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
 
-                self.counter += 1
-                print(f'Enemy die: {self.counter}')
+                self.counter += 0.1
 
 
             #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
@@ -158,14 +170,17 @@ class Ghost(pygame.sprite.Sprite): # Object 34
 
     def update(self, x):
         if not self.die:
-            self.move_counter += 10
-            if self.counter >= 4.0:
+
+            if self.counter >= len(self.images_right) - 1:
                 self.counter = 0.0
             else:
-                self.counter += 0.001
+                self.counter += 0.1
+            img = round(self.counter)
 
-            img = int(self.counter)
-            if abs(self.move_counter) > 300:
+            self.move_counter += 2
+
+            img = round(self.counter)
+            if abs(self.move_counter) > 100:
                 self.move_direction *= -1
                 if self.move_direction < 0:
                     self.direction = -1
@@ -176,8 +191,11 @@ class Ghost(pygame.sprite.Sprite): # Object 34
 
             self.rect.x += self.move_direction
             self.rect.x -= x
-            if self.counter >= len(self.images_right):
-                self.counter = 0
+            if self.counter >= len(self.images_right) - 1:
+                self.counter = 0.0
+            else:
+                self.counter += 0.1
+            img = round(self.counter)
 
             if self.direction == 1:
                 self.image = self.images_right[img]
@@ -186,23 +204,26 @@ class Ghost(pygame.sprite.Sprite): # Object 34
 
             self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
             win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
-
-            self.counter += 1
+            if self.counter >= len(self.images_right) - 1:
+                self.counter = 0.0
+            else:
+                self.counter += 0.1
         else:
-            if self.counter >= len(self.images_death_right):
+            if self.counter > len(self.images_death_right) - 1:
                 self.kill()
                 #self.counter = 0
             else:
+                self.counter += 0.1
+                img = round(self.counter)
                 if self.direction == 1:
-                    self.image = self.images_death_left[self.counter]
+                    self.image = self.images_death_left[img]
                 else:
-                    self.image = self.images_death_right[self.counter]
+                    self.image = self.images_death_right[img]
 
                 self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
                 win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
 
-                self.counter += 1
-                print(f'Enemy die: {self.counter}')
+                #self.counter += 1
 
 
             #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
@@ -243,10 +264,10 @@ class Gato(pygame.sprite.Sprite): # Object 35
 
 
         self.image = self.images_right [self.counter]
-        #self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
+        #self.image = pygame.transform.scale_by(self.image, 2)
         self.rect = self.image.get_rect()
-        self.rect.width = self.image.get_width() / 1.5
-        self.rect.height = self.image.get_height() - tile_size 
+        self.rect.width = self.image.get_width() / 1.2
+        self.rect.height = self.image.get_height() - tile_size
         self.rect.x = x - tile_size / 2
         self.rect.y = y - tile_size * 1.4
         self.move_direction = 10
@@ -266,14 +287,13 @@ class Gato(pygame.sprite.Sprite): # Object 35
     def update(self, x):
         if not self.die:
 
-            if self.counter >= 13.0:
+            if self.counter >= len(self.images_right) - 1:
                 self.counter = 0.0
             else:
                 self.counter += 0.1
+            img = round(self.counter)
 
-            img = int(self.counter)
-
-            self.move_counter += 10
+            self.move_counter += 5
 
             if abs(self.move_counter) > 300:
                 self.move_direction *= -1
@@ -286,7 +306,7 @@ class Gato(pygame.sprite.Sprite): # Object 35
             self.rect.x += self.move_direction
             self.rect.x -= x
 
-            if self.counter >= len(self.images_right):
+            if self.counter >= len(self.images_right) - 1:
                 self.counter = 0
 
             if self.direction == 1:
@@ -295,24 +315,25 @@ class Gato(pygame.sprite.Sprite): # Object 35
                 self.image = self.images_right[img]
 
                 #self.image = pygame.transform.scale(self.image, (self.size * 2, self.size * 2))
-            self.counter += 1
+            self.counter += 0.1
             win.blit(self.image, (self.rect.x - 20, self.rect.y - 40, self.rect.width, self.rect.height))
+            #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)
+
 
         else:
-            if self.counter >= len(self.images_death_right):
+            if self.counter > len(self.images_death_right) - 1:
                 self.kill()
                 #self.counter = 0
             else:
+                self.counter += 0.1
+                img = round(self.counter)
                 if self.direction == 1:
-                    self.image = self.images_death_left[self.counter]
+                    self.image = self.images_death_left[img]
                 else:
-                    self.image = self.images_death_right[self.counter]
+                    self.image = self.images_death_right[img]
 
                 self.image = pygame.transform.scale(self.image, (self.size * 4, self.size * 4))
                 win.blit(self.image, (self.rect.x - 10, self.rect.y - 60, self.rect.width, self.rect.height))
-
-                self.counter += 1
-                print(f'Enemy die: {self.counter}')
 
 
             #pygame.draw.rect(win, (255, 255, 255), self.rect, 2)

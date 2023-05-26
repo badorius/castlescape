@@ -220,6 +220,38 @@ class World1():
                         torch = Torch(col_count * tile_size + (tile_size // 2),
                                         row_count * tile_size + (tile_size // 2))
                         self.torch_group.add(torch)
+                    if tile == 91:
+                        to_tile_list_bg(bg_brick_1, tile, col_count, row_count)
+                    if tile == 92:
+                        to_tile_list_bg(bg_brick_2, tile, col_count, row_count)
+                    if tile == 93:
+                        to_tile_list_bg(bg_brick_3, tile, col_count, row_count)
+                    if tile == 94:
+                        to_tile_list_bg(bg_brick_4, tile, col_count, row_count)
+                    if tile == 95:
+                        to_tile_list_bg(bg_brick_5, tile, col_count, row_count)
+                    if tile == 96:
+                        to_tile_list_bg(bg_brick_6, tile, col_count, row_count)
+                    if tile == 97:
+                        to_tile_list_bg(bg_brick_7, tile, col_count, row_count)
+                    if tile == 98:
+                        to_tile_list_bg(bg_brick_8, tile, col_count, row_count)
+                    if tile == 99:
+                        to_tile_list_bg(bg_brick_9, tile, col_count, row_count)
+                    if tile == 100:
+                        to_tile_list_bg(bg_brick_10, tile, col_count, row_count)
+                    if tile == 101:
+                        to_tile_list_bg(bg_brick_11, tile, col_count, row_count)
+                    if tile == 102:
+                        to_tile_list_bg(bg_brick_12, tile, col_count, row_count)
+                    if tile == 103:
+                        to_tile_list_bg(bg_brick_13, tile, col_count, row_count)
+                    if tile == 104:
+                        to_tile_list_bg(bg_brick_14, tile, col_count, row_count)
+                    if tile == 105:
+                        to_tile_list_bg(bg_brick_15, tile, col_count, row_count)
+                    if tile == 106:
+                        to_tile_list_bg(bg_brick_16, tile, col_count, row_count)
 
 
                     col_count += 1
@@ -287,6 +319,8 @@ class World1():
             img_rect = tile[1]
             img_rect.x -= direction
             win.blit(tile[0], tile[1])
+            #pygame.draw.rect(win, (255, 255, 255), img_rect, 2)
+
 
 
         self.potion_group.update(direction)
@@ -294,6 +328,7 @@ class World1():
         self.enemy_group.update(direction)
         self.potion_group.draw(win)
         self.torch_group.draw(win)
+        #self.enemy_group.draw(win)
 
 
 

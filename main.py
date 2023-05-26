@@ -35,8 +35,8 @@ def main():
             pygame.mixer.music.stop()
             pygame.mixer.Sound.play(score_up)
             background.drwaBG()
-            world.draw()
             hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
+            world.draw()
             # world.drawgrid()
             # if background.scroll > 0 or background.scroll < 3000:
             world.move(0)
@@ -71,11 +71,11 @@ def main():
             #threading.Thread(target=world.draw).start()
             #world.draw()
 
-            threading.Thread(target=world.move(0)).start()
-            #world.move(0)
-
             threading.Thread(target=hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)).start()
             #hud.draw_hud(ingrid.live, ingrid.score, ingrid.timer)
+
+            threading.Thread(target=world.move(0)).start()
+            #world.move(0)
 
             threading.Thread(target=controls.keypress(ingrid, background, world)).start()
             #controls.keypress(ingrid, background, world)
