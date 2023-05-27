@@ -77,9 +77,12 @@ def main():
             threading.Thread(target=world.move(0)).start()
             #world.move(0)
 
-            threading.Thread(target=controls.keypress(ingrid, background, world)).start()
-            #controls.keypress(ingrid, background, world)
-            #controls.joypress(ingrid, background, world)
+            if joystick_count != 0:
+                threading.Thread(target=controls.joypress(ingrid, background, world)).start()
+            else:
+                threading.Thread(target=controls.keypress(ingrid, background, world)).start()
+                #controls.keypress(ingrid, background, world)
+                #controls.joypress(ingrid, background, world)
 
             threading.Thread(target=check_collide).start()
             #check_collide()

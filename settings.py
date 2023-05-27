@@ -22,7 +22,7 @@ else:
     num_axes = joystick.get_numaxes()
     num_buttons = joystick.get_numbuttons()
     num_hats = joystick.get_numhats()
-    print(num_axes, num_buttons, num_hats)
+    #print(num_axes, num_buttons, num_hats)
 
 
 win = pygame.display.set_mode((window_width,window_height))
