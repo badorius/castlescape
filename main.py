@@ -7,6 +7,8 @@ from hud import *
 import pygame
 import threading
 import settings
+import os
+
 
 
 def main():
@@ -169,11 +171,10 @@ def main():
             if pygame.sprite.spritecollide(ingrid, world.obstacle_group, False):
                 ingrid.collide_obstacle = True
                 pygame.mixer.Sound.play(hurt)
+                joystick.rumble(0, 1, 500)
                 ingrid.live -= 0.01
-                if ingrid.direction == 1:
-                    ingrid.dx -= 0.01
-                if ingrid.direction == -1:
-                    ingrid.dx += 0.01
+                ingrid.dy -= 0.01
+
             else:
                 ingrid.collide_obstacle = False
 
@@ -190,22 +191,22 @@ def main():
                 if pygame.sprite.spritecollide(ingrid, world.enemy_group, False):
                     ingrid.collide_enemy = True
                     pygame.mixer.Sound.play(hurt)
+                    joystick.rumble(0, 1, 500)
+
                     ingrid.live -= 0.01
-                    if ingrid.direction == 1:
-                        ingrid.dx -= 0.01
-                    if ingrid.direction == -1:
-                        ingrid.dx += 0.01
+                    ingrid.dy -= 0.01
+
+
 
 
             # Check spikes collide
             if pygame.sprite.spritecollide(ingrid, world.spikes_group, False):
                 ingrid.collide_spikes = True
                 pygame.mixer.Sound.play(hurt)
+                joystick.rumble(0, 1, 500)
                 ingrid.live -= 0.01
-                if ingrid.direction == 1:
-                    ingrid.dy -= 0.01
-                if ingrid.direction == -1:
-                    ingrid.dy += 0.01
+                ingrid.dy -= 0.01
+
             else:
                 ingrid.collide_spikes = False
 
@@ -234,6 +235,7 @@ def main():
             # FALL DOWN
             if ingrid.rect.y > window_height - tile_size * 2:
                 pygame.mixer.Sound.play(hurt)
+                joystick.rumble(0, 1, 500)
                 ingrid.collide_obstacle = True
                 ingrid.live -= 0.01
             else:
