@@ -27,3 +27,4 @@ else:
 
 win = pygame.display.set_mode((window_width,window_height))
 pygame.display.set_caption("Castle Mania")
+#win = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
