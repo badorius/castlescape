@@ -155,7 +155,7 @@ class Warrior():
                     self.image = self.images_idle_left[self.index_idle]
 
             # Collide obstacle
-            if self.collide_obstacle or self.collide_spikes:
+            if self.collide_obstacle or self.collide_spikes or self.collide_enemy:
                 if self.index_hurt >= len(self.images_hurt_right):
                     self.index_hurt = 0
                 if self.direction == 1:
