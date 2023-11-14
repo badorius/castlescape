@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf4d021lelowr"]
+
+[ext_resource type="Script" path="res://Scrpits/Player.gd" id="1_f0k0l"]
+[ext_resource type="Texture2D" uid="uid://dq5lgbpqvstas" path="res://Assets/Player/Warrior/Warrior_Idle_1.png" id="2_73rny"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2tou3"]
+size = Vector2(15, 32)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(-42, 52)
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_f0k0l")
+
+[node name="WarriorIdle1" type="Sprite2D" parent="."]
+texture = ExtResource("2_73rny")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-5.5, 5)
+shape = SubResource("RectangleShape2D_2tou3")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -60)
+zoom = Vector2(6, 6)

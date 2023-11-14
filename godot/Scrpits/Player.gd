@@ -1,11 +1,13 @@
 extends CharacterBody2D
 
 
-const SPEED = 300.0
+const SPEED = 150.0
 const JUMP_VELOCITY = -400.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var score : int = 0
+@onready var score_text : Label = get_node("CanvasLayer/ScoreText")
 
 
 func _physics_process(delta):
@@ -26,3 +28,19 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+	
+	if Input.is_action_just_pressed("ui_cancel") and is_on_floor():
+		game_quit()
+	
+	if global_position.y > 150:
+		game_over()
+
+func game_over ():
+	get_tree().reload_current_scene()
+	
+func game_quit ():
+	get_tree().quit(0)
+	
+func add_score (amount):
+	score += amount
+	score_text.text = str("Score: ", score)
