@@ -15,7 +15,13 @@ run/main_scene="res://Level1.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=1024
+window/size/resizable=false
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-environment/defaults/default_clear_color=Color(0.427451, 0, 0.137255, 1)
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
